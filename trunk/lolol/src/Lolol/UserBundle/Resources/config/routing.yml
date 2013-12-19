@@ -1,0 +1,3 @@
+lolol_user_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: LololUserBundle:Default:index }
