@@ -12,5 +12,5 @@
 
 = Doctrine =
   * *php app/console generate:doctrine:entity* Generate a new entity
-
+  * *php app/console doctrine:database:create* Create the DB
   * *php app/console doctrine:schema:update --force* Update the DB schema
