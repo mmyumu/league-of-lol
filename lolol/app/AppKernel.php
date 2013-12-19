@@ -15,6 +15,7 @@ class AppKernel extends Kernel {
 				new FOS\UserBundle\FOSUserBundle (),
 	            new Lolol\TeamBundle\LololTeamBundle(),
             	new Lolol\UserBundle\LololUserBundle(),
+            	new Lolol\AppBundle\LololAppBundle(),
 		);
 		
 		if (in_array ( $this->getEnvironment (), array (

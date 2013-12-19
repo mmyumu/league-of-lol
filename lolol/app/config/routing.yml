@@ -1,10 +1,15 @@
+lolol_app:
+    resource: "@LololAppBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}
+
 lolol_user:
     resource: "@LololUserBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}
 
 lolol_team:
     resource: "@LololTeamBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}
+
 
 # FOS Bundle routes
 fos_user_security:
