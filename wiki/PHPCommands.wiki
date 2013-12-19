@@ -1,13 +1,14 @@
 #summary List of usefuls php commands for Composer/Symfony
 
 = Composer=
-*php ../composer.phar update* Download the dependencies defined in composer.json
+  * *php ../composer.phar update* Download the dependencies defined in composer.json
 
 
 = Symfony =
-*php app/console generate:bundle* Generate a new bundle
+  * *php app/console generate:bundle* Generate a new bundle
 
 
 = Doctrine =
-*php app/console generate:doctrine:entity* Generate a new entity
-*php app/console doctrine:schema:update --force*
+  * *php app/console generate:doctrine:entity* Generate a new entity
+
+  * *php app/console doctrine:schema:update --force* Update the DB schema
