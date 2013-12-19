@@ -7,6 +7,8 @@
 = Symfony =
   * *php app/console generate:bundle* Generate a new bundle
 
+== FOS ==
+  * *php app/console fos:user:create* Create a new user
 
 = Doctrine =
   * *php app/console generate:doctrine:entity* Generate a new entity
