@@ -1,6 +1,7 @@
 #summary List of usefuls php commands for Composer/Symfony
 
-= Commands =
-
-*php app/console generate:bundle* Generate a new bundle
+= Composer=
 *php ../composer.phar update* Download the dependencies defined in composer.json
+
+= Symfony =
+*php app/console generate:bundle* Generate a new bundle
