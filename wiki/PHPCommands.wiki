@@ -1,4 +1,4 @@
-#summary List of all the useful php commands for Composer/Symfony
+#summary List of usefuls php commands for Composer/Symfony
 
 = Commands =
 
