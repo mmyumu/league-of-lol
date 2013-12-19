@@ -1,0 +1,3 @@
+lolol_app_homepage:
+    pattern:  /
+    defaults: { _controller: LololAppBundle:Default:index }
