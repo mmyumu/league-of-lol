@@ -3,5 +3,6 @@
 = Composer=
 *php ../composer.phar update* Download the dependencies defined in composer.json
 
+
 = Symfony =
 *php app/console generate:bundle* Generate a new bundle
