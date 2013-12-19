@@ -1,0 +1,5 @@
+#summary List of all the useful php commands for Composer/Symfony
+
+= Commands =
+
+*php app/console generate:bundle* Generate a new bundle
