@@ -6,3 +6,7 @@
 
 = Symfony =
 *php app/console generate:bundle* Generate a new bundle
+
+
+= Doctrine =
+*php app/console generate:doctrine:entity* Generate a new entity
