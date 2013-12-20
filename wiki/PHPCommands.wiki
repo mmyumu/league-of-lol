@@ -17,3 +17,4 @@
   * *php app/console doctrine:database:create* Create the DB
   * *php app/console doctrine:schema:update --dump-sql*  Generates the SQL to update the DB schema
   * *php app/console doctrine:schema:update --force* Update the DB schema
+  * *php app/console doctrine:fixtures:load* Load the fixtures into DB
