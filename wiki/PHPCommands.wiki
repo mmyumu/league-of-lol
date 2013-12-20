@@ -6,6 +6,7 @@
 
 = Symfony =
   * *php app/console generate:bundle* Generate a new bundle
+  * *php app/console cache:clear* Clear the cache
 
 == FOS ==
   * *php app/console fos:user:create* Create a new user
