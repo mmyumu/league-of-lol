@@ -8,26 +8,24 @@
 <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %} {% block javascripts %}
 <script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 {% javascripts 'js/bootstrap.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 
 <script type="text/javascript">
 	function aButtonPressed(){
-		alert('test');
 	    $.post('{{path('lolol_team_homepage')}}',               
 	                {data1: 'mydata1', data2:'mydata2'}, 
 	            function(response){
-	    	            alert(response.code);
 	                    if(response.code == 100 && response.success){//dummy check
 	                      alert(response);
 	                    }
 	
-	    }, "json");    
+	    }, "json");
 	}
 	
 	$(document).ready(function() {     
-	  $('button').on('click', function(){aButtonPressed();});
+	  $('a').on('click', function(){aButtonPressed(); return false;});
 	});
 </script>
 
@@ -58,7 +56,7 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="" onclick="aButtonPressed();">{{ 'Team'|trans }}</a></li>
+					<li class="active"><a href="#">{{ 'Team'|trans }}</a></li>
 					<li><a href="#">Link</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown">Dropdown <b class="caret"></b></a>
