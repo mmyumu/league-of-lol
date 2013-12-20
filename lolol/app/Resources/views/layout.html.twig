@@ -9,26 +9,8 @@
 {% endstylesheets %} {% block javascripts %}
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-{% javascripts 'js/bootstrap.js' %}
+{% javascripts 'js/bootstrap.js' 'js/holder.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
-
-<script type="text/javascript">
-	function aButtonPressed(){
-	    $.post('{{path('lolol_team_homepage')}}',               
-	                {data1: 'mydata1', data2:'mydata2'}, 
-	            function(response){
-	                    if(response.code == 100 && response.success){//dummy check
-	                      alert(response);
-	                    }
-	
-	    }, "json");
-	}
-	
-	$(document).ready(function() {     
-	  $('a').on('click', function(){aButtonPressed(); return false;});
-	});
-</script>
-
 {% endjavascripts %} {% endblock %}
 </head>
 
@@ -56,41 +38,32 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">{{ 'Team'|trans }}</a></li>
-					<li><a href="#">Link</a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-							<li class="divider"></li>
-							<li><a href="#">One more separated link</a></li>
-						</ul></li>
-				</ul>
-				<form class="navbar-form navbar-left" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search">
-					</div>
-					<button type="submit" class="btn btn-default">Submit</button>
-				</form>
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Link</a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-						</ul></li>
+					<li class="dropdown">
+					<a href="#"
+						class="dropdown-toggle" data-toggle="dropdown">{{ 'Teams'|trans }}
+							<b class="caret"></b>
+					</a>
+						<ul class="dropdown-menu" role="menu"
+							aria-labelledby="dropdownMenu1">
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_myteams') }}">{{
+									'My teams'|trans }}</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_newteam') }}">{{ 'Create new team'|trans }}</a></li>
+						</ul>
+					</li>
+					<li><a href="#">{{ 'Ranking'|trans }}</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
 		</nav>
+
+		<div id="content">{% block body %} {% endblock %}</div>
+
+		<hr>
+
+		<footer>
+			<p>Footer</p>
+		</footer>
+	</div>
 	</div>
 
 </body>

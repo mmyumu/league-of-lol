@@ -1,3 +1,6 @@
-lolol_team_homepage:
-    pattern:  /team/
-    defaults: { _controller: LololTeamBundle:Default:index }
+lolol_team_myteams:
+    pattern:  /myteams/
+    defaults: { _controller: LololTeamBundle:Team:myTeams }
+lolol_team_newteam:
+    pattern:  /newteam/
+    defaults: { _controller: LololTeamBundle:Team:newTeam }
