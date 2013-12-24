@@ -22,11 +22,11 @@ security:
             anonymous: true
             provider: main
             form_login:
-              login_path: login
-              check_path: login_check
+              login_path: fos_user_security_login
+              check_path: fos_user_security_check
             logout:
-              path: logout
-              target: /
+              path: fos_user_security_logout
+              target: lolol_app_homepage
             remember_me:
               key: %secret%
         dev:
@@ -45,6 +45,7 @@ security:
             logout:
                 path:   _demo_logout
                 target: _demo
+                invalidate_session: false
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
