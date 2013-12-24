@@ -26,6 +26,11 @@ class Team {
 	private $name;
 	
 	/**
+	 * @ORM\ManyToOne(targetEntity="Lolol\UserBundle\Entity\User")
+	 */
+	private $user;
+	
+	/**
 	 * Get id
 	 *
 	 * @return integer
@@ -54,4 +59,27 @@ class Team {
 	public function getName() {
 		return $this->name;
 	}
+
+    /**
+     * Set user
+     *
+     * @param \Lolol\UserBundle\Entity\User $user
+     * @return Team
+     */
+    public function setUser(\Lolol\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Lolol\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

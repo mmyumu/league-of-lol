@@ -16,6 +16,7 @@ class AppKernel extends Kernel {
 	            new Lolol\TeamBundle\LololTeamBundle(),
             	new Lolol\UserBundle\LololUserBundle(),
             	new Lolol\AppBundle\LololAppBundle(),
+            new Lolol\ShopBundle\LololShopBundle(),
 		);
 		
 		if (in_array ( $this->getEnvironment (), array (
