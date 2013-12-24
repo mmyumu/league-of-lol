@@ -1,0 +1,7 @@
+parameters:
+#    lolol_shop.example.class: Lolol\ShopBundle\Example
+
+services:
+#    lolol_shop.example:
+#        class: %lolol_shop.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

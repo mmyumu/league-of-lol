@@ -78,7 +78,11 @@
 	      			<li><a href="#">Admin</a></li>
 	      		{% endif %}
 	    		{% if is_granted('ROLE_SUPER_ADMIN') %}
-	      			<li><a href="#">Super admin</a></li>
+					<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Super admin<b class="caret"></b></a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_myteams') }}">Dump from wiki</a></li>
+						</ul>
 	      		{% endif %}
 	    		</ul>
     		</div>

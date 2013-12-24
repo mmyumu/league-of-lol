@@ -1,0 +1,3 @@
+lolol_shop_homepage:
+    pattern:  /shop/
+    defaults: { _controller: LololShopBundle:Shop:index }
