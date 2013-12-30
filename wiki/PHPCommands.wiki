@@ -10,6 +10,7 @@
 
 == FOS ==
   * *php app/console fos:user:create* Create a new user
+  * *php app/console fos:user:promote testuser --super* Promote user to super admin
 
 = Doctrine =
   * *php app/console generate:doctrine:entity* Generate a new entity
