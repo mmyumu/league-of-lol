@@ -9,12 +9,12 @@ use Lolol\UserBundle\Entity\User;
 class Users implements FixtureInterface {
 	public function load(ObjectManager $manager) {
 		
-		$user = new User();
-		$user->setUsername('mmyumu');
-		$user->setPassword('mmyumu');
+// 		$user = new User();
+// 		$user->setUsername('mmyumu');
+// 		$user->setPassword('mmyumu');
 		
-		$manager->persist();
+// 		$manager->persist();
 		
-		$manager->flush();
+// 		$manager->flush();
 	}
 }

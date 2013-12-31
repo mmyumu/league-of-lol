@@ -1,0 +1,12 @@
+{% extends "::layout.html.twig" %}
+{% block body %}
+
+	{# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+	<h3>Super Admin<small>{% block lololsuperadmin_subtitle %}{% endblock %}</small></h3>
+
+	<hr>
+	
+	{% block lololsuperadmin_body %}
+	{% endblock %}
+
+{% endblock %}

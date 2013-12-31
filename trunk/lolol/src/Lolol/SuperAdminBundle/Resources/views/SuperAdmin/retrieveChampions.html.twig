@@ -1,0 +1,68 @@
+{% extends "LololSuperAdminBundle::layout.html.twig" %} 
+
+{% block javascripts %}
+    {{ parent() }}
+
+	<script type="text/javascript">
+
+	function retrieve(){
+		var data = [];
+		$("input:checked").each(function() {
+			data.push($(this).attr('id'));
+		});
+
+		$('#loading-indicator').show();
+	    $.post('{{path('lolol_super_admin_retrieveProcess')}}',               
+	                JSON.stringify(data), 
+	            function(response){
+					if(response.code == 100 && response.success) {
+
+					}
+					$('#loading-indicator').hide();
+
+	    }, "json");    
+	}
+
+	function checkAll(checked) {
+		$('.chkChampion').prop('checked', checked);
+	}
+
+	$(document).ready(function() {     
+	  $('.retrieve').on('click', function(){retrieve();});
+
+	  $('.selectAll').on('click', function() { checkAll(true);});
+	  $('.unselectAll').on('click', function() { checkAll(false);});
+	});
+	
+	</script>
+{% endblock %}
+
+{% block lololsuperadmin_body %}
+	<button class="btn btn-default selectAll">Select all</button>
+	<button class="btn btn-default unselectAll">Unselect all</button>
+	<button class="btn btn-primary retrieve">Retrieve</button>
+  	<ul class="nav nav-pills nav-stacked">
+    {% for championInfo in championInfos %}
+      	<li>
+      		<div class="checkbox">
+	    		<label><input class="chkChampion" type="checkbox" id="{{ championInfo.name }}" name="champions[]" value="on" checked="true" />
+				<div class="row">
+					<div class="col-lg-2">    		
+    					{{ championInfo.name }}
+    				</div>
+    				<div class="col-lg-3">
+    			 		<i>({{ championInfo.lastRetrieve }})</i>
+    			 	</div>
+    			</div>	    		
+	    		</label>
+  			</div>
+      	</li>
+    {% else %}
+      	<li>No champion</li>
+    {% endfor %}
+  	</ul>
+	<button class="btn btn-default selectAll">Select all</button>
+	<button class="btn btn-default unselectAll">Unselect all</button>
+	<button class="btn btn-primary retrieve">Retrieve</button>
+{% endblock %}
+

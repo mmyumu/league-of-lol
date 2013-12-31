@@ -1,0 +1,8 @@
+#loading-indicator {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -25px; /* -1 * image width / 2 */
+    margin-top: -25px;  /* -1 * image height / 2 */
+    display: block; 
+}
