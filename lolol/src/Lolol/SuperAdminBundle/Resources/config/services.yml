@@ -1,0 +1,9 @@
+parameters:
+#    lolol_super_admin.example.class: Lolol\SuperAdminBundle\Example
+
+services:
+    lolol_superAdmin.retrieveChampions:
+        class: Lolol\SuperAdminBundle\RetrieveChampions\LololRetrieveChampions
+#    lolol_super_admin.example:
+#        class: %lolol_super_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

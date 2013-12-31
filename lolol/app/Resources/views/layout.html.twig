@@ -3,15 +3,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>{% block title %}Lolol{% endblock %}</title> {% stylesheets
-'css/bootstrap.css*' filter='cssrewrite' %}
+<title>{% block title %}Lolol{% endblock %}</title> 
+{% stylesheets
+'css/bootstrap.css' 'css/custom.css' filter='cssrewrite' %}
 <link rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %} {% block javascripts %}
+{% endstylesheets %} 
+
+{% block javascripts %}
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 {% javascripts 'js/bootstrap.js' 'js/holder.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %} {% endblock %}
+{% endjavascripts %} 
+{% endblock %}
 </head>
 
 <body>
@@ -81,7 +85,7 @@
 					<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Super admin<b class="caret"></b></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_myteams') }}">Dump from wiki</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_super_admin_retrieveChampions') }}">Retrieve champions</a></li>
 						</ul>
 	      		{% endif %}
 	    		</ul>
@@ -98,6 +102,6 @@
 		</footer>
 	</div>
 	</div>
-
+	<img src="{{ asset('img/ajax-loader.gif') }}" id="loading-indicator" style="display: none" />
 </body>
 </html>

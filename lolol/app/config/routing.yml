@@ -1,3 +1,7 @@
+lolol_super_admin:
+    resource: "@LololSuperAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
 lolol_shop:
     resource: "@LololShopBundle/Resources/config/routing.yml"
     prefix:   /{_locale}

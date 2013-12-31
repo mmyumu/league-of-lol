@@ -1,0 +1,11 @@
+lolol_super_admin_homepage:
+    pattern:  /superAdmin
+    defaults: { _controller: LololSuperAdminBundle:SuperAdmin:index }
+    
+lolol_super_admin_retrieveChampions:
+    pattern:  /superAdmin/retrieve
+    defaults: { _controller: LololSuperAdminBundle:SuperAdmin:retrieveChampions }
+
+lolol_super_admin_retrieveProcess:
+    pattern:  /superAdmin/retrieveProcess
+    defaults: { _controller: LololSuperAdminBundle:SuperAdmin:retrieveProcess }
