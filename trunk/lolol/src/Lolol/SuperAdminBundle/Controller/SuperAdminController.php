@@ -52,26 +52,17 @@ class SuperAdminController extends Controller {
 	 */
 	public function retrieveProcessAction() {
 		$params = array();
-		$content = $this->get("request")->getContent();
-		if (! empty($content)) {
-			$championNames = json_decode($content, true); // 2nd param to get as array
-			
+		$request = $this->getRequest();
+		
+		$championNames = $request->request->get('champions');
+		
+		if (!empty($championNames)) {
 			$folder = $this->container->getParameter('champions.folder');
 			$extension = $this->container->getParameter('champions.file.extension');
 			
 			$retrieveChampions = $this->container->get('lolol_superAdmin.retrieveChampions');
 			$retrieveChampions->retrieve($championNames, $folder, $extension);
 		}
-		
-		// Build the JSON reponse if successful
-		$response = new Response(json_encode(array(
-				"code" => 100,
-				"success" => true
-		)));
-		
-		// Define the headers to return JSON instead of HTML
-		$response->headers->set('Content-Type', 'application/json');
-		
-		return $response;
+		return $this->redirect($this->generateUrl('lolol_super_admin_retrieveChampions'));
 	}
 }
