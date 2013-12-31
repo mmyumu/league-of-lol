@@ -4,40 +4,20 @@
     {{ parent() }}
 
 	<script type="text/javascript">
-
-	function retrieve(){
-		var data = [];
-		$("input:checked").each(function() {
-			data.push($(this).attr('id'));
-		});
-
-		$('#loading-indicator').show();
-	    $.post('{{path('lolol_super_admin_retrieveProcess')}}',               
-	                JSON.stringify(data), 
-	            function(response){
-					if(response.code == 100 && response.success) {
-
-					}
-					$('#loading-indicator').hide();
-
-	    }, "json");    
-	}
-
 	function checkAll(checked) {
 		$('.chkChampion').prop('checked', checked);
 	}
 
-	$(document).ready(function() {     
-	  $('.retrieve').on('click', function(){retrieve();});
-
-	  $('.selectAll').on('click', function() { checkAll(true);});
-	  $('.unselectAll').on('click', function() { checkAll(false);});
+	$(document).ready(function() {
+	  $('.selectAll').on('click', function() { checkAll(true); return false;});
+	  $('.unselectAll').on('click', function() { checkAll(false); return false;});
 	});
 	
 	</script>
 {% endblock %}
 
 {% block lololsuperadmin_body %}
+	<form method="POST" action="{{ path('lolol_super_admin_retrieveProcess') }}">
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
 	<button class="btn btn-primary retrieve">Retrieve</button>
@@ -45,7 +25,7 @@
     {% for championInfo in championInfos %}
       	<li>
       		<div class="checkbox">
-	    		<label><input class="chkChampion" type="checkbox" id="{{ championInfo.name }}" name="champions[]" value="on" checked="true" />
+	    		<label><input class="chkChampion" type="checkbox" id="{{ championInfo.name }}" name="champions[]" value="{{ championInfo.name }}" checked="true" />
 				<div class="row">
 					<div class="col-lg-2">    		
     					{{ championInfo.name }}
@@ -64,5 +44,6 @@
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
 	<button class="btn btn-primary retrieve">Retrieve</button>
+	</form>
 {% endblock %}
 
