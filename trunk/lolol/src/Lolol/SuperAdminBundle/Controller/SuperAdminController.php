@@ -7,13 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Filesystem\Filesystem;
 
 class SuperAdminController extends Controller {
-	private $prefix48 = "48px-";
-	private $suffix48 = "Square.png";
-	
 	public function indexAction($name) {
-		return $this->render('LololSuperAdminBundle:Default:index.html.twig', array(
-				'name' => $name
-		));
+		return $this->render('LololSuperAdminBundle:Default:index.html.twig', array (
+				'name' => $name ));
 	}
 	
 	/**
@@ -22,46 +18,48 @@ class SuperAdminController extends Controller {
 	public function retrieveChampionsAction() {
 		// Get the service
 		$championNames = $this->container->get('lolol_team.champions');
+		$stringReplace = $this->container->get('lolol_app.stringReplace');
 		
 		// Get the parameters
-		$folder = $this->container->getParameter('champions.folder');
-		$statsExtension = $this->container->getParameter('champions.stats.extension');
+		$folder = $this->container->getParameter('champions_folder');
+		$statsExtension = $this->container->getParameter('champions_stats_extension');
+		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
+		$suffixIcons48 = $this->container->getParameter('champions_icons48_suffix');
 		
 		$fs = new Filesystem();
 		
-		$championInfos = array();
-		foreach($championNames->getList() as $championName) {
-			$championInfo['name'] = $championName;
-			$championInfo['trClass'] = '';
+		$championInfos = array ();
+		foreach ( $championNames->getList() as $championName ) {
+			$championInfo ['name'] = $championName;
+			$championInfo ['trClass'] = '';
 			
 			// Stats
 			$tmpName = str_replace(' ', '_', $championName);
 			$statsFilename = $folder . '/' . $tmpName . $statsExtension;
 			if ($fs->exists($statsFilename)) {
-				$championInfo['lastStatsRetrieve'] = date("Y-m-d H:i:s", filemtime($statsFilename));
-			} else {
-				$championInfo['lastStatsRetrieve'] = 'Never retrieved';
-				$championInfo['trClass'] = 'danger';
+				$championInfo ['lastStatsRetrieve'] = date("Y-m-d H:i:s", filemtime($statsFilename));
+			}
+			else {
+				$championInfo ['lastStatsRetrieve'] = 'Never retrieved';
+				$championInfo ['trClass'] = 'danger';
 			}
 			
 			// Icons: 48px
-			$tmpName = str_replace('\'', '', $championName);
-			$tmpName = str_replace(' ', '', $tmpName);
-			$tmpName = str_replace('.', '', $tmpName);
-			$icons48Filename = $folder . '/img/' . $this->prefix48 . $tmpName . $this->suffix48;
+			$tmpName = $stringReplace->getImgName($championName);
+			$icons48Filename = $folder . '/img/' . $prefixIcons48 . $tmpName . $suffixIcons48;
 			if ($fs->exists($icons48Filename)) {
-				$championInfo['lastIcons48Retrieve'] = date("Y-m-d H:i:s", filemtime($icons48Filename));
-			} else {
-				$championInfo['lastIcons48Retrieve'] = 'Never retrieved';
-				$championInfo['trClass'] = 'danger';
+				$championInfo ['lastIcons48Retrieve'] = date("Y-m-d H:i:s", filemtime($icons48Filename));
+			}
+			else {
+				$championInfo ['lastIcons48Retrieve'] = 'Never retrieved';
+				$championInfo ['trClass'] = 'danger';
 			}
 			
 			array_push($championInfos, $championInfo);
 		}
 		
-		return $this->render('LololSuperAdminBundle:SuperAdmin:retrieveChampions.html.twig', array(
-				'championInfos' => $championInfos
-		));
+		return $this->render('LololSuperAdminBundle:SuperAdmin:retrieveChampions.html.twig', array (
+				'championInfos' => $championInfos ));
 	}
 	
 	/**
@@ -70,30 +68,45 @@ class SuperAdminController extends Controller {
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
 	public function retrieveProcessAction() {
-		$params = array();
+		$params = array ();
 		$request = $this->getRequest();
 		
-		$res = '';
+		// Get the clicked submit button
+		$postRetrieve = $request->request->get('retrieveBtn');
 		
-		// Gets the type of data to retrieve on the selected champions
+		// Get the type of data to retrieve on the selected champions
 		$postRetrieveTypes = $request->request->get('retrieveTypes');
-		foreach($postRetrieveTypes as $retrieveType) {
-			$retrieveTypes[$retrieveType] = true;
+		if (! empty($postRetrieveTypes)) {
+			foreach ( $postRetrieveTypes as $retrieveType ) {
+				$retrieveTypes [$retrieveType] = true;
+			}
 		}
 		
+		// Get the selected champions
 		$championNames = $request->request->get('champions');
 		
-		if (!empty($championNames)) {
-			$folder = $this->container->getParameter('champions.folder');
-			$statsExtension = $this->container->getParameter('champions.stats.extension');
-			
+		if (! empty($championNames)) {
+			$folder = $this->container->getParameter('champions_folder');
+			$statsExtension = $this->container->getParameter('champions_stats_extension');
+				
 			$retrieveChampions = $this->container->get('lolol_superAdmin.retrieveChampions');
 			
-			if (isset($retrieveTypes['stats']) && $retrieveTypes['stats'] == true) {
-				$retrievedStats = $retrieveChampions->retrieveStats($championNames, $folder, $statsExtension);
+			// Manage the stats
+			if (isset($retrieveTypes ['stats']) && $retrieveTypes ['stats'] == true) {
+				if($postRetrieve == 'retrieve') {
+					$retrievedStats = $retrieveChampions->retrieveStats($championNames, $folder, $statsExtension);
+				} elseif($postRetrieve == 'clear') {
+					$retrievedStats = $retrieveChampions->clearStats($championNames, $folder, $statsExtension);
+				}
 			}
-			if (isset($retrieveTypes['icons48']) && $retrieveTypes['icons48'] == true) {
-				$retrievedIcons48 = $retrieveChampions->retrieveIcons48($championNames, $folder, $this->prefix48, $this->suffix48);
+			
+			// Manage the icons
+			if (isset($retrieveTypes ['icons48']) && $retrieveTypes ['icons48'] == true) {
+				if($postRetrieve == 'retrieve') {
+					$retrievedIcons48 = $retrieveChampions->retrieveIcons48($championNames);
+				} elseif($postRetrieve == 'clear') {
+					$retrievedIcons48 = $retrieveChampions->clearIcons48($championNames);
+				}
 			}
 		}
 		
@@ -111,20 +124,17 @@ class SuperAdminController extends Controller {
 		
 		$em = $this->getDoctrine()->getManager();
 		
-		$folder = $this->container->getParameter('champions.folder');
-		$statsExtension = $this->container->getParameter('champions.stats.extension');
-		
-		$result = $populateChampions->populate($em, $folder, $extension);
+		$result = $populateChampions->populate($em);
 		
 		// Add msg to flash bag to display an alert
 		$this->get('session')->getFlashBag()->add('info-detail', 'populateChampions');
-		$this->get('session')->getFlashBag()->add('populateChampions-title', count($result['added']) . ' champions added, ' . count($result['updated']) . ' updated.');
+		$this->get('session')->getFlashBag()->add('populateChampions-title', count($result ['added']) . ' champions added, ' . count($result ['updated']) . ' updated.');
 		
-		foreach($result['added'] as $added) {
+		foreach ( $result ['added'] as $added ) {
 			$this->get('session')->getFlashBag()->add('populateChampions-detail', $added . ' was added to DB.');
 		}
 		
-		foreach($result['updated'] as $updated) {
+		foreach ( $result ['updated'] as $updated ) {
 			$this->get('session')->getFlashBag()->add('populateChampions-detail', $updated . ' was updated.');
 		}
 		

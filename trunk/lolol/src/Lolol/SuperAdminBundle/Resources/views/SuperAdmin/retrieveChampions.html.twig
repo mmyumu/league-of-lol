@@ -11,6 +11,8 @@
 	$(document).ready(function() {
 	  $('.selectAll').on('click', function() { checkAll(true); return false;});
 	  $('.unselectAll').on('click', function() { checkAll(false); return false;});
+
+	  $('.clearBtn').on('click', function() { return confirm('Are you sure you want to clear the retrieved files?');});
 	});
 	
 	</script>
@@ -19,12 +21,12 @@
 {% block lololsuperadmin_body %}
 	<form method="POST" action="{{ path('lolol_super_admin_retrieveProcess') }}">
 	<div class="row">
-		<div class="col-lg-1">
+		<div class="col-xs-1">
 			<div class="btn-group checkbox">
 			  	<label><input type="checkbox" id="stats" name="retrieveTypes[]" value="stats" checked="true" />Stats</label>
 			</div>
 		</div>
-		<div class="col-lg-2">
+		<div class="col-xs-2">
 			<div class="btn-group checkbox">
 			  	<label><input type="checkbox" id="icons48" name="retrieveTypes[]" value="icons48" checked="true" />Icons 48px</label>
 			</div>
@@ -33,7 +35,8 @@
 	
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
-	<button class="btn btn-primary retrieve">Retrieve</button>
+	<button class="btn btn-primary" name="retrieveBtn" value="retrieve">Retrieve</button>
+	<button class="btn btn-danger clearBtn" name="retrieveBtn" value="clear">Clear</button>
 	<br /><br />
 	<table class="table table-bordered table-condensed">
 	<thead>
@@ -62,7 +65,8 @@
 
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
-	<button class="btn btn-primary retrieve">Retrieve</button>
+	<button class="btn btn-primary" name="retrieveBtn" value="retrieve">Retrieve</button>
+	<button class="btn btn-danger clearBtn" name="retrieveBtn" value="clear">Clear</button>
 	</form>
 {% endblock %}
 
