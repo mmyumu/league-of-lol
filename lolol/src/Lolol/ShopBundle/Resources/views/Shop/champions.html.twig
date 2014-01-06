@@ -1,8 +1,14 @@
 {% extends "LololShopBundle::layout.html.twig" %} 
-{% block lololshop_body %}
+{% block lololshop_body %} 
 
+<div class="row">
 {% for champion in champions %}
-<p>{{ champion.name }}</p>
-{% endfor %}
+<div class="col-xs-1">
+		<a href="#" class="thumbnail"> <img src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
+			alt="{{ champion.name }}" />
+		</a>
+	</div>	
+{% endfor %} 
+</div>
 
 {% endblock %}

@@ -3,8 +3,35 @@
 namespace Lolol\SuperAdminBundle\RetrieveChampions;
 
 use Symfony\Component\Filesystem\Filesystem;
+use Lolol\SuperAdminBundle\RetrieveFile\LololRetrieveFile;
+use Lolol\AppBundle\StringReplace\LololStringReplace;
 
 class LololRetrieveChampions {
+	private $retrieveFile;
+	private $stringReplace;
+	private $folder;
+	private $statExtension;
+	private $prefixIcon48;
+	private $suffixIcon48;
+	
+	/**
+	 * Initializes the service with the injected services/parameters
+	 *
+	 * @param \Lolol\SuperAdminBundle\RetrieveFile\LololRetrieveFile $retrieveFile        	
+	 * @param string $folder        	
+	 * @param string $extension        	
+	 * @param string $statExtension        	
+	 * @param string $prefixIcon48        	
+	 * @param string $suffixIcon48        	
+	 */
+	public function __construct(LololRetrieveFile $retrieveFile, LololStringReplace $stringReplace, $folder, $statExtension, $prefixIcon48, $suffixIcon48) {
+		$this->retrieveFile = $retrieveFile;
+		$this->stringReplace = $stringReplace;
+		$this->folder = $folder;
+		$this->statExtension = $statExtension;
+		$this->prefixIcon48 = $prefixIcon48;
+		$this->suffixIcon48 = $suffixIcon48;
+	}
 	
 	/**
 	 * Retrieve the html containing the stats of the given champions
@@ -14,28 +41,36 @@ class LololRetrieveChampions {
 	 * @param string $extension        	
 	 * @return boolean
 	 */
-	public function retrieveStats($championNames, $folder, $extension) {
+	public function retrieveStats($championNames) {
 		$limit = ini_get('max_execution_time');
 		
 		set_time_limit(600);
 		
 		$fs = new Filesystem();
 		
-		if (!$fs->exists($folder)) {
-			$fs->mkdir($folder);
+		if (! $fs->exists($this->folder)) {
+			$fs->mkdir($this->folder);
 		}
 		
 		// Parse all the champion names
 		foreach($championNames as $championName) {
 			$championName = str_replace(' ', '_', $championName);
-			$html = file_get_contents('http://leagueoflegends.wikia.com/wiki/' . $championName);
 			
-			file_put_contents($folder . '/' . $championName . $extension, $html);
+			$html = $this->retrieveFile->getFromWiki($championName);
+			
+			file_put_contents($this->folder . '/' . $championName . $this->statExtension, $html);
 		}
 		
 		set_time_limit($limit);
 		
 		return true;
+	}
+	
+	/**
+	 * 
+	 * @param array $championNames        	
+	 */
+	public function clearStats($championNames) {
 	}
 	
 	/**
@@ -45,8 +80,8 @@ class LololRetrieveChampions {
 	 * @param string $folder        	
 	 * @return boolean
 	 */
-	public function retrieveIcons48($championNames, $folder, $prefix, $suffix) {
-		$folder = $folder . '/img';
+	public function retrieveIcons48($championNames) {
+		$folder = $this->folder . '/img';
 		
 		$limit = ini_get('max_execution_time');
 		
@@ -54,12 +89,12 @@ class LololRetrieveChampions {
 		
 		$fs = new Filesystem();
 		
-		if (!$fs->exists($folder)) {
+		if (! $fs->exists($folder)) {
 			$fs->mkdir($folder);
 		}
 		
 		// Get 48px icons
-		$html = file_get_contents('http://leagueoflegends.wikia.com/wiki/League_of_Legends_Wiki');
+		$html = $this->retrieveFile->getFromWiki('League_of_Legends_Wiki');
 		
 		$DOM = new \DomDocument();
 		
@@ -78,14 +113,12 @@ class LololRetrieveChampions {
 		
 		// Parse all the champion names
 		foreach($championNames as $championName) {
-			$championName = str_replace('\'', '', $championName);
-			$championName = str_replace(' ', '', $championName);
-			$championName = str_replace('.', '', $championName);
+			$championName = $this->stringReplace->getImgName($championName);
 			foreach($championsDiv->getElementsByTagName('img') as $img) {
 				$url = $img->getAttribute('src');
-				$imgName = $prefix . $championName . $suffix;
+				$imgName = $this->prefixIcon48 . $championName . $this->suffixIcon48;
 				if (strpos($url, $imgName) !== FALSE) {
-					$imgData = file_get_contents($url);
+					$imgData = $this->retrieveFile->get($url);
 					file_put_contents($folder . '/' . $imgName, $imgData);
 					break;
 				}

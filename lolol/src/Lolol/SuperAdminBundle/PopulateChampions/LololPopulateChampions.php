@@ -4,120 +4,137 @@ namespace Lolol\SuperAdminBundle\PopulateChampions;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Lolol\TeamBundle\Entity\Champion;
+use \Lolol\TeamBundle\Champions\LololChampions;
+use \Lolol\AppBundle\StringReplace\LololStringReplace;
 
 class LololPopulateChampions {
 	private $championNames;
+	private $stringReplace;
+	private $folder;
+	private $statExtension;
 	private $patternBaseFloat = '/^\d+\.?\d*/';
 	private $patternBonusFloat = '/\(\+(\d+\.?\d*)\)/';
 	private $patternBonusPercent = '/\(\+(\d+\.?\d*%)\)/';
 	private $patternBonusRange = '/[\((Melee|Ranged|)\)]?/';
 	private $patternBonusEmpty = '/()/';
-	public function __construct(\Lolol\TeamBundle\Champions\LololChampions $championNames) {
+	
+	/**
+	 * Initializes the service with injected services/parameters
+	 * 
+	 * @param \Lolol\TeamBundle\Champions\LololChampions $championNames:
+	 *        	the service to get the campions list
+	 * @param string $folder:
+	 *        	parameter of the folder containing the retrived files
+	 * @param string $statExtension:
+	 *        	parameter of the extension of the stats files
+	 */
+	public function __construct(LololChampions $championNames, LololStringReplace $stringReplace, $folder, $statExtension) {
 		$this->championNames = $championNames;
+		$this->stringReplace = $stringReplace;
+		$this->folder = $folder;
+		$this->statExtension = $statExtension;
 	}
-	public function populate($em, $folder, $extension) {
-		$functions = array(
-				'Attack damage' => array(
+	
+	/**
+	 * Persists the champions retrieved in the database.
+	 * 
+	 * @param \Doctrine\ORM\EntityManager $em        	
+	 * @return associative array containing the added/updated champions
+	 */
+	public function populate(\Doctrine\ORM\EntityManager $em) {
+		$functions = array (
+				'Attack damage' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setAttackDamage($base);
 							$champion->setBonusAttackDamage($bonus);
-						}
-				),
-				'Armor' => array(
+						} ),
+				'Armor' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setArmor($base);
 							$champion->setBonusArmor($bonus);
-						}
-				),
-				'Health' => array(
+						} ),
+				'Health' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setHealth($base);
 							$champion->setBonusHealth($bonus);
-						}
-				),
-				'Health regen.' => array(
+						} ),
+				'Health regen.' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setHealthRegen($base);
 							$champion->setBonusHealthRegen($bonus);
-						}
-				),
-				'Mana' => array(
+						} ),
+				'Mana' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setMana($base);
 							$champion->setBonusMana($bonus);
-						}
-				),
-				'Mana regen.' => array(
+						} ),
+				'Mana regen.' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setManaRegen($base);
 							$champion->setBonusManaRegen($bonus);
-						}
-				),
-				'Magic res.' => array(
+						} ),
+				'Magic res.' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setMagicResist($base);
 							$champion->setBonusMagicResist($bonus);
-						}
-				),
-				'Range' => array(
+						} ),
+				'Range' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusRange,
 						'setter' => function ($champion, $base, $type) {
 							// Initialize the matching attribute
 							$champion->setAttackRange($base);
 							$champion->setAttackRangeType($type);
-						}
-				),
-				'Mov. speed' => array(
+						} ),
+				'Mov. speed' => array (
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusEmpty,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setMoveSpeed($base);
 							$champion->setBonusMoveSpeed($bonus);
-						}
-				)
-		);
+						} ) );
 		
 		$fs = new Filesystem();
 		
-		$updated = array();
-		$added = array();
+		$updated = array ();
+		$added = array ();
 		
 		// Parse all the champion names
-		foreach($this->championNames->getList() as $championName) {
+		foreach ( $this->championNames->getList() as $championName ) {
 			/*
 			 * $aContext = array( 'http' => array( 'proxy' => 'proxy_aeropark:8080', 'request_fulluri' => true, ), ); $cxContext = stream_context_create($aContext);
 			 */
 			
-			$filename = $folder . '/' . $championName . $extension;
+			$filename = $this->folder . '/' . $championName . $this->statExtension;
 			
 			// If there is a matching wiki file, user it to add/update champion in DB, otherwise skip this champion
 			if ($fs->exists($filename)) {
 				// $html = file_get_contents('http://leagueoflegends.wikia.com/wiki/' . $championName, False, $cxContext);
 				$html = file_get_contents($filename);
-			} else {
+			}
+			else {
 				continue;
 			}
 			
@@ -145,22 +162,24 @@ class LololPopulateChampions {
 				// Initialize the champion to be persisted
 				$champion = new Champion();
 				$champion->setName($championName);
-				$added[] = $championName;
-			} else {
-				$updated[] = $championName;
+				$champion->setImgName($this->stringReplace->getImgName($championName));
+				$added [] = $championName;
+			}
+			else {
+				$updated [] = $championName;
 			}
 			
-			for($i = 0; $i < $items->length; $i++) {
+			for($i = 0; $i < $items->length; $i ++) {
 				$node = $items->item($i);
 				$value = trim($node->nodeValue);
 				
 				// Gets the next cell
 				if (array_key_exists($value, $functions)) {
-					$patternBase = $functions[trim($value)]['patternBase'];
-					$attribute = $this->parseAttribute($items->item($i + 1)->nodeValue, $patternBase, $functions[trim($value)]['patternBonus']);
+					$patternBase = $functions [trim($value)] ['patternBase'];
+					$attribute = $this->parseAttribute($items->item($i + 1)->nodeValue, $patternBase, $functions [trim($value)] ['patternBonus']);
 					if ($attribute !== FALSE) {
-						$functions[trim($value)]['setter']($champion, $attribute['base'], $attribute['bonus']);
-						$i++;
+						$functions [trim($value)] ['setter']($champion, $attribute ['base'], $attribute ['bonus']);
+						$i ++;
 					}
 				}
 			}
@@ -170,8 +189,8 @@ class LololPopulateChampions {
 		
 		$em->flush();
 		
-		$result['added'] = $added;
-		$result['updated'] = $updated;
+		$result ['added'] = $added;
+		$result ['updated'] = $updated;
 		
 		return $result;
 	}
@@ -193,13 +212,12 @@ class LololPopulateChampions {
 		
 		// Get base number
 		if ($attribute != '' && preg_match($patternBase, $attribute, $base) == 1 && preg_match($patternBonus, $attribute, $bonus) == 1) {
-			if (!isset($bonus[1]) || $bonus[1] == '') {
-				$bonus[1] = NULL;
+			if (! isset($bonus [1]) || $bonus [1] == '') {
+				$bonus [1] = NULL;
 			}
-			return array(
-					'base' => $base[0],
-					'bonus' => $bonus[1]
-			);
+			return array (
+					'base' => $base [0],
+					'bonus' => $bonus [1] );
 		}
 		return FALSE;
 	}

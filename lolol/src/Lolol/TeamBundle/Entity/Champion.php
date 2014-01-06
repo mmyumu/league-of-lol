@@ -27,6 +27,12 @@ class Champion {
 	
 	/**
 	 *
+	 * @var string @ORM\Column(name="imgName", type="string", length=255)
+	 */
+	private $imgName;
+	
+	/**
+	 *
 	 * @var float @ORM\Column(name="attackDamage", type="float")
 	 */
 	private $attackDamage;
@@ -225,372 +231,363 @@ class Champion {
 	public function getHealth() {
 		return $this->health;
 	}
+	
+	/**
+	 * Set bonusAttackDamage
+	 *
+	 * @param float $bonusAttackDamage        	
+	 * @return Champion
+	 */
+	public function setBonusAttackDamage($bonusAttackDamage) {
+		$this->bonusAttackDamage = $bonusAttackDamage;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusAttackDamage
+	 *
+	 * @return float
+	 */
+	public function getBonusAttackDamage() {
+		return $this->bonusAttackDamage;
+	}
+	
+	/**
+	 * Set bonusArmor
+	 *
+	 * @param float $bonusArmor        	
+	 * @return Champion
+	 */
+	public function setBonusArmor($bonusArmor) {
+		$this->bonusArmor = $bonusArmor;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusArmor
+	 *
+	 * @return float
+	 */
+	public function getBonusArmor() {
+		return $this->bonusArmor;
+	}
+	
+	/**
+	 * Set bonusHealth
+	 *
+	 * @param float $bonusHealth        	
+	 * @return Champion
+	 */
+	public function setBonusHealth($bonusHealth) {
+		$this->bonusHealth = $bonusHealth;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusHealth
+	 *
+	 * @return float
+	 */
+	public function getBonusHealth() {
+		return $this->bonusHealth;
+	}
+	
+	/**
+	 * Set healthRegen
+	 *
+	 * @param float $healthRegen        	
+	 * @return Champion
+	 */
+	public function setHealthRegen($healthRegen) {
+		$this->healthRegen = $healthRegen;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get healthRegen
+	 *
+	 * @return float
+	 */
+	public function getHealthRegen() {
+		return $this->healthRegen;
+	}
+	
+	/**
+	 * Set bonusHealthRegen
+	 *
+	 * @param float $bonusHealthRegen        	
+	 * @return Champion
+	 */
+	public function setBonusHealthRegen($bonusHealthRegen) {
+		$this->bonusHealthRegen = $bonusHealthRegen;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusHealthRegen
+	 *
+	 * @return float
+	 */
+	public function getBonusHealthRegen() {
+		return $this->bonusHealthRegen;
+	}
+	
+	/**
+	 * Set magicResist
+	 *
+	 * @param float $magicResist        	
+	 * @return Champion
+	 */
+	public function setMagicResist($magicResist) {
+		$this->magicResist = $magicResist;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get magicResist
+	 *
+	 * @return float
+	 */
+	public function getMagicResist() {
+		return $this->magicResist;
+	}
+	
+	/**
+	 * Set bonusMagicResist
+	 *
+	 * @param float $bonusMagicResist        	
+	 * @return Champion
+	 */
+	public function setBonusMagicResist($bonusMagicResist) {
+		$this->bonusMagicResist = $bonusMagicResist;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusMagicResist
+	 *
+	 * @return float
+	 */
+	public function getBonusMagicResist() {
+		return $this->bonusMagicResist;
+	}
+	
+	/**
+	 * Set mana
+	 *
+	 * @param float $mana        	
+	 * @return Champion
+	 */
+	public function setMana($mana) {
+		$this->mana = $mana;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get mana
+	 *
+	 * @return float
+	 */
+	public function getMana() {
+		return $this->mana;
+	}
+	
+	/**
+	 * Set bonusMana
+	 *
+	 * @param float $bonusMana        	
+	 * @return Champion
+	 */
+	public function setBonusMana($bonusMana) {
+		$this->bonusMana = $bonusMana;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusMana
+	 *
+	 * @return float
+	 */
+	public function getBonusMana() {
+		return $this->bonusMana;
+	}
+	
+	/**
+	 * Set manaRegen
+	 *
+	 * @param float $manaRegen        	
+	 * @return Champion
+	 */
+	public function setManaRegen($manaRegen) {
+		$this->manaRegen = $manaRegen;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get manaRegen
+	 *
+	 * @return float
+	 */
+	public function getManaRegen() {
+		return $this->manaRegen;
+	}
+	
+	/**
+	 * Set bonusManaRegen
+	 *
+	 * @param float $bonusManaRegen        	
+	 * @return Champion
+	 */
+	public function setBonusManaRegen($bonusManaRegen) {
+		$this->bonusManaRegen = $bonusManaRegen;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusManaRegen
+	 *
+	 * @return float
+	 */
+	public function getBonusManaRegen() {
+		return $this->bonusManaRegen;
+	}
+	
+	/**
+	 * Set rangeType
+	 *
+	 * @param string $rangeType        	
+	 * @return Champion
+	 */
+	public function setRangeType($rangeType) {
+		$this->rangeType = $rangeType;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get rangeType
+	 *
+	 * @return string
+	 */
+	public function getRangeType() {
+		return $this->rangeType;
+	}
+	
+	/**
+	 * Set moveSpeed
+	 *
+	 * @param float $moveSpeed        	
+	 * @return Champion
+	 */
+	public function setMoveSpeed($moveSpeed) {
+		$this->moveSpeed = $moveSpeed;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get moveSpeed
+	 *
+	 * @return float
+	 */
+	public function getMoveSpeed() {
+		return $this->moveSpeed;
+	}
+	
+	/**
+	 * Set bonusMoveSpeed
+	 *
+	 * @param float $bonusMoveSpeed        	
+	 * @return Champion
+	 */
+	public function setBonusMoveSpeed($bonusMoveSpeed) {
+		$this->bonusMoveSpeed = $bonusMoveSpeed;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get bonusMoveSpeed
+	 *
+	 * @return float
+	 */
+	public function getBonusMoveSpeed() {
+		return $this->bonusMoveSpeed;
+	}
+	
+	/**
+	 * Set attackRange
+	 *
+	 * @param float $attackRange        	
+	 * @return Champion
+	 */
+	public function setAttackRange($attackRange) {
+		$this->attackRange = $attackRange;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get attackRange
+	 *
+	 * @return float
+	 */
+	public function getAttackRange() {
+		return $this->attackRange;
+	}
+	
+	/**
+	 * Set attackRangeType
+	 *
+	 * @param string $attackRangeType        	
+	 * @return Champion
+	 */
+	public function setAttackRangeType($attackRangeType) {
+		$this->attackRangeType = $attackRangeType;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get attackRangeType
+	 *
+	 * @return string
+	 */
+	public function getAttackRangeType() {
+		return $this->attackRangeType;
+	}
 
     /**
-     * Set bonusAttackDamage
+     * Set imgName
      *
-     * @param float $bonusAttackDamage
+     * @param string $imgName
      * @return Champion
      */
-    public function setBonusAttackDamage($bonusAttackDamage)
+    public function setImgName($imgName)
     {
-        $this->bonusAttackDamage = $bonusAttackDamage;
+        $this->imgName = $imgName;
 
         return $this;
     }
 
     /**
-     * Get bonusAttackDamage
-     *
-     * @return float 
-     */
-    public function getBonusAttackDamage()
-    {
-        return $this->bonusAttackDamage;
-    }
-
-    /**
-     * Set bonusArmor
-     *
-     * @param float $bonusArmor
-     * @return Champion
-     */
-    public function setBonusArmor($bonusArmor)
-    {
-        $this->bonusArmor = $bonusArmor;
-
-        return $this;
-    }
-
-    /**
-     * Get bonusArmor
-     *
-     * @return float 
-     */
-    public function getBonusArmor()
-    {
-        return $this->bonusArmor;
-    }
-
-    /**
-     * Set bonusHealth
-     *
-     * @param float $bonusHealth
-     * @return Champion
-     */
-    public function setBonusHealth($bonusHealth)
-    {
-        $this->bonusHealth = $bonusHealth;
-
-        return $this;
-    }
-
-    /**
-     * Get bonusHealth
-     *
-     * @return float 
-     */
-    public function getBonusHealth()
-    {
-        return $this->bonusHealth;
-    }
-
-    /**
-     * Set healthRegen
-     *
-     * @param float $healthRegen
-     * @return Champion
-     */
-    public function setHealthRegen($healthRegen)
-    {
-        $this->healthRegen = $healthRegen;
-
-        return $this;
-    }
-
-    /**
-     * Get healthRegen
-     *
-     * @return float 
-     */
-    public function getHealthRegen()
-    {
-        return $this->healthRegen;
-    }
-
-    /**
-     * Set bonusHealthRegen
-     *
-     * @param float $bonusHealthRegen
-     * @return Champion
-     */
-    public function setBonusHealthRegen($bonusHealthRegen)
-    {
-        $this->bonusHealthRegen = $bonusHealthRegen;
-
-        return $this;
-    }
-
-    /**
-     * Get bonusHealthRegen
-     *
-     * @return float 
-     */
-    public function getBonusHealthRegen()
-    {
-        return $this->bonusHealthRegen;
-    }
-
-    /**
-     * Set magicResist
-     *
-     * @param float $magicResist
-     * @return Champion
-     */
-    public function setMagicResist($magicResist)
-    {
-        $this->magicResist = $magicResist;
-
-        return $this;
-    }
-
-    /**
-     * Get magicResist
-     *
-     * @return float 
-     */
-    public function getMagicResist()
-    {
-        return $this->magicResist;
-    }
-
-    /**
-     * Set bonusMagicResist
-     *
-     * @param float $bonusMagicResist
-     * @return Champion
-     */
-    public function setBonusMagicResist($bonusMagicResist)
-    {
-        $this->bonusMagicResist = $bonusMagicResist;
-
-        return $this;
-    }
-
-    /**
-     * Get bonusMagicResist
-     *
-     * @return float 
-     */
-    public function getBonusMagicResist()
-    {
-        return $this->bonusMagicResist;
-    }
-
-    /**
-     * Set mana
-     *
-     * @param float $mana
-     * @return Champion
-     */
-    public function setMana($mana)
-    {
-        $this->mana = $mana;
-
-        return $this;
-    }
-
-    /**
-     * Get mana
-     *
-     * @return float 
-     */
-    public function getMana()
-    {
-        return $this->mana;
-    }
-
-    /**
-     * Set bonusMana
-     *
-     * @param float $bonusMana
-     * @return Champion
-     */
-    public function setBonusMana($bonusMana)
-    {
-        $this->bonusMana = $bonusMana;
-
-        return $this;
-    }
-
-    /**
-     * Get bonusMana
-     *
-     * @return float 
-     */
-    public function getBonusMana()
-    {
-        return $this->bonusMana;
-    }
-
-    /**
-     * Set manaRegen
-     *
-     * @param float $manaRegen
-     * @return Champion
-     */
-    public function setManaRegen($manaRegen)
-    {
-        $this->manaRegen = $manaRegen;
-
-        return $this;
-    }
-
-    /**
-     * Get manaRegen
-     *
-     * @return float 
-     */
-    public function getManaRegen()
-    {
-        return $this->manaRegen;
-    }
-
-    /**
-     * Set bonusManaRegen
-     *
-     * @param float $bonusManaRegen
-     * @return Champion
-     */
-    public function setBonusManaRegen($bonusManaRegen)
-    {
-        $this->bonusManaRegen = $bonusManaRegen;
-
-        return $this;
-    }
-
-    /**
-     * Get bonusManaRegen
-     *
-     * @return float 
-     */
-    public function getBonusManaRegen()
-    {
-        return $this->bonusManaRegen;
-    }
-
-    /**
-     * Set rangeType
-     *
-     * @param string $rangeType
-     * @return Champion
-     */
-    public function setRangeType($rangeType)
-    {
-        $this->rangeType = $rangeType;
-
-        return $this;
-    }
-
-    /**
-     * Get rangeType
+     * Get imgName
      *
      * @return string 
      */
-    public function getRangeType()
+    public function getImgName()
     {
-        return $this->rangeType;
-    }
-
-    /**
-     * Set moveSpeed
-     *
-     * @param float $moveSpeed
-     * @return Champion
-     */
-    public function setMoveSpeed($moveSpeed)
-    {
-        $this->moveSpeed = $moveSpeed;
-
-        return $this;
-    }
-
-    /**
-     * Get moveSpeed
-     *
-     * @return float 
-     */
-    public function getMoveSpeed()
-    {
-        return $this->moveSpeed;
-    }
-
-    /**
-     * Set bonusMoveSpeed
-     *
-     * @param float $bonusMoveSpeed
-     * @return Champion
-     */
-    public function setBonusMoveSpeed($bonusMoveSpeed)
-    {
-        $this->bonusMoveSpeed = $bonusMoveSpeed;
-
-        return $this;
-    }
-
-    /**
-     * Get bonusMoveSpeed
-     *
-     * @return float 
-     */
-    public function getBonusMoveSpeed()
-    {
-        return $this->bonusMoveSpeed;
-    }
-
-    /**
-     * Set attackRange
-     *
-     * @param float $attackRange
-     * @return Champion
-     */
-    public function setAttackRange($attackRange)
-    {
-        $this->attackRange = $attackRange;
-
-        return $this;
-    }
-
-    /**
-     * Get attackRange
-     *
-     * @return float 
-     */
-    public function getAttackRange()
-    {
-        return $this->attackRange;
-    }
-
-    /**
-     * Set attackRangeType
-     *
-     * @param string $attackRangeType
-     * @return Champion
-     */
-    public function setAttackRangeType($attackRangeType)
-    {
-        $this->attackRangeType = $attackRangeType;
-
-        return $this;
-    }
-
-    /**
-     * Get attackRangeType
-     *
-     * @return string 
-     */
-    public function getAttackRangeType()
-    {
-        return $this->attackRangeType;
+        return $this->imgName;
     }
 }
