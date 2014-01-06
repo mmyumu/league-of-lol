@@ -42,12 +42,12 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-				<li><a href="#">{{ 'Ranking'|trans }}</a></li>
+				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_ranking' ? 'active' }}"><a href="#">{{ 'Ranking'|trans }}</a></li>
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-				<li><a href="{{ path('lolol_shop_homepage') }}">{{ 'Shop'|trans }}</a></li>
+				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_shop' ? 'active' }}"><a href="{{ path('lolol_shop_champions') }}">{{ 'Shop'|trans }}</a></li>
 				{% endif %}
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-					<li class="dropdown">
+					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_team' ? 'active' }}">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Teams'|trans }}
 							<b class="caret"></b>
 					</a>
@@ -59,7 +59,7 @@
 					</li>
 				{% endif %}
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-					<li class="dropdown">
+					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_user' ? 'active' }}">
 					<a href="#"
 						class="dropdown-toggle" data-toggle="dropdown">{{ 'User'|trans }}
 							<b class="caret"></b>
@@ -82,10 +82,11 @@
 	      			<li><a href="#">Admin</a></li>
 	      		{% endif %}
 	    		{% if is_granted('ROLE_SUPER_ADMIN') %}
-					<li class="dropdown">
+					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_super_admin' ? 'active' }}">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Super admin<b class="caret"></b></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 							<li role="presentation"><a role="menuItem" href="{{ path('lolol_super_admin_retrieveChampions') }}">Retrieve champions</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_super_admin_populateChampions') }}">Populate champions</a></li>
 						</ul>
 	      		{% endif %}
 	    		</ul>
@@ -93,7 +94,34 @@
 			<!-- /.navbar-collapse -->
 		</nav>
 
-		<div id="content">{% block body %} {% endblock %}</div>
+		<div id="content">
+			{% for infoDetail in app.session.flashbag.get('info-detail') %}
+	      	<div class="row">
+				<div id="accordion" class="alert alert-info col-lg-6 col-lg-offset-3">
+					{% for title in app.session.flashbag.get(infoDetail ~ '-title' ) %}
+					<p><strong>Info:</strong> {{ title }}</p>
+					{% endfor %}
+					<p id="collapseOne" class="collapse">
+						{% for detail in app.session.flashbag.get(infoDetail ~ '-detail' ) %}
+						{{ detail }}<br />
+						{% endfor %}
+					</p>
+					<p><a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Details &raquo;</a></p>
+				</div>		
+			</div>	
+      		{% endfor %}
+      		
+			{% for info in app.session.flashbag.get('info') %}
+	      	<div class="row">
+				<div class="alert alert-info col-lg-6 col-lg-offset-3">
+					<p><strong>Info:</strong> {{ info }}</p>
+				</div>		
+			</div>	
+      		{% endfor %}
+
+    	
+		{% block body %} {% endblock %}
+	    </div>
 
 		<hr>
 

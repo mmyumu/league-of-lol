@@ -1,14 +1,15 @@
-{% extends "::layout.html.twig" %} {% block body %}
+{% extends "::layout.html.twig" %}
+{% block body %}
 <div class="row">
 	<div class="col-lg-2">
 		<h3>Menu</h3>
 		<ul class="nav nav-pills nav-stacked">
-			<li class="active"><a href="#">Champions</a></li>
-			<li><a href="#">Items</a></li>
+			<li class="{{ app.request.attributes.get('_route') == 'lolol_shop_champions' ? 'active' }}"><a href="{{ path('lolol_shop_champions') }}">{{ 'Champions'|trans }}</a></li>
+			<li class="{{ app.request.attributes.get('_route') == 'lolol_shop_items' ? 'active' }}"><a href="{{ path('lolol_shop_items') }}">{{ 'Items'|trans }}</a></li>
 		</ul>
 	</div>
 	<div class="col-lg-6">
-		<h1>Shop</h1>
+		<h3>Shop</h3>
 		<hr>
 		<div class="content">
 			{% block lololshop_body %} 

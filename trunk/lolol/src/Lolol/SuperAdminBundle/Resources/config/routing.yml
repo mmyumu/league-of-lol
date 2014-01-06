@@ -9,3 +9,7 @@ lolol_super_admin_retrieveChampions:
 lolol_super_admin_retrieveProcess:
     pattern:  /superAdmin/retrieveProcess
     defaults: { _controller: LololSuperAdminBundle:SuperAdmin:retrieveProcess }
+
+lolol_super_admin_populateChampions:
+    pattern:  /superAdmin/populateChampions
+    defaults: { _controller: LololSuperAdminBundle:SuperAdmin:populateChampions }

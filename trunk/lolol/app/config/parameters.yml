@@ -15,4 +15,4 @@ parameters:
     
     #Customs
     champions.folder: Champions
-    champions.file.extension: .html
+    champions.stats.extension: .html

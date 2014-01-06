@@ -1,3 +1,11 @@
 lolol_shop_homepage:
     pattern:  /shop/
     defaults: { _controller: LololShopBundle:Shop:index }
+
+lolol_shop_champions:
+    pattern:  /shop/champions
+    defaults: { _controller: LololShopBundle:Shop:champions }
+
+lolol_shop_items:
+    pattern:  /shop/items
+    defaults: { _controller: LololShopBundle:Shop:items }

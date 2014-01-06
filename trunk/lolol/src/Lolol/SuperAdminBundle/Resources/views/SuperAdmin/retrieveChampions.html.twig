@@ -18,29 +18,48 @@
 
 {% block lololsuperadmin_body %}
 	<form method="POST" action="{{ path('lolol_super_admin_retrieveProcess') }}">
+	<div class="row">
+		<div class="col-lg-1">
+			<div class="btn-group checkbox">
+			  	<label><input type="checkbox" id="stats" name="retrieveTypes[]" value="stats" checked="true" />Stats</label>
+			</div>
+		</div>
+		<div class="col-lg-2">
+			<div class="btn-group checkbox">
+			  	<label><input type="checkbox" id="icons48" name="retrieveTypes[]" value="icons48" checked="true" />Icons 48px</label>
+			</div>
+		</div>
+	</div>
+	
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
 	<button class="btn btn-primary retrieve">Retrieve</button>
-  	<ul class="nav nav-pills nav-stacked">
-    {% for championInfo in championInfos %}
-      	<li>
-      		<div class="checkbox">
-	    		<label><input class="chkChampion" type="checkbox" id="{{ championInfo.name }}" name="champions[]" value="{{ championInfo.name }}" checked="true" />
-				<div class="row">
-					<div class="col-lg-2">    		
-    					{{ championInfo.name }}
-    				</div>
-    				<div class="col-lg-3">
-    			 		<i>({{ championInfo.lastRetrieve }})</i>
-    			 	</div>
-    			</div>	    		
-	    		</label>
-  			</div>
-      	</li>
-    {% else %}
-      	<li>No champion</li>
-    {% endfor %}
-  	</ul>
+	<br /><br />
+	<table class="table table-bordered table-condensed">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Name</th>
+			<th>Stats</th>
+			<th>Icon</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for championInfo in championInfos %}
+		<tr class="{{ championInfo.trClass }}">
+			<td class="text-center"><input class="chkChampion" type="checkbox" id="{{ championInfo.name }}" name="champions[]" value="{{ championInfo.name }}" checked="true" /></td>
+			<td><label for="{{ championInfo.name }}">{{ championInfo.name }}</label></td>
+			<td><label for="{{ championInfo.name }}">{{ championInfo.lastStatsRetrieve }}</label></td>
+			<td><label for="{{ championInfo.name }}">{{ championInfo.lastIcons48Retrieve }}</label></td>
+		</tr>
+		{% else %}
+		<tr>
+			<td colspan="3">No champions found</td>
+		</tr>
+		{% endfor %}	
+	</tbody>
+	</table>
+
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
 	<button class="btn btn-primary retrieve">Retrieve</button>
