@@ -3,6 +3,7 @@
 namespace Lolol\TeamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Lolol\AppBundle\Entity\Champion as Champion;
 
 /**
  * @ORM\Entity
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ChampionTeam {
 	/**
 	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Champion")
+	 * @ORM\ManyToOne(targetEntity="Lolol\AppBundle\Entity\Champion")
 	 */
 	private $champion;
 	
@@ -51,10 +52,10 @@ class ChampionTeam {
 	/**
 	 * Set champion
 	 *
-	 * @param \Lolol\TeamBundle\Entity\Champion $champion        	
+	 * @param Champion $champion        	
 	 * @return ChampionTeam
 	 */
-	public function setChampion(\Lolol\TeamBundle\Entity\Champion $champion) {
+	public function setChampion(Champion $champion) {
 		$this->champion = $champion;
 		
 		return $this;

@@ -4,11 +4,11 @@ namespace Lolol\SuperAdminBundle\RetrieveChampions;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Lolol\SuperAdminBundle\RetrieveFile\LololRetrieveFile;
-use Lolol\AppBundle\StringReplace\LololStringReplace;
+use Lolol\AppBundle\StringHelper\LololStringHelper;
 
 class LololRetrieveChampions {
 	private $retrieveFile;
-	private $stringReplace;
+	private $stringHelper;
 	private $folder;
 	private $statExtension;
 	private $prefixIcon48;
@@ -17,16 +17,17 @@ class LololRetrieveChampions {
 	/**
 	 * Initializes the service with the injected services/parameters
 	 *
-	 * @param \Lolol\SuperAdminBundle\RetrieveFile\LololRetrieveFile $retrieveFile        	
+	 * @param LololRetrieveFile $retrieveFile        	
+	 * @param LololStringHelper $stringHelper
 	 * @param string $folder        	
 	 * @param string $extension        	
 	 * @param string $statExtension        	
 	 * @param string $prefixIcon48        	
 	 * @param string $suffixIcon48        	
 	 */
-	public function __construct(LololRetrieveFile $retrieveFile, LololStringReplace $stringReplace, $folder, $statExtension, $prefixIcon48, $suffixIcon48) {
+	public function __construct(LololRetrieveFile $retrieveFile, LololStringHelper $stringHelper, $folder, $statExtension, $prefixIcon48, $suffixIcon48) {
 		$this->retrieveFile = $retrieveFile;
-		$this->stringReplace = $stringReplace;
+		$this->stringHelper = $stringHelper;
 		$this->folder = $folder;
 		$this->statExtension = $statExtension;
 		$this->prefixIcon48 = $prefixIcon48;
@@ -54,7 +55,7 @@ class LololRetrieveChampions {
 		
 		// Parse all the champion names
 		foreach($championNames as $championName) {
-			$championName = str_replace(' ', '_', $championName);
+			$championName = $this->stringHelper->getWikiPage($championName);
 			
 			$html = $this->retrieveFile->getFromWiki($championName);
 			
@@ -71,6 +72,20 @@ class LololRetrieveChampions {
 	 * @param array $championNames        	
 	 */
 	public function clearStats($championNames) {
+		$fs = new Filesystem();
+		
+		// Parse all the champion names
+		foreach($championNames as $championName) {
+			$championName = $this->stringHelper->getWikiPage($championName);
+			
+			$fileName = $this->folder . '/' . $championName . $this->statExtension;
+			
+			if ($fs->exists($fileName)) {
+				$fs->remove($fileName);
+			}
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -113,10 +128,11 @@ class LololRetrieveChampions {
 		
 		// Parse all the champion names
 		foreach($championNames as $championName) {
-			$championName = $this->stringReplace->getImgName($championName);
+			$championName = $this->stringHelper->getImgName($championName);
 			foreach($championsDiv->getElementsByTagName('img') as $img) {
 				$url = $img->getAttribute('src');
 				$imgName = $this->prefixIcon48 . $championName . $this->suffixIcon48;
+				
 				if (strpos($url, $imgName) !== FALSE) {
 					$imgData = $this->retrieveFile->get($url);
 					file_put_contents($folder . '/' . $imgName, $imgData);
@@ -127,6 +143,24 @@ class LololRetrieveChampions {
 		
 		set_time_limit($limit);
 		
+		return true;
+	}
+	
+	/**
+	 *
+	 * @param array $championNames
+	 */
+	public function clearIcons48($championNames) {
+		$fs = new Filesystem();
+	
+		// Parse all the champion names
+		foreach($championNames as $championName) {		
+			$fileName = $this->stringHelper->getIcon48Path($championName);
+			if ($fs->exists($fileName)) {
+				$fs->remove($fileName);
+			}
+		}
+	
 		return true;
 	}
 }

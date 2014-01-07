@@ -1,14 +1,16 @@
-{% extends "LololShopBundle::layout.html.twig" %} 
-{% block lololshop_body %} 
+{% extends "LololShopBundle::layout.html.twig" %} {% block
+lololshop_body %}
 
-<div class="row">
-{% for champion in champions %}
-<div class="col-xs-1">
-		<a href="#" class="thumbnail"> <img src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
+<div class="row no-gutter compacted-gallery">
+	{% for champion in champions %}
+	<div class="col-xs-1 text-center">
+		<a href="{{ path('lolol_app_champion', { 'id': champion.id }) }}" class="thumbnail"> <img class="img-responsive"
+			src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
 			alt="{{ champion.name }}" />
+			<small>{{ champion.name }}</small>
 		</a>
-	</div>	
-{% endfor %} 
+		
+	</div>
+	{% endfor %}
 </div>
-
 {% endblock %}

@@ -1,3 +1,7 @@
 lolol_app_homepage:
     pattern:  /
     defaults: { _controller: LololAppBundle:App:index }
+    
+lolol_app_champion:
+    pattern:  /champion/{id}
+    defaults: { _controller: LololAppBundle:App:champion }

@@ -4,6 +4,7 @@ namespace Lolol\UserBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Lolol\TeamBundle\Entity\Champion;
 
 /**
  * @ORM\Entity
@@ -18,7 +19,7 @@ class User extends BaseUser {
 	protected $id;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="Lolol\TeamBundle\Entity\Champion", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Lolol\AppBundle\Entity\Champion", cascade={"persist"})
 	 */
 	private $champions;
 	/**
@@ -41,10 +42,10 @@ class User extends BaseUser {
 	/**
 	 * Add champions
 	 *
-	 * @param \Lolol\TeamBundle\Entity\Champion $champions        	
+	 * @param \Lolol\AppBundle\Entity\Champion $champions        	
 	 * @return User
 	 */
-	public function addChampion(\Lolol\TeamBundle\Entity\Champion $champions) {
+	public function addChampion(Champion $champions) {
 		$this->champions [] = $champions;
 		
 		return $this;

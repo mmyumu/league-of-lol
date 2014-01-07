@@ -1,6 +1,6 @@
 <?php
 
-namespace Lolol\TeamBundle\Entity;
+namespace Lolol\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Champion
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Lolol\TeamBundle\Entity\ChampionRepository")
+ * @ORM\Entity(repositoryClass="Lolol\AppBundle\Entity\ChampionRepository")
  */
 class Champion {
 	/**
@@ -138,6 +138,22 @@ class Champion {
 	 * @var float @ORM\Column(name="bonusMoveSpeed", type="float", nullable=true)
 	 */
 	private $bonusMoveSpeed;
+	
+	/**
+	 *
+	 * @var float @ORM\Column(name="attackSpeed", type="float")
+	 */
+	private $attackSpeed;
+	
+	/**
+	 *
+	 * @var float @ORM\Column(name="bonusAttackSpeed", type="float", nullable=true)
+	 */
+	private $bonusAttackSpeed;	
+	
+	// TODO MLA: Add the attack power, difficulty and stuff and draw lines (like wiki)
+	// TODO MLA: Add "subtitle" like Amumu the sad mummy
+	// TODO MLA: Add the role like primary: tank secondary: mage
 	
 	/**
 	 * Get id
@@ -589,5 +605,51 @@ class Champion {
     public function getImgName()
     {
         return $this->imgName;
+    }
+
+    /**
+     * Set attackSpeed
+     *
+     * @param float $attackSpeed
+     * @return Champion
+     */
+    public function setAttackSpeed($attackSpeed)
+    {
+        $this->attackSpeed = $attackSpeed;
+
+        return $this;
+    }
+
+    /**
+     * Get attackSpeed
+     *
+     * @return float 
+     */
+    public function getAttackSpeed()
+    {
+        return $this->attackSpeed;
+    }
+
+    /**
+     * Set bonusAttackSpeed
+     *
+     * @param float $bonusAttackSpeed
+     * @return Champion
+     */
+    public function setBonusAttackSpeed($bonusAttackSpeed)
+    {
+        $this->bonusAttackSpeed = $bonusAttackSpeed;
+
+        return $this;
+    }
+
+    /**
+     * Get bonusAttackSpeed
+     *
+     * @return float 
+     */
+    public function getBonusAttackSpeed()
+    {
+        return $this->bonusAttackSpeed;
     }
 }

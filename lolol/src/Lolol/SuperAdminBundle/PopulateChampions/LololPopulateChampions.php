@@ -3,19 +3,19 @@
 namespace Lolol\SuperAdminBundle\PopulateChampions;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Lolol\TeamBundle\Entity\Champion;
+use Lolol\AppBundle\Entity\Champion;
 use \Lolol\TeamBundle\Champions\LololChampions;
-use \Lolol\AppBundle\StringReplace\LololStringReplace;
+use \Lolol\AppBundle\StringHelper\LololStringHelper;
 
 class LololPopulateChampions {
 	private $championNames;
-	private $stringReplace;
+	private $stringHelper;
 	private $folder;
 	private $statExtension;
 	private $patternBaseFloat = '/^\d+\.?\d*/';
 	private $patternBonusFloat = '/\(\+(\d+\.?\d*)\)/';
 	private $patternBonusPercent = '/\(\+(\d+\.?\d*%)\)/';
-	private $patternBonusRange = '/[\((Melee|Ranged|)\)]?/';
+	private $patternBonusRange = '/(Melee|Ranged)/';
 	private $patternBonusEmpty = '/()/';
 	
 	/**
@@ -28,9 +28,9 @@ class LololPopulateChampions {
 	 * @param string $statExtension:
 	 *        	parameter of the extension of the stats files
 	 */
-	public function __construct(LololChampions $championNames, LololStringReplace $stringReplace, $folder, $statExtension) {
+	public function __construct(LololChampions $championNames, LololStringHelper $stringHelper, $folder, $statExtension) {
 		$this->championNames = $championNames;
-		$this->stringReplace = $stringReplace;
+		$this->stringHelper = $stringHelper;
 		$this->folder = $folder;
 		$this->statExtension = $statExtension;
 	}
@@ -114,7 +114,16 @@ class LololPopulateChampions {
 							// Initialize the matching attribute
 							$champion->setMoveSpeed($base);
 							$champion->setBonusMoveSpeed($bonus);
-						} ) );
+						} ),
+				'Attack speed' => array (
+						'patternBase' => $this->patternBaseFloat,
+						'patternBonus' => $this->patternBonusPercent,
+						'setter' => function ($champion, $base, $bonus) {
+							// Initialize the matching attribute
+							$champion->setAttackSpeed($base);
+							$champion->setBonusAttackSpeed($bonus);
+						} ),
+				);
 		
 		$fs = new Filesystem();
 		
@@ -156,18 +165,19 @@ class LololPopulateChampions {
 			$items = $championTable->getElementsByTagName('td');
 			
 			// Try to retrieve the existing champion from database
-			$champion = $em->getRepository('LololTeamBundle:Champion')->findOneByName($championName);
+			$champion = $em->getRepository('LololAppBundle:Champion')->findOneByName($championName);
 			
 			if ($champion == null) {
 				// Initialize the champion to be persisted
 				$champion = new Champion();
 				$champion->setName($championName);
-				$champion->setImgName($this->stringReplace->getImgName($championName));
 				$added [] = $championName;
 			}
 			else {
 				$updated [] = $championName;
 			}
+			
+			$champion->setImgName($this->stringHelper->getImgName($championName));
 			
 			for($i = 0; $i < $items->length; $i ++) {
 				$node = $items->item($i);

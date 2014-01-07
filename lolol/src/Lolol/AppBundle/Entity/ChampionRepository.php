@@ -1,6 +1,6 @@
 <?php
 
-namespace Lolol\TeamBundle\Entity;
+namespace Lolol\AppBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

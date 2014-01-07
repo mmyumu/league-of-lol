@@ -18,7 +18,7 @@ class SuperAdminController extends Controller {
 	public function retrieveChampionsAction() {
 		// Get the service
 		$championNames = $this->container->get('lolol_team.champions');
-		$stringReplace = $this->container->get('lolol_app.stringReplace');
+		$stringHelper = $this->container->get('lolol_app.stringHelper');
 		
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
@@ -45,10 +45,9 @@ class SuperAdminController extends Controller {
 			}
 			
 			// Icons: 48px
-			$tmpName = $stringReplace->getImgName($championName);
-			$icons48Filename = $folder . '/img/' . $prefixIcons48 . $tmpName . $suffixIcons48;
-			if ($fs->exists($icons48Filename)) {
-				$championInfo ['lastIcons48Retrieve'] = date("Y-m-d H:i:s", filemtime($icons48Filename));
+			$icon48Filename = $stringHelper->getIcon48Path($championName);
+			if ($fs->exists($icon48Filename)) {
+				$championInfo ['lastIcons48Retrieve'] = date("Y-m-d H:i:s", filemtime($icon48Filename));
 			}
 			else {
 				$championInfo ['lastIcons48Retrieve'] = 'Never retrieved';
@@ -110,8 +109,12 @@ class SuperAdminController extends Controller {
 			}
 		}
 		
-		// Add msg to flash bag to display an alert
-		$this->get('session')->getFlashBag()->add('info', 'champions successfully retrieved');
+		if($postRetrieve == 'retrieve') {
+			$action = 'retrieved';
+		} elseif($postRetrieve == 'clear') {
+			$action = 'cleared';
+		}
+		$this->get('session')->getFlashBag()->add('info', 'champions successfully '.$action);
 		
 		return $this->redirect($this->generateUrl('lolol_super_admin_retrieveChampions'));
 	}
