@@ -1,0 +1,35 @@
+{% extends "LololAppBundle::layout.html.twig" %} 
+{% block lololapp_title %} 
+{{ champion.name }} 
+{% endblock %}
+ 
+{% block lololapp_body %}
+<img class="img-responsive"
+	src="{{ asset(folder ~ '/img/' ~ prefixIcons ~ champion.imgName ~ suffixIcons) }}"
+	alt="{{ champion.name }}" />
+<table class="champion-stats">
+<tbody>
+<tr>
+	<td class="stat-title">{{ 'Health'|trans }}</td><td>{{ champion.health }}</td>
+	<td class="stat-title">{{ 'Attack damage'|trans }}</td><td>{{ champion.attackDamage }}</td>
+</tr>
+<tr>
+	<td class="stat-title">{{ 'Health regen.'|trans }}</td><td>{{ champion.healthRegen }}</td>
+	<td class="stat-title">{{ 'Attack speed'|trans }}</td><td>{{ champion.attackSpeed }}</td>	
+</tr>
+<tr>
+	<td class="stat-title">{{ 'Mana'|trans }}</td><td>{{ champion.mana }}</td>
+	<td class="stat-title">{{ 'Armor'|trans }}</td><td>{{ champion.armor }}</td>
+</tr>
+<tr>
+	<td class="stat-title">{{ 'Mana regen.'|trans }}</td><td>{{ champion.manaRegen }}</td>
+	<td class="stat-title">{{ 'Magic res.'|trans }}</td><td>{{ champion.magicResist }}</td>
+</tr>
+<tr>
+	<td class="stat-title">{{ 'Range'|trans }}</td><td>{{ champion.attackRange }} ({{ champion.attackRangeType }})</td>
+	<td class="stat-title">{{ 'Mov. speed'|trans }}</td><td>{{ champion.moveSpeed }}</td>
+</tr>
+</tbody>
+</table>
+
+{% endblock %}

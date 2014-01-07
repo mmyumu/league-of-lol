@@ -15,10 +15,7 @@ class ShopController extends Controller {
 	/**
 	 * Renders the shop for champions
 	 */
-	public function championsAction() {
-		// Get the service
-		$stringReplace = $this->container->get('lolol_app.stringReplace');
-		
+	public function championsAction() {	
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
 		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
@@ -26,7 +23,7 @@ class ShopController extends Controller {
 		
 		$em = $this->getDoctrine()->getManager();
 		
-		$champions = $em->getRepository('LololTeamBundle:Champion')->findAll();
+		$champions = $em->getRepository('LololAppBundle:Champion')->findAll();
 		
 		return $this->render('LololShopBundle:Shop:champions.html.twig', array(
 				'champions' => $champions,

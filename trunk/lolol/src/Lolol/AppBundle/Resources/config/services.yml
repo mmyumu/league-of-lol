@@ -2,8 +2,9 @@ parameters:
 #    lolol_app.example.class: Lolol\AppBundle\Example
 
 services:
-    lolol_app.stringReplace:
-        class: Lolol\AppBundle\StringReplace\LololStringReplace
+    lolol_app.stringHelper:
+        class: Lolol\AppBundle\StringHelper\LololStringHelper
+        arguments: [%champions_folder%,%champions_icons48_prefix%,%champions_icons48_suffix%]
 #    lolol_app.example:
 #        class: %lolol_app.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

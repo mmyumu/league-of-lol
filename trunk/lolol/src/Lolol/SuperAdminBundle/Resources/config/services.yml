@@ -4,10 +4,10 @@ parameters:
 services:
     lolol_superAdmin.retrieveChampions:
         class: Lolol\SuperAdminBundle\RetrieveChampions\LololRetrieveChampions
-        arguments: [@lolol_superAdmin.retrieveFile, @lolol_app.stringReplace, %champions_folder%, %champions_stats_extension%, %champions_icons48_prefix%, %champions_icons48_suffix%]
+        arguments: [@lolol_superAdmin.retrieveFile, @lolol_app.stringHelper, %champions_folder%, %champions_stats_extension%, %champions_icons48_prefix%, %champions_icons48_suffix%]
     lolol_superAdmin.populateChampions:
         class: Lolol\SuperAdminBundle\PopulateChampions\LololPopulateChampions
-        arguments: [@lolol_team.champions, @lolol_app.stringReplace, %champions_folder%, %champions_stats_extension%]
+        arguments: [@lolol_team.champions, @lolol_app.stringHelper, %champions_folder%, %champions_stats_extension%]
     lolol_superAdmin.retrieveFile:
         class: Lolol\SuperAdminBundle\RetrieveFile\LololRetrieveFile
         arguments: [%http_proxy%, %wiki_url%]

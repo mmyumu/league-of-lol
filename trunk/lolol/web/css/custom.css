@@ -10,3 +10,21 @@
 label {
 	font-weight: normal;
 }
+
+.no-gutter [class*="col-"] {
+  padding-right:0px;
+  padding-left:0px;
+}
+
+.compacted-gallery {
+	overflow: hidden;
+}
+
+.stat-title{
+	font-weight: bold;
+	color: #55AADD;
+}
+
+.champion-stats {
+	margin: 10px;
+}
