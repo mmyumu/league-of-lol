@@ -18,11 +18,20 @@ class AppController extends Controller {
 		
 		$champion = $em->getRepository('LololAppBundle:Champion')->findOneById($id);
 		
+		$ownedChampion = false;
+		foreach($this->getUser()->getChampions() as $userChampion) {
+			if($userChampion->getId() == $champion->getId()) {
+				$ownedChampion = true;
+				break;
+			}
+		}
+		
 		return $this->render('LololAppBundle:App:champion.html.twig', array(
 				'champion' => $champion,
 				'folder' => $folder,
 				'prefixIcons' => $prefixIcons,
-				'suffixIcons' => $suffixIcons
+				'suffixIcons' => $suffixIcons,
+				'owned' => $ownedChampion,
 		));
 	}
 }

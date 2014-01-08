@@ -21,11 +21,6 @@
 <body>
 
 	<div class="container">
-		<div class="jumbotron">
-			<h1>Lolol</h1>
-			<p>League of lol</p>
-		</div>
-
 		<nav class="navbar navbar-default" role="navigation">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -35,43 +30,43 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">brand</a>
+				<a class="navbar-brand" href="{{ path('lolol_app_homepage') }}">Lolol</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_ranking' ? 'active' }}"><a href="#">{{ 'Ranking'|trans }}</a></li>
+				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_ranking' ? 'active' }}"><a href="#">{{ 'ranking.menu'|trans }}</a></li>
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_shop' ? 'active' }}"><a href="{{ path('lolol_shop_champions') }}">{{ 'Shop'|trans }}</a></li>
+				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_shop' ? 'active' }}"><a href="{{ path('lolol_shop_champions') }}">{{ 'shop.menu'|trans }}</a></li>
 				{% endif %}
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_team' ? 'active' }}">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Teams'|trans }}
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'menu.team'|trans }}
 							<b class="caret"></b>
 					</a>
 						<ul class="dropdown-menu" role="menu"
 							aria-labelledby="dropdownMenu1">
-							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_myteams') }}">{{ 'My teams'|trans }}</a></li>
-							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_newteam') }}">{{ 'Create new team'|trans }}</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_myteams') }}">{{ 'menu.team.myTeams'|trans }}</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_newteam') }}">{{ 'menu.team.createNewTeam'|trans }}</a></li>
 						</ul>
 					</li>
 				{% endif %}
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_user' ? 'active' }}">
 					<a href="#"
-						class="dropdown-toggle" data-toggle="dropdown">{{ 'User'|trans }}
+						class="dropdown-toggle" data-toggle="dropdown">{{ 'menu.user'|trans }}
 							<b class="caret"></b>
 					</a>
 						<ul class="dropdown-menu" role="menu"
 							aria-labelledby="dropdownMenu1">
-							<li role="presentation"><a role="menuItem" href="{{ path('fos_user_security_logout') }}">{{ 'Log out'|trans }}</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('fos_user_security_logout') }}">{{ 'menu.user.logOut'|trans }}</a></li>
 						</ul>
 					</li>
 				{% else %}
 					<li>
-	    				<a href="{{ path('fos_user_profile_show') }}">{{ 'Log in'|trans }}</a>
+	    				<a href="{{ path('fos_user_profile_show') }}">{{ 'menu.user.logIn'|trans }}</a>
 	    			</li>
 				{% endif %}
 				</ul>			
@@ -115,6 +110,14 @@
 	      	<div class="row">
 				<div class="alert alert-info col-lg-6 col-lg-offset-3">
 					<p><strong>Info:</strong> {{ info }}</p>
+				</div>		
+			</div>	
+      		{% endfor %}
+      		
+			{% for error in app.session.flashbag.get('error') %}
+	      	<div class="row">
+				<div class="alert alert-danger col-lg-6 col-lg-offset-3">
+					<p><strong>Error:</strong> {{ error }}</p>
 				</div>		
 			</div>	
       		{% endfor %}

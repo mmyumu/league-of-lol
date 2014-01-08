@@ -9,3 +9,11 @@ lolol_shop_champions:
 lolol_shop_items:
     pattern:  /shop/items
     defaults: { _controller: LololShopBundle:Shop:items }
+    
+lolol_shop_buyChampion:
+    pattern: /shop/buy/champion/{id}
+    defaults: { _controller: LololShopBundle:Shop:buyChampion }
+    
+lolol_shop_buyItem:
+    pattern: /shop/buy/item/{id}
+    defaults: { _controller: LololShopBundle:Shop:buyItem }

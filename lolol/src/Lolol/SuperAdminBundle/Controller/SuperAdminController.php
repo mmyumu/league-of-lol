@@ -71,7 +71,7 @@ class SuperAdminController extends Controller {
 		$request = $this->getRequest();
 		
 		// Get the clicked submit button
-		$postRetrieve = $request->request->get('retrieveBtn');
+		$postRetrieve = $request->request->get('btnRetrieve');
 		
 		// Get the type of data to retrieve on the selected champions
 		$postRetrieveTypes = $request->request->get('retrieveTypes');

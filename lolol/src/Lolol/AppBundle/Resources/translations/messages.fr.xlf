@@ -3,8 +3,20 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="1">
-                <source>Team</source>
-                <target>Equipe</target>
+                <source>champion.statistics</source>
+                <target>Statistiques</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>champion.buy</source>
+                <target>Acheter</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>champion.owned</source>
+                <target>Possédé</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>champion.owned.error</source>
+                <target>Vous possédez déjà %championName%</target>
             </trans-unit>
         </body>
     </file>

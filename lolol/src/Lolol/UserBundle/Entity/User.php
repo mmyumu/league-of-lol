@@ -4,7 +4,7 @@ namespace Lolol\UserBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Lolol\TeamBundle\Entity\Champion;
+use Lolol\AppBundle\Entity\Champion;
 
 /**
  * @ORM\Entity
@@ -22,6 +22,7 @@ class User extends BaseUser {
 	 * @ORM\ManyToMany(targetEntity="Lolol\AppBundle\Entity\Champion", cascade={"persist"})
 	 */
 	private $champions;
+	
 	/**
 	 * Constructor
 	 */
@@ -54,9 +55,9 @@ class User extends BaseUser {
 	/**
 	 * Remove champions
 	 *
-	 * @param \Lolol\TeamBundle\Entity\Champion $champions        	
+	 * @param \Lolol\AppBundle\Entity\Champion $champions        	
 	 */
-	public function removeChampion(\Lolol\TeamBundle\Entity\Champion $champions) {
+	public function removeChampion(Champion $champions) {
 		$this->champions->removeElement($champions);
 	}
 	

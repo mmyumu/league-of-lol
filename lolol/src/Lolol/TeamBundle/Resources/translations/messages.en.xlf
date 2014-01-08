@@ -4,15 +4,15 @@
 		<body>
 			<trans-unit id="1">
 				<source>menu.team</source>
-				<target>Equipe</target>
+				<target>Team</target>
 			</trans-unit>
 			<trans-unit id="2">
 				<source>menu.team.myTeams</source>
-				<target>Mes équipes</target>
+				<target>My teams</target>
 			</trans-unit>
 			<trans-unit id="3">
 				<source>menu.team.createNewTeam</source>
-				<target>Nouvelle équipe</target>
+				<target>Create new team</target>
 			</trans-unit>
 		</body>
 	</file>

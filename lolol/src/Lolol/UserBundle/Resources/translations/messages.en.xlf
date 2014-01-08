@@ -4,15 +4,15 @@
         <body>
             <trans-unit id="1">
                 <source>menu.user</source>
-                <target>Utilisateur</target>
+                <target>User</target>
             </trans-unit>
             <trans-unit id="2">
                 <source>menu.user.logIn</source>
-                <target>S'identifier</target>
+                <target>Log in</target>
             </trans-unit>
             <trans-unit id="3">
                 <source>menu.user.logOut</source>
-                <target>Déconnexion</target>
+                <target>Log out</target>
             </trans-unit>
         </body>
     </file>
