@@ -1,35 +1,67 @@
-{% extends "LololAppBundle::layout.html.twig" %} 
+{% extends "LololAppBundle::layout.html.twig" %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+	<script type="text/javascript">
+	function checkAll(checked) {
+		$('.chkChampion').prop('checked', checked);
+	}
+
+	$(document).ready(function() {
+		$('.btn-buy').on('click', function() { return confirm('{{ 'shop.confirm'|trans({'%championName%': champion.name}) }}');});
+		});
+	
+	</script>
+{% endblock %}
+
 {% block lololapp_title %} 
-{{ champion.name }} 
+{{ champion.name }} <small>the Sad Mummy</small>
 {% endblock %}
  
 {% block lololapp_body %}
-<img class="img-responsive"
-	src="{{ asset(folder ~ '/img/' ~ prefixIcons ~ champion.imgName ~ suffixIcons) }}"
-	alt="{{ champion.name }}" />
-<table class="champion-stats">
-<tbody>
-<tr>
-	<td class="stat-title">{{ 'Health'|trans }}</td><td>{{ champion.health }}</td>
-	<td class="stat-title">{{ 'Attack damage'|trans }}</td><td>{{ champion.attackDamage }}</td>
-</tr>
-<tr>
-	<td class="stat-title">{{ 'Health regen.'|trans }}</td><td>{{ champion.healthRegen }}</td>
-	<td class="stat-title">{{ 'Attack speed'|trans }}</td><td>{{ champion.attackSpeed }}</td>	
-</tr>
-<tr>
-	<td class="stat-title">{{ 'Mana'|trans }}</td><td>{{ champion.mana }}</td>
-	<td class="stat-title">{{ 'Armor'|trans }}</td><td>{{ champion.armor }}</td>
-</tr>
-<tr>
-	<td class="stat-title">{{ 'Mana regen.'|trans }}</td><td>{{ champion.manaRegen }}</td>
-	<td class="stat-title">{{ 'Magic res.'|trans }}</td><td>{{ champion.magicResist }}</td>
-</tr>
-<tr>
-	<td class="stat-title">{{ 'Range'|trans }}</td><td>{{ champion.attackRange }} ({{ champion.attackRangeType }})</td>
-	<td class="stat-title">{{ 'Mov. speed'|trans }}</td><td>{{ champion.moveSpeed }}</td>
-</tr>
-</tbody>
-</table>
+<div class="row">
+	<div class="col-xs-3">
+		<img class="img-responsive"
+			src="{{ asset(folder ~ '/img/' ~ prefixIcons ~ champion.imgName ~ suffixIcons) }}"
+			alt="{{ champion.name }}" />
+	</div>
+	<div>
+		
+	</div>
+</div>
 
+<div class="row">
+	<div class="col-xs-11 col-sm-10 col-md-7 col-lg-6">
+		<div class="row">
+			<div class="col-xs-12 text-center stat-title">{{ 'champion.statistics'|trans }}</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.health'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.health }} (+{{ champion.bonusHealth }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.attackDamage'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.attackDamage }} (+{{ champion.bonusAttackDamage }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.healthRegen'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.healthRegen }} (+{{ champion.bonusHealthRegen }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.attackSpeed'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.attackSpeed }} (+{{ champion.bonusAttackSpeed }}%)</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.mana'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.mana }} (+{{ champion.bonusMana }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.armor'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.armor }} (+{{ champion.bonusArmor }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.manaRegen'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.manaRegen }} (+{{ champion.bonusManaRegen }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.magicResist'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.magicResist }} (+{{ champion.bonusMagicResist }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.attackRange'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.attackRange }} ({{ champion.attackRangeType }})</div>
+			<div class="col-xs-6 col-sm-3 stat-name">{{ 'champion.moveSpeed'|trans }}</div><div class="col-xs-6 col-sm-3">{{ champion.moveSpeed }}</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-xs-2 col-xs-offset-5">
+				<form method="POST" action="{{ path('lolol_shop_buyChampion', { 'id': champion.id }) }}">
+					<button type="submit" class="btn btn-primary btn-buy" onclick="" {% if owned == true %}disabled{% endif %}>
+					{% if owned == true %}
+						{{ 'champion.owned'|trans }}
+					{% else %}
+						{{ 'champion.buy'|trans }}
+					{% endif %}
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>champion.statistics</source>
+                <target>Statistics</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>champion.health</source>
+                <target>Health</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>champion.attackDamage</source>
+                <target>Attack damage</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>champion.healthRegen</source>
+                <target>Health regen.</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>champion.attackSpeed</source>
+                <target>Attack speed</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>champion.mana</source>
+                <target>Mana</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>champion.armor</source>
+                <target>Armor</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>champion.manaRegen</source>
+                <target>Mana regen.</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>champion.magicResist</source>
+                <target>Magic res.</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>champion.attackRange</source>
+                <target>Range</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>champion.moveSpeed</source>
+                <target>Mov. speed</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>champion.buy</source>
+                <target>Buy</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>champion.owned</source>
+                <target>Owned</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>champion.owned.error</source>
+                <target>You already own %championName%</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

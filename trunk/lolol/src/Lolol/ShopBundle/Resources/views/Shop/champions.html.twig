@@ -1,15 +1,15 @@
 {% extends "LololShopBundle::layout.html.twig" %} {% block
 lololshop_body %}
 
-<div class="row no-gutter compacted-gallery">
+<div class="row gutter-1 compacted-gallery">
 	{% for champion in champions %}
-	<div class="col-xs-1 text-center">
-		<a href="{{ path('lolol_app_champion', { 'id': champion.id }) }}" class="thumbnail"> <img class="img-responsive"
+	<div class="col-xs-2 col-sm-1 text-center">
+		<a href="{{ path('lolol_app_champion', { 'id': champion.id }) }}" class="thumbnail"> 
+		<img class="img-responsive"
 			src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
 			alt="{{ champion.name }}" />
 			<small>{{ champion.name }}</small>
 		</a>
-		
 	</div>
 	{% endfor %}
 </div>

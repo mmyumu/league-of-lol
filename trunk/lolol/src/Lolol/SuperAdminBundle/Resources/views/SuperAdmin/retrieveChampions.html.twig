@@ -12,7 +12,7 @@
 	  $('.selectAll').on('click', function() { checkAll(true); return false;});
 	  $('.unselectAll').on('click', function() { checkAll(false); return false;});
 
-	  $('.clearBtn').on('click', function() { return confirm('Are you sure you want to clear the retrieved files?');});
+	  $('.btn-clear').on('click', function() { return confirm('Are you sure you want to clear the retrieved files?');});
 	});
 	
 	</script>
@@ -35,8 +35,8 @@
 	
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
-	<button class="btn btn-primary" name="retrieveBtn" value="retrieve">Retrieve</button>
-	<button class="btn btn-danger clearBtn" name="retrieveBtn" value="clear">Clear</button>
+	<button class="btn btn-primary" name="btnRetrieve" value="retrieve">Retrieve</button>
+	<button class="btn btn-danger btn-clear" name="btnRetrieve" value="clear">Clear</button>
 	<br /><br />
 	<table class="table table-bordered table-condensed">
 	<thead>
@@ -65,8 +65,8 @@
 
 	<button class="btn btn-default selectAll">Select all</button>
 	<button class="btn btn-default unselectAll">Unselect all</button>
-	<button class="btn btn-primary" name="retrieveBtn" value="retrieve">Retrieve</button>
-	<button class="btn btn-danger clearBtn" name="retrieveBtn" value="clear">Clear</button>
+	<button class="btn btn-primary" name="btnRetrieve" value="retrieve">Retrieve</button>
+	<button class="btn btn-danger btn-clear" name="btnRetrieve" value="clear">Clear</button>
 	</form>
 {% endblock %}
 
