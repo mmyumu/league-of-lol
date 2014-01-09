@@ -1,3 +1,7 @@
+body {
+	padding-top: 70px;
+}
+
 #loading-indicator {
     position: absolute;
     left: 50%;
@@ -59,4 +63,26 @@ img.desaturate {
     filter: url(filters.svg#grayscale); /* Firefox 3.5+ */
     filter: gray; /* IE6-9 */
     -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+}
+
+.team-selected {
+	padding-right: 30px;
+	padding-left: 30px;	
+}
+
+.champion-selected {
+	border-color: #428bca;
+}
+
+.red {
+	background-color: red;	
+}
+.green {
+	background-color: green;	
+}
+.blue {
+	background-color: blue;	
+}
+.yellow {
+	background-color: yellow;	
 }
