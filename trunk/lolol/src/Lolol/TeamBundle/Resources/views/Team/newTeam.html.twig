@@ -1,18 +1,70 @@
-{% extends "LololTeamBundle::layout.html.twig" %} 
-{% block lololapp_body %}
+{% extends "LololTeamBundle::layout.html.twig" %}
 
-<div class="row team-builder gutter-1">
-	<div class="col-xs-2">
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('.draggable').draggable({ revert: true });
+		$('.droppable').droppable ({
+		    drop: function() { alert('dropped'); }
+		});
+
+		$('.draggable').on('click', function() {
+			$(this).toggleClass("champion-selected");
+		});
+	});
+	</script>
+{% endblock %}
+
+{% block lololapp_body %}
+<div class="row team-builder">
+	<div class="col-xs-2 team-selected">
 		<div class="row">
-			<div class="col-xs-10"><img class="thumbnail center-block" data-src="holder.js/120x120/text:1" /></div>
-			<div class="col-xs-4"><img class="thumbnail" data-src="holder.js/40x40/text:1" /></div>
-			<div class="col-xs-4"><img class="thumbnail" data-src="holder.js/40x40/text:1" /></div>
-			<div class="col-xs-4"><img class="thumbnail" data-src="holder.js/40x40/text:1" /></div>
-			<div class="col-xs-4"><img class="thumbnail" data-src="holder.js/40x40/text:1" /></div>
-			<div class="col-xs-4"><img class="thumbnail" data-src="holder.js/40x40/text:1" /></div>
-			<div class="col-xs-4"><img class="thumbnail" data-src="holder.js/40x40/text:1" /></div>
+			<div class="col-xs-12 droppable text-center">
+				<div class="thumbnail">
+					<img class="img-responsive" data-src="holder.js/48x48/text:1">
+					<a href="#"><small>Empty</small></a>
+				</div>
+			</div>
+			<div class="col-xs-12 droppable text-center">
+				<div class="thumbnail">
+					<img class="img-responsive" data-src="holder.js/48x48/text:1">
+					<a href="#"><small>Empty</small></a>
+				</div>
+			</div>
+			<div class="col-xs-12 droppable text-center">
+				<div class="thumbnail">
+					<img class="img-responsive" data-src="holder.js/48x48/text:1">
+					<a href="#"><small>Empty</small></a>
+				</div>
+			</div>
+			<div class="col-xs-12 droppable text-center">
+				<div class="thumbnail">
+					<img class="img-responsive" data-src="holder.js/48x48/text:1">
+					<a href="#"><small>Empty</small></a>
+				</div>
+			</div>
+			<div class="col-xs-12 droppable text-center">
+				<div class="thumbnail">
+					<img class="img-responsive" data-src="holder.js/48x48/text:1">
+					<a href="#"><small>Empty</small></a>
+				</div>
+			</div>
 		</div>
 	</div>
+	<div class="col-xs-8 compacted-gallery">
+	{% for champion in champions %}
+		<div class="col-xs-4 col-sm-2 text-center">
+			<div class="thumbnail draggable"> 
+				<img class="img-responsive"
+					src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
+					alt="{{ champion.name }}" />
+				<a href="{{ path('lolol_app_champion', { 'id': champion.id }) }}"><small>{{ champion.name }}</small></a>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
 </div>
-
 {% endblock %}
