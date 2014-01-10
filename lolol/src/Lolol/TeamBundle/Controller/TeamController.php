@@ -15,7 +15,7 @@ class TeamController extends Controller {
 	/**
 	 * Action to display the GUI to build a new team
 	 */
-	public function newTeamAction() {
+	public function teamBuilderAction() {
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
 		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
@@ -24,6 +24,7 @@ class TeamController extends Controller {
 		$champions = $this->getUser()->getChampions();
 		
 		return $this->render('LololTeamBundle:Team:newTeam.html.twig', array(
+				'team' => array(),
 				'champions' => $champions,
 				'folder' => $folder,
 				'prefixIcons48' => $prefixIcons48,
