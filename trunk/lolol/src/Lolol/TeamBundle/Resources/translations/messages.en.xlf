@@ -14,6 +14,34 @@
 				<source>menu.team.createNewTeam</source>
 				<target>Create new team</target>
 			</trans-unit>
+			<trans-unit id="4">
+				<source>team.title</source>
+				<target>Team</target>
+			</trans-unit>
+			<trans-unit id="5">
+				<source>team.save</source>
+				<target>Save</target>
+			</trans-unit>
+			<trans-unit id="6">
+				<source>team.reset</source>
+				<target>Reset</target>
+			</trans-unit>
+			<trans-unit id="7">
+				<source>team.selected</source>
+				<target>Selected team</target>
+			</trans-unit>
+			<trans-unit id="8">
+				<source>team.empty</source>
+				<target>Empty</target>
+			</trans-unit>
+			<trans-unit id="9">
+				<source>team.pool</source>
+				<target>Pool</target>
+			</trans-unit>
+			<trans-unit id="10">
+				<source>team.reset.confirm</source>
+				<target>Are you sure you want to reset this team?</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

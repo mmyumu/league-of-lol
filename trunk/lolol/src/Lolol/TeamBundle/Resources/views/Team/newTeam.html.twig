@@ -5,66 +5,180 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript">
-	$(document).ready(function() {
+
+	var selectedChampion = null;
+	var selectedTeamSlot = null;
+
+	var team = {};
+	var placeholders = {}
+	
+	
+	$(document).ready(function() {	
+		$('.btn-save').on('click', function() {
+			return save();
+		});
+
+		$('.btn-reset').on('click', function() {
+			return reset();
+		});		
+		
 		$('.draggable').draggable({ revert: true });
-		$('.droppable').droppable ({
+		$('.droppable').droppable({
 		    drop: function() { alert('dropped'); }
 		});
 
 		$('.draggable').on('click', function() {
-			$(this).toggleClass("champion-selected");
+			var currentChampion = $(this);
+			$('.draggable').each(function(index) {
+				var champion = $(this);
+				if(currentChampion.is(champion)) {
+					if(champion.hasClass('champion-selected')) {
+						selectedChampion = null;
+						champion.removeClass('champion-selected');
+					} else {
+						selectedChampion = $(this).attr('id');
+						champion.addClass('champion-selected');
+					}
+				} else if($(this).hasClass('champion-selected')) {
+					$(this).removeClass('champion-selected');
+				}
+			});
+		});
+
+		$('.droppable').on('click', function() {
+			if(Object.keys(placeholders).length == 0) {
+				// Backup the placeholders
+				$('.droppable').each(function(index) {
+					var id = $(this).attr('id');
+					var img = '#' + id + ' > img';
+					placeholders[id] = $(img).attr('src');
+				});
+			}
+
+			if(selectedChampion != null) {
+				var id = $(this).attr('id');
+				var img = '#'+id+' > img';
+				var link = '#'+id+' > a';
+
+				// Check if duplicate champion in team
+				for (var tmpId in team) {
+					if(team[tmpId] == selectedChampion) {
+						var tmpImg = '#'+tmpId+' > img';
+						var tmpLink = '#'+tmpId+' > a';
+
+						delete team[tmpId];
+
+						// Restores the placeholder
+						$(tmpImg).attr('src', placeholders[tmpId]);
+						$(tmpLink).html('<small>{{ 'team.empty'|trans }}</small>');
+					}
+				}
+
+				team[id] = selectedChampion;
+				
+				var championUrl = $('#'+selectedChampion+'> img').attr('src');
+				var championName = $('#'+selectedChampion+'> a').html();
+
+				$(img).attr('src', championUrl);
+				$(link).html(championName);
+			} else {
+				var tmpImg = '#'+tmpId+' > img';
+				var tmpLink = '#'+tmpId+' > a';
+
+				delete team[tmpId];
+
+				// Restores the placeholder
+				$(tmpImg).attr('src', placeholders[tmpId]);
+				$(tmpLink).html('<small>{{ 'team.empty'|trans }}</small>');
+			}
 		});
 	});
+
+	function save() {
+		// Add the data to form (Idk how)
+		// or AJAX call ?
+	}
+
+	function reset() {
+		if(confirm('{{ 'team.reset.confirm'|trans }}')) {
+			// Reset team
+		}
+		return false;
+	}
 	</script>
 {% endblock %}
 
 {% block lololapp_body %}
-<div class="row team-builder">
-	<div class="col-xs-2 team-selected">
-		<div class="row">
-			<div class="col-xs-12 droppable text-center">
-				<div class="thumbnail">
-					<img class="img-responsive" data-src="holder.js/48x48/text:1">
-					<a href="#"><small>Empty</small></a>
-				</div>
-			</div>
-			<div class="col-xs-12 droppable text-center">
-				<div class="thumbnail">
-					<img class="img-responsive" data-src="holder.js/48x48/text:1">
-					<a href="#"><small>Empty</small></a>
-				</div>
-			</div>
-			<div class="col-xs-12 droppable text-center">
-				<div class="thumbnail">
-					<img class="img-responsive" data-src="holder.js/48x48/text:1">
-					<a href="#"><small>Empty</small></a>
-				</div>
-			</div>
-			<div class="col-xs-12 droppable text-center">
-				<div class="thumbnail">
-					<img class="img-responsive" data-src="holder.js/48x48/text:1">
-					<a href="#"><small>Empty</small></a>
-				</div>
-			</div>
-			<div class="col-xs-12 droppable text-center">
-				<div class="thumbnail">
-					<img class="img-responsive" data-src="holder.js/48x48/text:1">
-					<a href="#"><small>Empty</small></a>
-				</div>
-			</div>
+<div class="row team-builder compacted-gallery">
+	<div class="row">
+		<div class="col-xs-12 col-xs-offset-1">
+			<form method="POST" action="">
+				<button class="btn btn-primary btn-save" type="submit"><i class="fa fa-save"></i> {{ 'team.save'|trans }}</button>
+				<button class="btn btn-danger btn-reset" type="submit"><i class="fa fa-eraser"></i> {{ 'team.reset'|trans }}</button> 
+			</form>
 		</div>
 	</div>
-	<div class="col-xs-8 compacted-gallery">
-	{% for champion in champions %}
-		<div class="col-xs-4 col-sm-2 text-center">
-			<div class="thumbnail draggable"> 
-				<img class="img-responsive"
-					src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
-					alt="{{ champion.name }}" />
-				<a href="{{ path('lolol_app_champion', { 'id': champion.id }) }}"><small>{{ champion.name }}</small></a>
+	<div class="row">
+		<div class="col-xs-12">&nbsp;</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-2">
+			<p><strong>{{ 'team.selected'|trans }}</strong></p>
+		</div>
+		<div class="col-xs-10">
+			<p><strong>{{ 'team.pool'|trans }}</strong></p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-2 team-selected">
+			<div class="row">
+			{% for champion in team %}
+			{% else %}
+				<div class="col-xs-12 text-center">
+					<div id="team0" class="thumbnail droppable">
+						<img id="img-team0"  class="img-responsive" data-src="holder.js/48x48/text:1">
+						<a href="#"><small>{{ 'team.empty'|trans }}</small></a>
+					</div>
+				</div>
+				<div class="col-xs-12 text-center">
+					<div id="team1" class="thumbnail droppable">
+						<img id="img-team1" class="img-responsive" data-src="holder.js/48x48/text:2">
+						<a href="#"><small>{{ 'team.empty'|trans }}</small></a>
+					</div>
+				</div>
+				<div class="col-xs-12 text-center">
+					<div id="team2" class="thumbnail droppable">
+						<img id="img-team2"  class="img-responsive" data-src="holder.js/48x48/text:3">
+						<a href="#"><small>{{ 'team.empty'|trans }}</small></a>
+					</div>
+				</div>
+				<div class="col-xs-12 text-center">
+					<div id="team3" class="thumbnail droppable">
+						<img id="img-team3"  class="img-responsive" data-src="holder.js/48x48/text:4">
+						<a href="#"><small>{{ 'team.empty'|trans }}</small></a>
+					</div>
+				</div>
+				<div class="col-xs-12 text-center">
+					<div id="team4" class="thumbnail droppable">
+						<img id="img-team4"  class="img-responsive" data-src="holder.js/48x48/text:5">
+						<a href="#"><small>{{ 'team.empty'|trans }}</small></a>
+					</div>
+				</div>
+				{% endfor %}
 			</div>
 		</div>
-	{% endfor %}
+		<div class="col-xs-10">
+		{% for champion in champions %}
+			<div class="col-xs-4 col-sm-2 text-center">
+				<div id="champion-{{ champion.id }}" class="thumbnail draggable"> 
+					<img id="img-champion-{{ champion.id }}" class="img-responsive"
+						src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
+						alt="{{ champion.name }}" />
+					<a href="{{ path('lolol_app_champion', { 'id': champion.id }) }}"><small>{{ champion.name }}</small></a>
+				</div>
+			</div>
+		{% endfor %}
+		</div>
 	</div>
 </div>
 {% endblock %}
