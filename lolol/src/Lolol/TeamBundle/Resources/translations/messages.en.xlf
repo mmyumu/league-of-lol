@@ -42,6 +42,10 @@
 				<source>team.reset.confirm</source>
 				<target>Are you sure you want to reset this team?</target>
 			</trans-unit>
+			<trans-unit id="11">
+				<source>team.pool.empty</source>
+				<target>You don't have any champion, you can visit the shop to buy champions.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

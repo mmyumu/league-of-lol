@@ -1,9 +1,9 @@
-lolol_team_myteams:
+lolol_team_myTeams:
     pattern:  /my-teams/
     defaults: { _controller: LololTeamBundle:Team:myTeams }
-lolol_team_newteam:
+lolol_team_teamBuilder:
     pattern:  /team-builder/
     defaults: { _controller: LololTeamBundle:Team:teamBuilder }
-lolol_team_newteamSave:
+lolol_team_teamBuilderSave:
     pattern:  /team-builder/save
-    defaults: { _controller: LololTeamBundle:Team:teamSave } 
+    defaults: { _controller: LololTeamBundle:Team:teamBuilderSave } 

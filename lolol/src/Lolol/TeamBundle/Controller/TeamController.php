@@ -23,11 +23,15 @@ class TeamController extends Controller {
 		
 		$champions = $this->getUser()->getChampions();
 		
-		return $this->render('LololTeamBundle:Team:newTeam.html.twig', array(
+		return $this->render('LololTeamBundle:Team:teamBuilder.html.twig', array(
 				'team' => array(),
 				'champions' => $champions,
 				'folder' => $folder,
 				'prefixIcons48' => $prefixIcons48,
 				'suffixIcons48' => $suffixIcons48));
+	}
+	
+	public function teamBuilderSaveAction() {
+		return $this->render('LololTeamBundle:Team:teamBuilder.html.twig');
 	}
 }

@@ -14,8 +14,8 @@ class LololPopulateChampions {
 	private $statExtension;
 	private $patternBaseFloat = '/^\d+\.?\d*/';
 	private $patternBonusFloat = '/\(\+(\d+\.?\d*)\)/';
-	private $patternBonusPercent = '/\(\+(\d+\.?\d*%)\)/';
-	private $patternBonusRange = '/(Melee|Ranged)/';
+	private $patternBonusPercent = '/\(\+(\d+\.?\d*)%\)/';
+	private $patternBonusRange = '/(Melee|Ranged|)/';
 	private $patternBonusEmpty = '/()/';
 	
 	/**

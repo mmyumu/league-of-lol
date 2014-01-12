@@ -66,8 +66,8 @@ class ShopController extends Controller {
 			$em->flush();
 		}
 		
+		// Redirect to previous page, or homepage if no previous page
 		$url = $this->getRequest()->headers->get('referer');
-		
 		if (empty($url)) {
 			$url = $this->generateUrl('lolol_app_homepage');
 		}
