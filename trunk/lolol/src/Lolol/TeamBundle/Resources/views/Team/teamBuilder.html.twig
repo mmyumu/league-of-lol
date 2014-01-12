@@ -63,14 +63,7 @@
 				// Check if duplicate champion in team
 				for (var tmpId in team) {
 					if(team[tmpId] == selectedChampion) {
-						var tmpImg = '#'+tmpId+' > img';
-						var tmpLink = '#'+tmpId+' > a';
-
-						delete team[tmpId];
-
-						// Restores the placeholder
-						$(tmpImg).attr('src', placeholders[tmpId]);
-						$(tmpLink).html('<small>{{ 'team.empty'|trans }}</small>');
+						clear(tmpId);
 					}
 				}
 
@@ -81,22 +74,54 @@
 
 				$(img).attr('src', championUrl);
 				$(link).html(championName);
-			} else {
-				var tmpImg = '#'+tmpId+' > img';
-				var tmpLink = '#'+tmpId+' > a';
 
-				delete team[tmpId];
-
-				// Restores the placeholder
-				$(tmpImg).attr('src', placeholders[tmpId]);
-				$(tmpLink).html('<small>{{ 'team.empty'|trans }}</small>');
+				if(checkTeam()) {
+					$('.btn-save').removeAttr('disabled');
+				} else {
+					$('.btn-save').attr('disabled','disabled');				
+				}
 			}
 		});
 	});
 
+	function clear(id) {
+		var tmpImg = '#'+id+' > img';
+		var tmpLink = '#'+id+' > a';
+
+		delete team[id];
+
+		// Restores the placeholder
+		$(tmpImg).attr('src', placeholders[id]);
+		$(tmpLink).html('<small>{{ 'team.empty'|trans }}</small>');
+	}
+
+	function checkTeam() {
+		var championsCount = 0;
+		for(id in team) {
+			championsCount++;
+		}
+		return true;
+		return championsCount == 5;
+	}
+
 	function save() {
-		// Add the data to form (Idk how)
-		// or AJAX call ?
+		$('#loading-indicator').show();
+		
+//	    $.post('{{ path('lolol_team_teamBuilderSave') }}',               
+// 	                {data1: 'mydata1', data2:'mydata2'}, 
+// 	            function(response){
+// 					if(response.code == 100 && response.success){//dummy check
+// 						//do something
+// 					} else {
+// 						$
+// 					}
+					
+// 					$('#loading-indicator').hide();
+
+// 	    }, "json");  
+	$('#team-builder-alert').modal();
+	    		$('#loading-indicator').hide();
+		return false;
 	}
 
 	function reset() {
@@ -108,12 +133,32 @@
 	</script>
 {% endblock %}
 
+{% block lolol_alert %}
+<div id="team-builder-alert" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
+
 {% block lololapp_body %}
 <div class="row team-builder compacted-gallery">
 	<div class="row">
 		<div class="col-xs-12 col-xs-offset-1">
 			<form method="POST" action="">
-				<button class="btn btn-primary btn-save" type="submit"><i class="fa fa-save"></i> {{ 'team.save'|trans }}</button>
+				<button class="btn btn-primary btn-save" type="submit" disabled><i class="fa fa-save"></i> {{ 'team.save'|trans }}</button>
 				<button class="btn btn-danger btn-reset" type="submit"><i class="fa fa-eraser"></i> {{ 'team.reset'|trans }}</button> 
 			</form>
 		</div>
@@ -176,6 +221,10 @@
 						alt="{{ champion.name }}" />
 					<a href="{{ path('lolol_app_champion', { 'id': champion.id }) }}"><small>{{ champion.name }}</small></a>
 				</div>
+			</div>
+		{% else %}
+			<div class="col-xs-12">
+				{{ 'team.pool.empty'|trans }}
 			</div>
 		{% endfor %}
 		</div>
