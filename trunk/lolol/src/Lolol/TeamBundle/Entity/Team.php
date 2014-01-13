@@ -27,6 +27,7 @@ class Team {
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Lolol\UserBundle\Entity\User")
+	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $user;
 	
@@ -66,7 +67,7 @@ class Team {
      * @param \Lolol\UserBundle\Entity\User $user
      * @return Team
      */
-    public function setUser(\Lolol\UserBundle\Entity\User $user = null)
+    public function setUser(\Lolol\UserBundle\Entity\User $user)
     {
         $this->user = $user;
 

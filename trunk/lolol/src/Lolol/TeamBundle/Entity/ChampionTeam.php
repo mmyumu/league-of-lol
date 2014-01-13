@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Lolol\AppBundle\Entity\Champion as Champion;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Lolol\TeamBundle\Entity\ChampionTeamRepository")
  */
 class ChampionTeam {
 	/**

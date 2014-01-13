@@ -19,5 +19,6 @@ parameters:
     champions_icons48_prefix: 48px-
     champions_icons48_suffix: Square.png
     wiki_url: http://leagueoflegends.wikia.com/wiki/
-    #http_proxy: proxy_aeropark:8080
-    http_proxy:
+    http_proxy: proxy_aeropark:8080
+    #http_proxy:
+    team_size:  5

@@ -42,6 +42,30 @@
 				<source>team.reset.confirm</source>
 				<target>Etes-vous sûr de vouloir reset cette équipe ?</target>
 			</trans-unit>
+			<trans-unit id="11">
+				<source>team.pool.empty</source>
+				<target>Vous n'avez pas encore de champion, visitez la boutique pour en acheter.</target>
+			</trans-unit>
+			<trans-unit id="12">
+				<source>team.built.ok</source>
+				<target>L'équipe a été créée avec succès.</target>
+			</trans-unit>
+			<trans-unit id="13">
+				<source>team.built.error.missingChampions</source>
+				<target>Vous devez sélectionner 5 champions pour créer votre équipe</target>
+			</trans-unit>
+			<trans-unit id="14">
+				<source>team.name</source>
+				<target>Nom d'équipe</target>
+			</trans-unit>
+			<trans-unit id="15">
+				<source>team.built.error.missingName</source>
+				<target>Vous devez choisir un nom d'équipe</target>
+			</trans-unit>
+			<trans-unit id="16">
+				<source>team.myTeams.empty</source>
+				<target>Vous n'avez pas encore d'équipe. Pour créer une nouvelle équipe, cliquez sur Equipe > Nouvelle équipe.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
