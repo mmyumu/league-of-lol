@@ -58,6 +58,10 @@
                 <source>champion.owned.error</source>
                 <target>You already own %championName%</target>
             </trans-unit>
+            <trans-unit id="15">
+                <source>alert.error</source>
+                <target>Error</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

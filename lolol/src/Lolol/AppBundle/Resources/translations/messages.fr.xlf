@@ -18,6 +18,10 @@
                 <source>champion.owned.error</source>
                 <target>Vous possédez déjà %championName%</target>
             </trans-unit>
+            <trans-unit id="15">
+                <source>alert.error</source>
+                <target>Erreur</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
