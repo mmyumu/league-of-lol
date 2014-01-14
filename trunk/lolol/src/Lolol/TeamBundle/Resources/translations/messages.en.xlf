@@ -66,6 +66,14 @@
 				<source>team.myTeams.empty</source>
 				<target>You don't have team yet. To create a new team, click on Team > Create new team.</target>
 			</trans-unit>
+			<trans-unit id="17">
+				<source>team.names</source>
+				<target>Team names</target>
+			</trans-unit>
+			<trans-unit id="18">
+				<source>team.selectedChampions</source>
+				<target>Selected champions</target>
+			</trans-unit>			
 		</body>
 	</file>
 </xliff>
