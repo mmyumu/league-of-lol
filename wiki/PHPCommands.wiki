@@ -7,7 +7,7 @@
 = Symfony =
   * *php app/console generate:bundle* Generate a new bundle
   * *php app/console cache:clear --no-debug* Clear the cache
-  * *php app/console --env=prod cache:clear --no-debug* Clear the cache for prod
+  * *php app/console cache:clear --env=prod --no-debug* Clear the cache for prod
 
 == FOS ==
   * *php app/console fos:user:create* Create a new user
