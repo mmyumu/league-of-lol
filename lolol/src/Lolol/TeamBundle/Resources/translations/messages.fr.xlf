@@ -66,6 +66,14 @@
 				<source>team.myTeams.empty</source>
 				<target>Vous n'avez pas encore d'équipe. Pour créer une nouvelle équipe, cliquez sur Equipe > Nouvelle équipe.</target>
 			</trans-unit>
+			<trans-unit id="17">
+				<source>team.names</source>
+				<target>Noms d'équipes</target>
+			</trans-unit>
+			<trans-unit id="18">
+				<source>team.selectedChampions</source>
+				<target>Champions séletionnés</target>
+			</trans-unit>	
 		</body>
 	</file>
 </xliff>

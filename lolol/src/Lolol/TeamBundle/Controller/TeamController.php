@@ -2,6 +2,7 @@
 
 namespace Lolol\TeamBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,17 @@ class TeamController extends Controller {
 	 * Action to display the GUI of the existing teams
 	 */
 	public function myTeamsAction() {
+		// Get the parameters
+		$folder = $this->container->getParameter('champions_folder');
+		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
+		$suffixIcons48 = $this->container->getParameter('champions_icons48_suffix');
+		
+		// Get teams
 		$em = $this->getDoctrine()->getManager();
 		$teams = $em->getRepository('LololTeamBundle:Team')->findByUser($this->getUser());
 		$championRepo = $em->getRepository('LololTeamBundle:ChampionTeam');
 		
+		// Get champions by teams
 		$i = 0;
 		foreach($teams as $team) {
 			$champions = $championRepo->getWithChampionsByTeam($team, 'ct.position');
@@ -28,14 +36,17 @@ class TeamController extends Controller {
 			$i ++;
 		}
 		
-		// $teams = $em->getRepository('LololTeamBundle:Team')->getTeamsWithChampionsByUser($this->getUser());
 		return $this->render('LololTeamBundle:Team:myTeams.html.twig', array(
-				"results" => $result));
+				"results" => $result,
+				'folder' => $folder,
+				'prefixIcons48' => $prefixIcons48,
+				'suffixIcons48' => $suffixIcons48));
 	}
 	/**
-	 * Action to display the GUI to build a new team
+	 * * Action to display the GUI to build a new team or edit an existing team
+	 * @ParamConverter("team", class="Lolol\TeamBundle\Entity\Team")
 	 */
-	public function teamBuilderAction() {
+	public function teamBuilderAction(Team $team = null) {
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
 		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
@@ -43,8 +54,19 @@ class TeamController extends Controller {
 		
 		$champions = $this->getUser()->getChampions();
 		
+		if($team != null) {
+			$em = $this->getDoctrine()->getManager();
+			$championRepo = $em->getRepository('LololTeamBundle:ChampionTeam');
+			
+			$teamChampions['team'] = $team;
+			$teamChampions['champions'] = $championRepo->getWithChampionsByTeam($team, 'ct.position');
+		} else {
+			$teamChampions['team'] = null;
+			$teamChampions['champions'] = null;			
+		}
+		
 		return $this->render('LololTeamBundle:Team:teamBuilder.html.twig', array(
-				'team' => array(),
+				'teamChampions' => $teamChampions,
 				'champions' => $champions,
 				'folder' => $folder,
 				'prefixIcons48' => $prefixIcons48,

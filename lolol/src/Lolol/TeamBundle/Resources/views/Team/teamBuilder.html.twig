@@ -4,8 +4,10 @@
 {% block javascripts %} 
 {{ parent() }}
 
+<!-- 
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.js"></script>
+ -->
 <script type="text/javascript">
 
 	var selectedChampion = null;
@@ -52,8 +54,9 @@
 		});
 
 		$('.droppable').on('click', function() {
+			// If we didn't backup the placeholders yet ...
 			if(Object.keys(placeholders).length == 0) {
-				// Backup the placeholders
+				// ... backup the placeholders
 				$('.droppable').each(function(index) {
 					var id = $(this).attr('id');
 					var img = '#' + id + ' > img';
@@ -61,20 +64,24 @@
 				});
 			}
 
+			// If a champion is already selected ...
 			if(selectedChampion != null) {
 				var id = $(this).attr('id');
 				var img = '#'+id+' > img';
 				var link = '#'+id+' > a';
 
-				// Check if duplicate champion in team
+				// ... check if duplicate champion in team
 				for (var tmpId in team) {
 					if(team[tmpId] == selectedChampion) {
+						// Clear the champion slot if it was already part of the team
 						clear(tmpId);
 					}
 				}
 
+				// Put the champion in the team
 				team[id] = selectedChampion;
-				
+
+				// Change the img src and link
 				var championUrl = $('#'+selectedChampion+'> img').attr('src');
 				var championName = $('#'+selectedChampion+'> a').html();
 
@@ -86,6 +93,10 @@
 		});
 	});
 
+	/**
+	 * Clear the slot with the id given as parameter.
+	 * Restore the placeholder and the link.
+	 */
 	function clear(id) {
 		var tmpImg = '#'+id+' > img';
 		var tmpLink = '#'+id+' > a';
@@ -97,6 +108,9 @@
 		$(tmpLink).html('<small>{{ 'team.empty'|trans }}</small>');
 	}
 
+	/**
+	 * Enable/disable the save button according to criterias.
+	 */
 	function updateSaveButton() {
 		if(checkTeam()) {
 			$('.btn-save').removeAttr('disabled');
@@ -104,9 +118,11 @@
 			$('.btn-save').attr('disabled','disabled');				
 		}
 	}
-	
+
+	/**
+	 * Check if the the team name and the champions are properly filled.
+	 */
 	function checkTeam() {
-		return true;
 		if($('#teamName').val() == '') {
 			return false;
 		}
@@ -118,6 +134,9 @@
 		return championsCount == 5;
 	}
 
+	/**
+	 * Save the team by making an AJAX call
+	 */
 	function save() {
 		$('#loading-indicator').show();
 	    $.post('{{ path('lolol_team_teamBuilderSave') }}',               
@@ -154,6 +173,9 @@
 		return false;
 	}
 
+	/**
+	 * Reset the team being created
+	 */
 	function reset() {
 		if(confirm('{{ 'team.reset.confirm'|trans }}')) {
 			// Reset team
@@ -187,25 +209,25 @@
 				</div>
 			</div>
 		</div>
+		<br />
 		<div class="row">
-			<div class="col-xs-12">&nbsp;</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-2">
+			<div class="col-xs-3 col-md-2">
 				<p>
-					<strong>{{ 'team.selected'|trans }}</strong>
+					<strong class="hidden-xs">{{ 'team.selected'|trans }}</strong>
+					<strong class="visible-xs"><small>{{ 'team.selected'|trans }}</small></strong>
 				</p>
 			</div>
-			<div class="col-xs-10">
+			<div class="col-xs-9 col-md-10">
 				<p>
-					<strong>{{ 'team.pool'|trans }}</strong>
+					<strong class="hidden-xs">{{ 'team.pool'|trans }}</strong>
+					<strong class="visible-xs"><small>{{ 'team.pool'|trans }}</small></strong>
 				</p>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-2 team-selected">
+			<div class="col-xs-3 col-md-2 team-selected">
 				<div class="row">
-					{% for champion in team %} {% else %}
+					{% if teamChampions.team is null %}
 					<div class="col-xs-12 text-center">
 						<div id="team0" class="thumbnail droppable">
 							<img id="img-team0" class="img-responsive"
@@ -241,12 +263,14 @@
 									'team.empty'|trans }}</small></a>
 						</div>
 					</div>
-					{% endfor %}
+					{% else %}
+					{{ teamChampions.team.name }}
+					{% endif %}
 				</div>
 			</div>
-			<div class="col-xs-10">
+			<div class="col-xs-9 col-md-10">
 				{% for champion in champions %}
-				<div class="col-xs-4 col-sm-2 text-center">
+				<div class="col-xs-3 col-sm-2 text-center">
 					<div id="champion-{{ champion.id }}" class="thumbnail draggable">
 						<img id="img-champion-{{ champion.id }}" class="img-responsive"
 							src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
