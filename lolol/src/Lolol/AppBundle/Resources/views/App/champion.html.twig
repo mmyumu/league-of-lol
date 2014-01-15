@@ -9,7 +9,7 @@
 	}
 
 	$(document).ready(function() {
-		$('.btn-buy').on('click', function() { return confirm('{{ 'shop.confirm'|trans({'%championName%': champion.name}) }}');});
+		$('.btn-buy').on('click', function() { return confirm('{{ 'shop.confirm'|trans({'%championName%': champion.name})|e('js') }}');});
 		});
 	
 	</script>

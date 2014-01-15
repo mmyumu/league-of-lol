@@ -31,6 +31,7 @@ class TeamController extends Controller {
 		
 		// Get champions by teams
 		$i = 0;
+		$result = array();
 		foreach($teams as $team) {
 			$champions = $championRepo->getWithChampionsByTeam($team, 'ct.position');
 			
