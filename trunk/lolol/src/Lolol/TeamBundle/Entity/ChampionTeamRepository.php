@@ -28,7 +28,7 @@ class ChampionTeamRepository extends EntityRepository {
 				->getResult();
 	}
 	
-	public function getWithChampionsByTeam(Team $team, $orderBy = 'ct.id') {
+	public function getWithChampionsByTeam(Team $team, $orderBy = 'ct.position') {
 		$qb = $this->_em->createQueryBuilder();
 		
 		$qb->select('ct')

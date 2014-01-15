@@ -14,10 +14,9 @@
 	var selectedTeamSlot = null;
 
 	var team = {};
-	var placeholders = {}
+	var placeholders = {}	
 	
-	
-	$(document).ready(function() {	
+	$(document).ready(function() {
 		$("#teamName").keyup(function(event) {
 			updateSaveButton();
 		})
@@ -54,58 +53,88 @@
 		});
 
 		$('.droppable').on('click', function() {
-			// If we didn't backup the placeholders yet ...
-			if(Object.keys(placeholders).length == 0) {
-				// ... backup the placeholders
-				$('.droppable').each(function(index) {
-					var id = $(this).attr('id');
-					var img = '#' + id + ' > img';
-					placeholders[id] = $(img).attr('src');
-				});
-			}
-
 			// If a champion is already selected ...
 			if(selectedChampion != null) {
 				var id = $(this).attr('id');
-				var img = '#'+id+' > img';
-				var link = '#'+id+' > a';
 
 				// ... check if duplicate champion in team
 				for (var tmpId in team) {
 					if(team[tmpId] == selectedChampion) {
 						// Clear the champion slot if it was already part of the team
-						clear(tmpId);
+						initializeSlot(tmpId, null);
 					}
 				}
 
-				// Put the champion in the team
-				team[id] = selectedChampion;
-
-				// Change the img src and link
-				var championUrl = $('#'+selectedChampion+'> img').attr('src');
-				var championName = $('#'+selectedChampion+'> a').html();
-
-				$(img).attr('src', championUrl);
-				$(link).html(championName);
+				initializeSlot(id, selectedChampion);
 
 				updateSaveButton();
 			}
 		});
+
+		for(var i = 0; i < {{ teamSize }}; i++) {
+			placeholders['team'+i] = createEmptyDiv(i);
+		}
+		
+		{% if teamChampions.team is not null %}
+			{% for championTeam in teamChampions.champions %}
+				initializeSlot( 'team{{ loop.index0 }}', 'champion-{{ championTeam.champion.id }}');
+			{% endfor %}
+		{%  else %}
+			initializeSlots();
+		{% endif %}
+
+		
+		
+		updateSaveButton();
 	});
 
+	function createEmptyDiv(id) {
+		return createDiv(id, '<small>{{ 'team.empty'|trans }}</small>', '#', '');
+	}
+	
+	function createDiv(id, name, href, src) {
+		if(src != '') {
+			src = ' src="'+src+'" ';
+			datasrc = '';
+		} else {
+			datasrc = 'data-src="holder.js/48x48/text:' + (id + 1);
+		}
+
+		
+
+		return 	'<img id="img-'+id+'" class="img-responsive"'+
+				'	'+datasrc+'" '+src+' />'+
+				'	<a href="'+href+'">'+name+'</a>';
+	}
+	
+	function initializeSlots() {
+		for(var i = 0; i < {{ teamSize }}; i++) {
+			initializeSlot('team'+i, null);
+		}
+	}
+
 	/**
-	 * Clear the slot with the id given as parameter.
-	 * Restore the placeholder and the link.
+	 *	Initialize the slot of the given id with the champion given as parameter (format: champion-<ID>, ex. champion-1)
 	 */
-	function clear(id) {
-		var tmpImg = '#'+id+' > img';
-		var tmpLink = '#'+id+' > a';
+	function initializeSlot(id, champion) {
+		if(champion == null) {
+			$('#'+id).html(placeholders[id]);
 
-		delete team[id];
+			// Generates the correct src for placeholder
+			Holder.run();
+		} else {
+			// Create the div with champions infos
+ 			var name = $('#'+champion+'> a').html();
+ 			var href = $('#'+champion+'> a').attr('href');
+ 			var src = $('#'+champion+'> img').attr('src');
+	 		
+			var div = createDiv(id, name, href, src);
+			
+			$('#'+id).html(div);
 
-		// Restores the placeholder
-		$(tmpImg).attr('src', placeholders[id]);
-		$(tmpLink).html('<small>{{ 'team.empty'|trans }}</small>');
+			// Put the champion id into the team
+			team[id] = champion;
+		}
 	}
 
 	/**
@@ -146,16 +175,23 @@
              	team3:team['team3'],
              	team4:team['team4'],
              	teamName:$('#teamName').val(),
-             	idTeam:null
+             	idTeam:$('#idTeam').val()
              	}, 
 	            function(response){
              		var info = null;
 					if(response.code == 100 && response.success){
+						var msg = '';
+						if($('#idTeam').val() == '') {
+							msg = '{{ 'team.built.ok'|trans }}';
+						} else {
+							msg = '{{ 'team.edited.ok'|trans }}';
+						}
 						info = 	
 							'<div class="alert alert-info col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 fade in">'+
 							'	<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><small>x</small></button>'+
-							'	<p><strong>Info:</strong></p><p>{{ 'team.built.ok'|trans }}</p>'+
+							'	<p><strong>Info:</strong></p><p>'+msg+'</p>'+
 							'</div>';
+						$('#idTeam').val(response.id);
 					} else {
 						info = 	
 							'<div class="alert alert-danger col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 fade in">'+
@@ -188,6 +224,7 @@
 {% endblock %} {% block lololapp_body %}
 <div class="row team-builder compacted-gallery">
 	<form method="POST" action="">
+		<input id="idTeam" type="hidden" value="{% if teamChampions.team is not null %}{{ teamChampions.team.id }}{% endif %}" />
 		<div class="row">
 			<div class="col-xs-12 col-xs-offset-1">
 				<button class="btn btn-primary btn-save" type="submit" disabled>
@@ -205,7 +242,7 @@
 					<span class="input-group-addon"><i class="fa fa-users"></i></span>
 					<input type="text" class="form-control"
 						placeholder="{{ 'team.name'|trans }}" id="teamName"
-						name="teamName">
+						name="teamName" value="{% if teamChampions.team is not null %}{{ teamChampions.team.name }}{% endif %}">
 				</div>
 			</div>
 		</div>
@@ -229,42 +266,29 @@
 				<div class="row">
 					{% if teamChampions.team is null %}
 					<div class="col-xs-12 text-center">
-						<div id="team0" class="thumbnail droppable">
-							<img id="img-team0" class="img-responsive"
-								data-src="holder.js/48x48/text:1"> <a href="#"><small>{{
-									'team.empty'|trans }}</small></a>
-						</div>
+						<div id="team0" class="thumbnail droppable"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team1" class="thumbnail droppable">
-							<img id="img-team1" class="img-responsive"
-								data-src="holder.js/48x48/text:2"> <a href="#"><small>{{
-									'team.empty'|trans }}</small></a>
-						</div>
+						<div id="team1" class="thumbnail droppable"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team2" class="thumbnail droppable">
-							<img id="img-team2" class="img-responsive"
-								data-src="holder.js/48x48/text:3"> <a href="#"><small>{{
-									'team.empty'|trans }}</small></a>
-						</div>
+						<div id="team2" class="thumbnail droppable"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team3" class="thumbnail droppable">
-							<img id="img-team3" class="img-responsive"
-								data-src="holder.js/48x48/text:4"> <a href="#"><small>{{
-									'team.empty'|trans }}</small></a>
-						</div>
+						<div id="team3" class="thumbnail droppable"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team4" class="thumbnail droppable">
-							<img id="img-team4" class="img-responsive"
-								data-src="holder.js/48x48/text:5"> <a href="#"><small>{{
-									'team.empty'|trans }}</small></a>
-						</div>
+						<div id="team4" class="thumbnail droppable"></div>
 					</div>
 					{% else %}
-					{{ teamChampions.team.name }}
+						{% for champion in teamChampions.champions %}
+							<div class="col-xs-12 text-center">
+								<div id="team{{ loop.index0 }}" class="thumbnail droppable">
+								</div>
+							</div>
+						{% else %}
+							BUG: empty team
+						{% endfor %}
 					{% endif %}
 				</div>
 			</div>
