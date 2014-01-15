@@ -73,7 +73,15 @@
 			<trans-unit id="18">
 				<source>team.selectedChampions</source>
 				<target>Champions séletionnés</target>
-			</trans-unit>	
+			</trans-unit>
+			<trans-unit id="19">
+				<source>team.built.error.notOwnedChampion</source>
+				<target>Vous ne possédez pas %championName%</target>
+			</trans-unit>
+			<trans-unit id="20">
+				<source>team.edited.ok</source>
+				<target>L'équipe a été éditée avec succès.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

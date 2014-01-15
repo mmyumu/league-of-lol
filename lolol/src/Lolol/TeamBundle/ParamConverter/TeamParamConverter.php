@@ -15,33 +15,20 @@ class TeamParamConverter implements ParamConverterInterface {
 		$this->em = $em;
 	}
 	public function apply(Request $request, ConfigurationInterface $configuration) {
+		// Get the route parameter
 		$id = $request->attributes->get('id');
-		// $dql = "SELECT u, d, a
-		// FROM MyBundle\Entity\User u
-		// JOIN u.details d
-		// JOIN u.addresses a
-		// WHERE u.id = ?1";
 		
-		// $user = $this->get('doctrine.orm.default_entity_manager')->createQuery($dql)->setParameter(1, $id)->getSingleResult();
-		
-		// $qb = $this->_em->createQueryBuilder();
-		
-		// $team = $qb->select('t')->from('LololTeamBundle:Team', 't')->where('t.id = :id')->setParameter('id', $id);
-		
-		// $param = $configuration->getName();
-		// $request->attributes($param, $user);
-		
-		$qb = $this->em->createQueryBuilder();
-		
+		// Build the query
+		$qb = $this->em->createQueryBuilder();	
 		$qb->select('t')->from('LololTeamBundle:Team', 't')->where('t.id = :id')->setParameter('id', $id);
 		
+		// Return the found team or null
 		try {
 			$team = $qb->getQuery()->getSingleResult();
 		}
 		catch(\Doctrine\ORM\NoResultException $e) {
 			$team = null;
 		}
-		
 		$param = $configuration->getName();
 		$request->attributes->set($param, $team);
 		

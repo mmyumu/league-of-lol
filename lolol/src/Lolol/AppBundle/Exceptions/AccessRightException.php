@@ -2,7 +2,7 @@
 
 namespace Lolol\AppBundle\Exceptions;
 
-class MalformedTeamException extends CustomException {
+class AccessRightException extends CustomException {
 	public function __construct($message) {
 		parent::__construct($message);
 	}
