@@ -42,6 +42,15 @@ label {
   padding-left:10px;
 }
 
+.vgutter-1 {
+	margin-top: -1px;
+	margin-bottom: -1px;
+}
+.vgutter-1 [class*="col-"] {
+  padding-top:1px;
+  padding-bottom:1px;
+}
+
 .compacted-gallery a {
 	overflow: hidden;
 }
@@ -85,11 +94,17 @@ img.desaturate {
 	background-color: red;	
 }
 .green {
-	background-color: green;	
+	background-color: green;
 }
 .blue {
 	background-color: blue;	
 }
 .yellow {
 	background-color: yellow;	
+}
+.vgutter-2 {
+	margin-bottom: 2px;
+}
+.vgutter-10 {
+	margin-bottom: 2px;
 }

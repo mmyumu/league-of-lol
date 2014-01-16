@@ -199,7 +199,7 @@ class TeamController extends Controller {
 				$em->persist($championTeam);
 				$position++;
 			}
-			
+
 			// Persist link between champions and team
 			$em->flush();
 			
@@ -215,5 +215,9 @@ class TeamController extends Controller {
 					"error" => $e->getMessage());
 		}
 		return new Response(json_encode($response));
+	}
+	
+	public function deleteTeamAction(Team $team) {
+		
 	}
 }
