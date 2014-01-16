@@ -13,6 +13,7 @@ class LololRetrieveChampions {
 	private $statExtension;
 	private $prefixIcon48;
 	private $suffixIcon48;
+	private $suffixIcon48Sp;
 	
 	/**
 	 * Initializes the service with the injected services/parameters
@@ -23,15 +24,17 @@ class LololRetrieveChampions {
 	 * @param string $extension        	
 	 * @param string $statExtension        	
 	 * @param string $prefixIcon48        	
-	 * @param string $suffixIcon48        	
+	 * @param string $suffixIcon48
+	 * @param string $suffixIcon48Sp              	
 	 */
-	public function __construct(LololRetrieveFile $retrieveFile, LololStringHelper $stringHelper, $folder, $statExtension, $prefixIcon48, $suffixIcon48) {
+	public function __construct(LololRetrieveFile $retrieveFile, LololStringHelper $stringHelper, $folder, $statExtension, $prefixIcon48, $suffixIcon48, $suffixIcon48Sp) {
 		$this->retrieveFile = $retrieveFile;
 		$this->stringHelper = $stringHelper;
 		$this->folder = $folder;
 		$this->statExtension = $statExtension;
 		$this->prefixIcon48 = $prefixIcon48;
 		$this->suffixIcon48 = $suffixIcon48;
+		$this->suffixIcon48Sp = $suffixIcon48Sp;
 	}
 	
 	/**
@@ -132,8 +135,9 @@ class LololRetrieveChampions {
 			foreach($championsDiv->getElementsByTagName('img') as $img) {
 				$url = $img->getAttribute('src');
 				$imgName = $this->prefixIcon48 . $championName . $this->suffixIcon48;
+				$imgNameSp = $this->prefixIcon48 . $championName . $this->suffixIcon48Sp;
 				
-				if (strpos($url, $imgName) !== FALSE) {
+				if ((strpos($url, $imgName) !== FALSE) || (strpos($url, $imgNameSp) !== FALSE)) {
 					$imgData = $this->retrieveFile->get($url);
 					file_put_contents($folder . '/' . $imgName, $imgData);
 					break;
