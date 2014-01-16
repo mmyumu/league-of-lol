@@ -102,7 +102,7 @@
 
 		
 
-		return 	'<img id="img-'+id+'" class="img-responsive"'+
+		return 	'<img id="img-'+id+'" class=""'+
 				'	'+datasrc+'" '+src+' />'+
 				'	<a href="'+href+'">'+name+'</a>';
 	}
@@ -266,19 +266,19 @@
 				<div class="row">
 					{% if teamChampions.team is null %}
 					<div class="col-xs-12 text-center">
-						<div id="team0" class="thumbnail droppable"></div>
+						<div id="team0" class="thumbnail droppable vgutter-2"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team1" class="thumbnail droppable"></div>
+						<div id="team1" class="thumbnail droppable vgutter-2"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team2" class="thumbnail droppable"></div>
+						<div id="team2" class="thumbnail droppable vgutter-2"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team3" class="thumbnail droppable"></div>
+						<div id="team3" class="thumbnail droppable vgutter-2"></div>
 					</div>
 					<div class="col-xs-12 text-center">
-						<div id="team4" class="thumbnail droppable"></div>
+						<div id="team4" class="thumbnail droppable vgutter-2"></div>
 					</div>
 					{% else %}
 						{% for champion in teamChampions.champions %}
@@ -292,10 +292,10 @@
 					{% endif %}
 				</div>
 			</div>
-			<div class="col-xs-9 col-md-10">
+			<div class="col-xs-9 col-md-10 gutter-1">
 				{% for champion in champions %}
-				<div class="col-xs-3 col-sm-2 text-center">
-					<div id="champion-{{ champion.id }}" class="thumbnail draggable">
+				<div class="col-xs-3 col-sm-2 col-md-1 col-lg-1 text-center">
+					<div id="champion-{{ champion.id }}" class="thumbnail draggable vgutter-10">
 						<img id="img-champion-{{ champion.id }}" class="img-responsive"
 							src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ champion.imgName ~suffixIcons48) }}"
 							alt="{{ champion.name }}" /> <a
