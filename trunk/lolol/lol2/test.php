@@ -2,13 +2,8 @@
 	require_once 'Log.php';
 	require_once 'Fight.php';
 	require_once 'Team.php';
-
-	#DEBUT_LISTE_DES_CHAMPIONS#
-	require_once 'GarenCrownguard.php';
-	require_once 'Udyr.php';
-	require_once 'JannaWindforce.php';
-	require_once 'AnnieHastur.php';
-	#FIN_LISTE_DES_CHAMPIONS#
+	require_once 'Tanky.php';
+	require_once 'Mage.php';
 
 	// test
 	$LOGGER = new Log();
@@ -24,15 +19,15 @@
 	$teamB = new Team('B');
 	$teamB->setLogger($LOGGER);
 
-	$LOGGER->debug('Ajout du premier champion GarenCrownguard à l\'équipe A');
-	$teamA->addChampion(new GarenCrownguard());
-	$LOGGER->debug('Ajout du second champion AnnieHastur à l\'équipe A');
-	$teamA->addChampion(new AnnieHastur());
+	$LOGGER->debug('Ajout du premier champion Tanky à l\'équipe A');
+	$teamA->addChampion(new Tanky());
+	$LOGGER->debug('Ajout du second champion Mage à l\'équipe A');
+	$teamA->addChampion(new Mage());
 
-	$LOGGER->debug('Ajout du premier champion Udyr à l\'équipe B');
-	$teamB->addChampion(new Udyr());
-	$LOGGER->debug('Ajout du second champion JannaWindforce à l\'équipe B');
-	$teamB->addChampion(new JannaWindforce());
+	$LOGGER->debug('Ajout du premier champion Mage à l\'équipe B');
+	$teamB->addChampion(new Mage());
+	$LOGGER->debug('Ajout du second champion Tanky à l\'équipe B');
+	$teamB->addChampion(new Tanky());
 
 	$LOGGER->debug('Initialisation de l\'arène');
 	$f = new Fight($teamA, $teamB);

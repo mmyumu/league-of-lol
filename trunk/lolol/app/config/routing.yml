@@ -20,6 +20,6 @@ lolol_user:
 
 lolol_team:
     resource: "@LololTeamBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}
+    prefix:   /{_locale}/team
     requirements:
         _locale: fr|en

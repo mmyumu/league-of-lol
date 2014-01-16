@@ -79,8 +79,28 @@
 				<target>You do not own %championName%</target>
 			</trans-unit>
 			<trans-unit id="20">
-				<source>team.edited.ok</source>
+				<source>team.edit.ok</source>
 				<target>The team was edited successfully.</target>
+			</trans-unit>
+			<trans-unit id="21">
+				<source>team.delete.ok</source>
+				<target>The team was deleted successfully.</target>
+			</trans-unit>
+			<trans-unit id="22">
+				<source>team.delete.confirm</source>
+				<target>Are you sure you want to delete the team %teamName%?</target>
+			</trans-unit>
+			<trans-unit id="23">
+				<source>team.consult</source>
+				<target>Consult</target>
+			</trans-unit>
+			<trans-unit id="24">
+				<source>team.edit</source>
+				<target>Edit</target>
+			</trans-unit>
+			<trans-unit id="25">
+				<source>team.delete</source>
+				<target>Delete</target>
 			</trans-unit>
 		</body>
 	</file>

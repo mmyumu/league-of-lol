@@ -14,9 +14,10 @@ parameters:
     secret: ThisTokenIsNotSoSecretChangeIt
     champions_folder: Champions
     champions_stats_extension: .html
+    champions_icons20_prefix: 20px-
     champions_icons48_prefix: 48px-
-    champions_icons48_suffix: Square.png
-    champions_icons48_suffix_sp: _Cuadrado.png
+    champions_icons_suffix: Square.png
+    champions_icons_suffix_sp: _Cuadrado.png
     wiki_url: 'http://leagueoflegends.wikia.com/wiki/'
     http_proxy: 'proxy_aeropark:8080'
     team_size: 5

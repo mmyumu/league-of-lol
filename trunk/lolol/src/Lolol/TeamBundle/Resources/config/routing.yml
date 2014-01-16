@@ -1,16 +1,21 @@
 lolol_team_myTeams:
-    pattern:  /my-teams/
-    defaults: { _controller: LololTeamBundle:Team:myTeams }
+    pattern:  /list/
+    defaults: { _controller: LololTeamBundle:Team:list }
 lolol_team_teamBuilder:
-    pattern:  /team-builder/{id}
-    defaults: { _controller: LololTeamBundle:Team:teamBuilder, id: 0 }
+    pattern:  /builder/{id}
+    defaults: { _controller: LololTeamBundle:Team:builder, id: 0 }
     requirements:
         id: \d+
-lolol_team_teamBuilderSave:
-    pattern:  /team-builder/save
-    defaults: { _controller: LololTeamBundle:Team:teamBuilderSave }
-lolol_team_teamBuilderSave:
-    pattern:  /team-builder/delete/{id}
-    defaults: { _controller: LololTeamBundle:Team:deleteTeam, id: 0 }
+lolol_team_teamSave:
+    pattern:  /save
+    defaults: { _controller: LololTeamBundle:Team:save }
+lolol_team_teamDelete:
+    pattern:  /delete/{id}
+    defaults: { _controller: LololTeamBundle:Team:delete, id: 0 }
+    requirements:
+        id: \d+
+lolol_team_consult:
+    pattern:  /consult/{id}
+    defaults: { _controller: LololTeamBundle:Team:consult, id: 0 }
     requirements:
         id: \d+

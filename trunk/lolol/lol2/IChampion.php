@@ -36,6 +36,7 @@
 		 * Inflige la blessure passée en paramètre au Champion
 		 *
 		 * @param	IInjury	p_injury	La blessure à infliger
+		 * @return	boolean	Le Champion est-il mort ? Vrai si la blessure le tue, faux sinon
 		 */
 		public function setInjury(IInjury $p_injury);
 
