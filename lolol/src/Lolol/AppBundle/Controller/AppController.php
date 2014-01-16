@@ -12,7 +12,7 @@ class AppController extends Controller {
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
 		$prefixIcons = $this->container->getParameter('champions_icons48_prefix');
-		$suffixIcons = $this->container->getParameter('champions_icons48_suffix');
+		$suffixIcons = $this->container->getParameter('champions_icons_suffix');
 		
 		$em = $this->getDoctrine()->getManager();
 		

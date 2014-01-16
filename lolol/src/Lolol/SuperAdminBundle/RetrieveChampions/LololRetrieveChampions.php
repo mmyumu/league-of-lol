@@ -12,29 +12,32 @@ class LololRetrieveChampions {
 	private $folder;
 	private $statExtension;
 	private $prefixIcon48;
-	private $suffixIcon48;
-	private $suffixIcon48Sp;
+	private $prefixIcon20;
+	private $suffixIcon;
+	private $suffixIconSp;
 	
 	/**
 	 * Initializes the service with the injected services/parameters
 	 *
 	 * @param LololRetrieveFile $retrieveFile        	
-	 * @param LololStringHelper $stringHelper
+	 * @param LololStringHelper $stringHelper        	
 	 * @param string $folder        	
 	 * @param string $extension        	
 	 * @param string $statExtension        	
 	 * @param string $prefixIcon48        	
-	 * @param string $suffixIcon48
-	 * @param string $suffixIcon48Sp              	
+	 * @param string $prefixIcon20        	
+	 * @param string $suffixIcon48        	
+	 * @param string $suffixIcon48Sp        	
 	 */
-	public function __construct(LololRetrieveFile $retrieveFile, LololStringHelper $stringHelper, $folder, $statExtension, $prefixIcon48, $suffixIcon48, $suffixIcon48Sp) {
+	public function __construct(LololRetrieveFile $retrieveFile, LololStringHelper $stringHelper, $folder, $statExtension, $prefixIcon48, $prefixIcon20, $suffixIcon, $suffixIconSp) {
 		$this->retrieveFile = $retrieveFile;
 		$this->stringHelper = $stringHelper;
 		$this->folder = $folder;
 		$this->statExtension = $statExtension;
 		$this->prefixIcon48 = $prefixIcon48;
-		$this->suffixIcon48 = $suffixIcon48;
-		$this->suffixIcon48Sp = $suffixIcon48Sp;
+		$this->prefixIcon20 = $prefixIcon20;
+		$this->suffixIcon = $suffixIcon;
+		$this->suffixIconSp = $suffixIconSp;
 	}
 	
 	/**
@@ -52,7 +55,7 @@ class LololRetrieveChampions {
 		
 		$fs = new Filesystem();
 		
-		if (! $fs->exists($this->folder)) {
+		if (!$fs->exists($this->folder)) {
 			$fs->mkdir($this->folder);
 		}
 		
@@ -71,7 +74,7 @@ class LololRetrieveChampions {
 	}
 	
 	/**
-	 * 
+	 *
 	 * @param array $championNames        	
 	 */
 	public function clearStats($championNames) {
@@ -92,13 +95,27 @@ class LololRetrieveChampions {
 	}
 	
 	/**
+	 * Retrieve the icons for the px given as parameters
+	 * @param array $championNames
+	 * @param int $px
+	 */
+	public function retrieveIcons($championNames, $px) {
+		if ($px == 48) {
+			return $this->retrieveIconsFromPage($championNames, 'League_of_Legends_Wiki', 'champions', $this->prefixIcon48);
+		}
+		else if ($px == 20) {
+			return $this->retrieveIconsFromPage($championNames, 'Champion', 'mw-content-text', $this->prefixIcon20);
+		}
+	}
+	
+	/**
 	 * Retrieve the icons of the given champions
 	 *
 	 * @param array $championNames        	
-	 * @param string $folder        	
+	 * @param int $px        	
 	 * @return boolean
 	 */
-	public function retrieveIcons48($championNames) {
+	public function retrieveIconsFromPage($championNames, $page, $div, $prefix) {
 		$folder = $this->folder . '/img';
 		
 		$limit = ini_get('max_execution_time');
@@ -107,12 +124,12 @@ class LololRetrieveChampions {
 		
 		$fs = new Filesystem();
 		
-		if (! $fs->exists($folder)) {
+		if (!$fs->exists($folder)) {
 			$fs->mkdir($folder);
 		}
 		
-		// Get 48px icons
-		$html = $this->retrieveFile->getFromWiki('League_of_Legends_Wiki');
+		// Get icons page
+		$html = $this->retrieveFile->getFromWiki($page);
 		
 		$DOM = new \DomDocument();
 		
@@ -127,15 +144,16 @@ class LololRetrieveChampions {
 		libxml_use_internal_errors($libxml_previous_state);
 		
 		// Get the table containing the stats of the champion
-		$championsDiv = $DOM->getElementById('champions');
+		$championsDiv = $DOM->getElementById($div);
 		
 		// Parse all the champion names
 		foreach($championNames as $championName) {
 			$championName = $this->stringHelper->getImgName($championName);
 			foreach($championsDiv->getElementsByTagName('img') as $img) {
 				$url = $img->getAttribute('src');
-				$imgName = $this->prefixIcon48 . $championName . $this->suffixIcon48;
-				$imgNameSp = $this->prefixIcon48 . $championName . $this->suffixIcon48Sp;
+				
+				$imgName = $prefix . $championName . $this->suffixIcon;
+				$imgNameSp = $prefix . $championName . $this->suffixIconSp;
 				
 				if ((strpos($url, $imgName) !== FALSE) || (strpos($url, $imgNameSp) !== FALSE)) {
 					$imgData = $this->retrieveFile->get($url);
@@ -151,20 +169,29 @@ class LololRetrieveChampions {
 	}
 	
 	/**
+	 * Remove the icons from file system
 	 *
-	 * @param array $championNames
+	 * @param array $championNames        	
+	 * @param
+	 *        	int px of the icons
 	 */
-	public function clearIcons48($championNames) {
+	public function clearIcons($championNames, $px) {
 		$fs = new Filesystem();
-	
+		
 		// Parse all the champion names
-		foreach($championNames as $championName) {		
-			$fileName = $this->stringHelper->getIcon48Path($championName);
+		foreach($championNames as $championName) {
+			if ($px == 48) {
+				$fileName = $this->stringHelper->getIcon48Path($championName);
+			}
+			else if ($px == 20) {
+				$fileName = $this->stringHelper->getIcon20Path($championName);
+			}
+			
 			if ($fs->exists($fileName)) {
 				$fs->remove($fileName);
 			}
 		}
-	
+		
 		return true;
 	}
 }

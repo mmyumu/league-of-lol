@@ -17,11 +17,11 @@ class TeamController extends Controller {
 	/**
 	 * Action to display the GUI of the existing teams
 	 */
-	public function myTeamsAction() {
+	public function listAction() {
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
 		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
-		$suffixIcons48 = $this->container->getParameter('champions_icons48_suffix');
+		$suffixIcons = $this->container->getParameter('champions_icons_suffix');
 		$teamSize = $this->container->getParameter('team_size');
 		
 		// Get teams
@@ -40,22 +40,22 @@ class TeamController extends Controller {
 			$i ++;
 		}
 		
-		return $this->render('LololTeamBundle:Team:myTeams.html.twig', array(
+		return $this->render('LololTeamBundle:Team:list.html.twig', array(
 				"results" => $result,
 				'folder' => $folder,
 				'prefixIcons48' => $prefixIcons48,
-				'suffixIcons48' => $suffixIcons48,
+				'suffixIcons' => $suffixIcons,
 				'teamSize' => $teamSize));
 	}
 	/**
 	 * * Action to display the GUI to build a new team or edit an existing team
 	 * @ParamConverter("team", class="Lolol\TeamBundle\Entity\Team")
 	 */
-	public function teamBuilderAction(Team $team = null) {
+	public function builderAction(Team $team = null) {
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
 		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
-		$suffixIcons48 = $this->container->getParameter('champions_icons48_suffix');
+		$suffixIcons = $this->container->getParameter('champions_icons_suffix');
 		$teamSize = $this->container->getParameter('team_size');
 		
 		$champions = $this->getUser()->getChampions();
@@ -75,12 +75,12 @@ class TeamController extends Controller {
 			$teamChampions['champions'] = null;
 		}
 		
-		return $this->render('LololTeamBundle:Team:teamBuilder.html.twig', array(
+		return $this->render('LololTeamBundle:Team:builder.html.twig', array(
 				'teamChampions' => $teamChampions,
 				'champions' => $champions,
 				'folder' => $folder,
 				'prefixIcons48' => $prefixIcons48,
-				'suffixIcons48' => $suffixIcons48,
+				'suffixIcons' => $suffixIcons,
 				'teamSize' => $teamSize));
 	}
 	
@@ -89,7 +89,7 @@ class TeamController extends Controller {
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function teamBuilderSaveAction(Request $request) {
+	public function saveAction(Request $request) {
 		try {
 			// Test AJAX call
 			if (!$request->isXmlHttpRequest()) {
@@ -197,9 +197,9 @@ class TeamController extends Controller {
 				$championTeam->setPosition($position);
 				
 				$em->persist($championTeam);
-				$position++;
+				$position ++;
 			}
-
+			
 			// Persist link between champions and team
 			$em->flush();
 			
@@ -217,7 +217,50 @@ class TeamController extends Controller {
 		return new Response(json_encode($response));
 	}
 	
-	public function deleteTeamAction(Team $team) {
+	/**
+	 * Delete the team (with the associated champions)
+	 * 
+	 * @param Team $team        	
+	 */
+	public function deleteAction(Team $team) {
+		// Get the parameters
+		$folder = $this->container->getParameter('champions_folder');
+		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
+		$suffixIcons = $this->container->getParameter('champions_icons_suffix');
+		$teamSize = $this->container->getParameter('team_size');
+		
+		// Get the services
+		$translator = $this->get('translator');
+		$logger = $this->get('logger');
+		
+		// Get teams
+		$em = $this->getDoctrine()->getManager();
+		$championRepo = $em->getRepository('LololTeamBundle:ChampionTeam');
+		
+		// Get champions of the team and remove them
+		$championTeams = $championRepo->getWithChampionsByTeam($team, 'ct.position');
+		foreach($championTeams as $championTeam) {
+			$logger->info('Deleting association with champion (name=' . $championTeam->getChampion()->getName() . ')');
+			$em->remove($championTeam);
+		}
+		
+		// Remove the team then persist
+		$logger->info('Deleting team with name=' . $team->getName());
+		$em->remove($team);
+		$em->flush();
+		
+		$message = $translator->trans('team.delete.ok');
+		$this->get('session')->getFlashBag()->add('info', $message);
+		
+		// Redirect to previous page, or homepage if no previous page
+		$url = $this->getRequest()->headers->get('referer');
+		if (empty($url)) {
+			$url = $this->generateUrl('lolol_app_homepage');
+		}
+		return $this->redirect($url);
+	}
+	
+	public function consultAction(Team $team) {
 		
 	}
 }

@@ -4,10 +4,6 @@
 	require_once 'Team.php';
 
 	#DEBUT_LISTE_DES_CHAMPIONS#
-	require_once 'GarenCrownguard.php';
-	require_once 'Udyr.php';
-	require_once 'JannaWindforce.php';
-	require_once 'AnnieHastur.php';
 	#FIN_LISTE_DES_CHAMPIONS#
 
 	// test

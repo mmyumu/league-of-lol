@@ -5,19 +5,22 @@ namespace Lolol\AppBundle\StringHelper;
 class LololStringHelper {
 	private $folder;
 	private $prefixIcons48;
-	private $suffixIcons48;
+	private $prefixIcons20;
+	private $suffixIcons;
 	
 	/**
 	 * Inject parameters
 	 *
-	 * @param string $folder        	
-	 * @param string $prefixIcons48        	
-	 * @param string $suffixIcons48        	
+	 * @param string $folder
+	 * @param string $prefixIcons48
+	 * @param string $prefixIcons20
+	 * @param string $suffixIcons
 	 */
-	public function __construct($folder, $prefixIcons48, $suffixIcons48) {
+	public function __construct($folder, $prefixIcons48, $prefixIcons20, $suffixIcons) {
 		$this->folder = $folder;
 		$this->prefixIcons48 = $prefixIcons48;
-		$this->suffixIcons48 = $suffixIcons48;
+		$this->prefixIcons20 = $prefixIcons20;
+		$this->suffixIcons = $suffixIcons;
 	}
 	
 	/**
@@ -50,6 +53,16 @@ class LololStringHelper {
 	 */
 	public function getIcon48Path($championName) {
 		$imgName = $this->getImgName($championName);
-		return $this->folder . '/img/' . $this->prefixIcons48 . $imgName . $this->suffixIcons48;
+		return $this->folder . '/img/' . $this->prefixIcons48 . $imgName . $this->suffixIcons;
+	}
+	
+	/**
+	 * Get the relative path of the icon (20px) on file system of the champion with the name given as parameter.
+	 *
+	 * @param string $championName
+	 */
+	public function getIcon20Path($championName) {
+		$imgName = $this->getImgName($championName);
+		return $this->folder . '/img/' . $this->prefixIcons20 . $imgName . $this->suffixIcons;
 	}
 }
