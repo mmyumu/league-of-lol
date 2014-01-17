@@ -1,0 +1,9 @@
+lolol_battle_homepage:
+    pattern:  /
+    defaults: { _controller: LololBattleBundle:Default:index }
+lolol_battle_attack:
+    pattern:  /attack
+    defaults: { _controller: LololBattleBundle:Battle:attack }    
+lolol_battle_defense:
+    pattern:  /defense
+    defaults: { _controller: LololBattleBundle:Battle:defense }
