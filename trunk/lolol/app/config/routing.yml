@@ -1,10 +1,16 @@
+lolol_battle:
+    resource: "@LololBattleBundle/Resources/config/routing.yml"
+    prefix:   /
+
 lolol_super_admin:
     resource: "@LololSuperAdminBundle/Resources/config/routing.yml"
     prefix:   /
 
 lolol_shop:
     resource: "@LololShopBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}
+    prefix:   /{_locale}/shop
+    requirements:
+        _locale: fr|en
 
 lolol_app:
     resource: "@LololAppBundle/Resources/config/routing.yml"
@@ -21,5 +27,11 @@ lolol_user:
 lolol_team:
     resource: "@LololTeamBundle/Resources/config/routing.yml"
     prefix:   /{_locale}/team
+    requirements:
+        _locale: fr|en
+        
+lolol_battle:
+    resource: "@LololBattleBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}/battle
     requirements:
         _locale: fr|en
