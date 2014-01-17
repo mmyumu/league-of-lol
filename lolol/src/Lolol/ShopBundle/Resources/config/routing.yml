@@ -1,19 +1,19 @@
 lolol_shop_homepage:
-    pattern:  /shop/
+    pattern:  /
     defaults: { _controller: LololShopBundle:Shop:index }
 
 lolol_shop_champions:
-    pattern:  /shop/champions
+    pattern:  /champions
     defaults: { _controller: LololShopBundle:Shop:champions }
 
 lolol_shop_items:
-    pattern:  /shop/items
+    pattern:  /items
     defaults: { _controller: LololShopBundle:Shop:items }
     
 lolol_shop_buyChampion:
-    pattern: /shop/buy/champion/{id}
+    pattern: /buy/champion/{id}
     defaults: { _controller: LololShopBundle:Shop:buyChampion }
     
 lolol_shop_buyItem:
-    pattern: /shop/buy/item/{id}
+    pattern: /buy/item/{id}
     defaults: { _controller: LololShopBundle:Shop:buyItem }
