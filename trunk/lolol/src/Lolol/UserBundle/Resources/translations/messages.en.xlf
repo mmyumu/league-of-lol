@@ -7,12 +7,20 @@
                 <target>User</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>menu.user.logIn</source>
-                <target>Log in</target>
+                <source>menu.user.signIn</source>
+                <target>Sign in</target>
             </trans-unit>
             <trans-unit id="3">
                 <source>menu.user.logOut</source>
                 <target>Log out</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>user.username</source>
+                <target>Username</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>user.password</source>
+                <target>Password</target>
             </trans-unit>
         </body>
     </file>

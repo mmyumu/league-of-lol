@@ -12,6 +12,7 @@ class SecurityController extends BaseController {
 		$router = $this->container->get('router');
 		
 		if ($securityContext->isGranted('ROLE_ADMIN')) {
+			$logger->info("##### ".$router->generate('lolol_app_homepage'));
 			return new RedirectResponse($router->generate('lolol_app_homepage'), 307);
 		}
 		

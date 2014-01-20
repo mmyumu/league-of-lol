@@ -20,7 +20,7 @@ class ShopController extends Controller {
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
 		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
-		$suffixIcons48 = $this->container->getParameter('champions_icons48_suffix');
+		$suffixIcons = $this->container->getParameter('champions_icons_suffix');
 		
 		$em = $this->getDoctrine()->getManager();
 		
@@ -30,7 +30,7 @@ class ShopController extends Controller {
 				'champions' => $champions,
 				'folder' => $folder,
 				'prefixIcons48' => $prefixIcons48,
-				'suffixIcons48' => $suffixIcons48));
+				'suffixIcons' => $suffixIcons));
 	}
 	
 	/**
