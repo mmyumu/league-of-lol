@@ -7,12 +7,20 @@
                 <target>Utilisateur</target>
             </trans-unit>
             <trans-unit id="2">
-                <source>menu.user.logIn</source>
+                <source>menu.user.signIn</source>
                 <target>S'identifier</target>
             </trans-unit>
             <trans-unit id="3">
                 <source>menu.user.logOut</source>
                 <target>Déconnexion</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>user.username</source>
+                <target>Nom d'utilisateur</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>user.password</source>
+                <target>Mot de passe</target>
             </trans-unit>
         </body>
     </file>

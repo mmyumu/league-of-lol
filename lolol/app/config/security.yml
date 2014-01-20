@@ -24,6 +24,8 @@ security:
             form_login:
               login_path: fos_user_security_login
               check_path: fos_user_security_check
+              use_referer: true
+              failure_path: lolol_app_homepage
             logout:
               path: fos_user_security_logout
               target: lolol_app_homepage

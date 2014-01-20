@@ -14,7 +14,14 @@
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 {% javascripts 'js/bootstrap.js' 'js/holder.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %} 
+{% endjavascripts %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$("#blob").popover({ html:true });
+});
+
+</script>
 {% endblock %}
 </head>
 
@@ -78,8 +85,13 @@
 					</li>
 				{% else %}
 					<li>
+						<a class="hidden-xs" id="blob" href="#" class="popover-lg" data-toggle="popover" title="" role="button" data-original-title="Sign in" data-placement="bottom" data-content='{{ render(controller('LololUserBundle:Security:login')) }}'><i class="fa fa-sign-in"></i> {{ 'menu.user.signIn'|trans }}</a>
+					</li>
+					<!-- 
+					<li>
 	    				<a href="{{ path('fos_user_profile_show') }}"><i class="fa fa-sign-in"></i> {{ 'menu.user.logIn'|trans }}</a>
 	    			</li>
+	    			-->
 				{% endif %}
 				</ul>			
 				
