@@ -109,7 +109,6 @@ img.desaturate {
 	margin-bottom: 2px;
 }
 
-.sign-in {
-	width: 200px;	
-}
+.popover.in {
+    z-index: 9999;
 }

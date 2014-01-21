@@ -22,6 +22,10 @@
                 <source>user.password</source>
                 <target>Password</target>
             </trans-unit>
+            <trans-unit id="6">
+                <source>user.notSignedIn</source>
+                <target>You must be logged in to access that page</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
