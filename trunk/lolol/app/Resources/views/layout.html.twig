@@ -15,14 +15,37 @@
 {% javascripts 'js/bootstrap.js' 'js/holder.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
-<script type="text/javascript">
-
-$(document).ready(function() {
-	$("#blob").popover({ html:true });
-});
-
-</script>
 {% endblock %}
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.popover-sign-in').popover({html: true, container: 'body'});
+	
+	$('.popover-sign-in').on('shown.bs.popover', function () {
+	    $('#btn-sign-in').click(function(e){
+	    	$('#sign-in-error').hide();
+	        e.preventDefault();
+	        $.ajax({
+	            type        : $('form').attr( 'method' ),
+	            url         : '{{ path("fos_user_security_check") }}',
+	            data        : $('form').serialize(),
+	            dataType    : "json",
+	            success     : function(data, status, object) {
+	                if(data.success) {
+	                	window.location.replace(data.url);
+					} else {
+	                	$('#sign-in-error').html(data.message);
+	                	$('#sign-in-error').show('fast');						
+					}
+	            },
+	            error: function(data, status, object){
+	                console.log(data.message);
+	            }
+	        });
+	    });
+	});
+	
+});
+</script>
 </head>
 
 <body>
@@ -85,13 +108,8 @@ $(document).ready(function() {
 					</li>
 				{% else %}
 					<li>
-						<a class="hidden-xs" id="blob" href="#" class="popover-lg" data-toggle="popover" title="" role="button" data-original-title="Sign in" data-placement="bottom" data-content='{{ render(controller('LololUserBundle:Security:login')) }}'><i class="fa fa-sign-in"></i> {{ 'menu.user.signIn'|trans }}</a>
+						<a href="#" class="popover-sign-in" data-toggle="popover" title="" role="button" data-original-title="Sign in" data-placement="bottom" data-content='{{ render(controller('LololUserBundle:Security:login')) }}'><i class="fa fa-sign-in"></i> {{ 'menu.user.signIn'|trans }}</a>
 					</li>
-					<!-- 
-					<li>
-	    				<a href="{{ path('fos_user_profile_show') }}"><i class="fa fa-sign-in"></i> {{ 'menu.user.logIn'|trans }}</a>
-	    			</li>
-	    			-->
 				{% endif %}
 				</ul>			
 				
@@ -149,8 +167,18 @@ $(document).ready(function() {
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><small>x</small></button>
 					<p><strong>{{ 'alert.error'|trans }}:</strong></p><p>{{ error }}</p>
 				</div>		
-			</div>	
+			</div>
       		{% endfor %}
+      		
+      		{% if error is defined %}
+      		AEZAEZAEZAEZAEZAEa
+		      	<div class="row">
+					<div class="alert alert-danger col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 fade in">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><small>x</small></button>
+						<p><strong>{{ 'alert.error'|trans }}:</strong></p><p>{{ error }}</p>
+					</div>		
+				</div>
+			{% endif %}
       		
       		{% block lolol_alert %} {% endblock %}
 

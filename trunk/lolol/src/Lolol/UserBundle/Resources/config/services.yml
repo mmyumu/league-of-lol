@@ -2,6 +2,14 @@ parameters:
 #    lolol_user.example.class: Lolol\UserBundle\Example
 
 services:
+    authentication_handler:
+        class:  %vendor_security.authentication_handler%
+        arguments:  [@router, @translator]
+        tags:
+            - { name: 'monolog.logger', channel: 'security' }
+    entry_point.user_login:
+        class: Lolol\UserBundle\LoginEntryPoint\LoginEntryPoint
+        arguments: [ @router, @translator ] #I am going to use this for URL generation since I will be redirecting in my service
 #    lolol_user.example:
 #        class: %lolol_user.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
