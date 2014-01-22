@@ -22,6 +22,7 @@ $(document).ready(function(){
 	
 	$('.popover-sign-in').on('shown.bs.popover', function () {
 	    $('#btn-sign-in').click(function(e){
+		    $('#sign-in-loading-indicator').show();
 	    	$('#sign-in-error').hide();
 	        e.preventDefault();
 	        $.ajax({
@@ -31,14 +32,17 @@ $(document).ready(function(){
 	            dataType    : "json",
 	            success     : function(data, status, object) {
 	                if(data.success) {
+	                	$('#sign-in-success').show('fast');
 	                	window.location.replace(data.url);
 					} else {
 	                	$('#sign-in-error').html(data.message);
-	                	$('#sign-in-error').show('fast');						
+	                	$('#sign-in-error').show('fast');
 					}
+	                $('#sign-in-loading-indicator').hide();
 	            },
 	            error: function(data, status, object){
 	                console.log(data.message);
+	                $('#sign-in-loading-indicator').hide();
 	            }
 	        });
 	    });
@@ -58,7 +62,7 @@ $(document).ready(function(){
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ path('lolol_app_homepage') }}">Lolol</a>
+				<a class="navbar-brand" href="{{ path('lolol_app_homepage') }}">{{ title }}</a>
 			</div>
 			
 
@@ -73,8 +77,8 @@ $(document).ready(function(){
 					</a>
 						<ul class="dropdown-menu" role="menu"
 							aria-labelledby="dropdownMenu1">
-							<li role="presentation"><a role="menuItem" href="{{ path('lolol_battle_attack') }}"><i class="fa fa-bars fa-fw"></i> {{ 'menu.battle.attack'|trans }}</a></li>
-							<li role="presentation"><a role="menuItem" href="{{ path('lolol_battle_defense') }}"><i class="fa fa-plus-circle fa-fw"></i> {{ 'menu.battle.defense'|trans }}</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_battle_attack') }}"><i class="fa fa-bolt fa-fw"></i> {{ 'menu.battle.attack'|trans }}</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_battle_defense') }}"><i class="fa fa-shield fa-fw"></i> {{ 'menu.battle.defense'|trans }}</a></li>
 						</ul>
 					</li>
 				{% endif %}
@@ -85,7 +89,7 @@ $(document).ready(function(){
 				{% endif %}
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_team' ? 'active' }}">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-users"></i> {{ 'menu.team'|trans }}
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"></span><i class="fa fa-users"></i> {{ 'menu.team'|trans }}
 							<b class="caret"></b>
 					</a>
 						<ul class="dropdown-menu" role="menu"
@@ -110,8 +114,11 @@ $(document).ready(function(){
 					<li>
 						<a href="#" class="popover-sign-in" data-toggle="popover" title="" role="button" data-original-title="Sign in" data-placement="bottom" data-content='{{ render(controller('LololUserBundle:Security:login')) }}'><i class="fa fa-sign-in"></i> {{ 'menu.user.signIn'|trans }}</a>
 					</li>
+					<li>
+					<a href="{{ path('fos_user_registration_register') }}"><i class="fa fa-pencil-square-o"></i> {{ 'menu.user.signUp'|trans }}</a>
+					</li>
 				{% endif %}
-				</ul>			
+				</ul>
 				
 				
 	    		<ul class="nav navbar-nav navbar-right">

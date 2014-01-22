@@ -22,3 +22,4 @@ parameters:
     http_proxy: 'proxy_aeropark:8080'
     team_size: 5
     vendor_security.authentication_handler: Lolol\UserBundle\Handler\AuthenticationHandler
+    app_title: LoloL

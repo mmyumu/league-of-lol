@@ -26,6 +26,18 @@
                 <source>user.notSignedIn</source>
                 <target>You must be logged in to access that page</target>
             </trans-unit>
+            <trans-unit id="7">
+                <source>menu.user.signUp</source>
+                <target>Sign up</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>user.registration.title</source>
+                <target>Create your %title% account</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>user.signIn.success</source>
+                <target>You have been successfully authenticated. Please wait.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -3,6 +3,8 @@
     <div class="alert alert-warning">{{ error|trans }}</div>
 {% endif %}
 <div id="sign-in-error" class="alert alert-danger" style="display: none;"><small>{{ error|trans }}</small></div>
+<div id="sign-in-success" class="alert alert-success" style="display: none;"><small>{{ 'user.signIn.success'|trans }}</small></div>
+<div id="sign-in-loading-indicator" class="text-center" style="display: none"><i class="fa fa-spinner fa-spin fa-lg"></i></div>
 <form action="{{ path("fos_user_security_check") }}" method="post" role="form">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     

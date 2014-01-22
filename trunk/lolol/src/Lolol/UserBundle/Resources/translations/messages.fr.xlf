@@ -26,6 +26,18 @@
                 <source>user.notSignedIn</source>
                 <target>Vous devez être authentifié pour accéder à cette page.</target>
             </trans-unit>
+            <trans-unit id="7">
+                <source>menu.user.signUp</source>
+                <target>S'inscrire</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>user.registration.title</source>
+                <target>Créez votre compte %title% en 2 coups de cuillère à pot</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>user.signIn.success</source>
+                <target>Vous avez été identifié. Attendez quelques instants.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
