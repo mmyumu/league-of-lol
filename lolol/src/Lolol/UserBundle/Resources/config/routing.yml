@@ -1,6 +1,10 @@
-lolol_user_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: LololUserBundle:Default:index }
+lolol_user_settings:
+    pattern: /settings
+    defaults: { _controller: LololUserBundle:User:settings }
+
+lolol_user_settings_save:
+    pattern: /settings/save
+    defaults: { _controller: LololUserBundle:User:settingsSave }
 
 # FOS Bundle routes
 fos_user_security:

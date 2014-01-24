@@ -22,6 +22,26 @@
                 <source>menu.battle.defense</source>
                 <target>Défense</target>
             </trans-unit>
+            <trans-unit id="6">
+                <source>battle.title</source>
+                <target>Bataille</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>battle.defender</source>
+                <target>Défenseurs :</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>battle.otherTeams</source>
+                <target>Autres équipes</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>battle.promote</source>
+                <target>Promouvoir en tant que défenseurs</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>battle.noDefenders</source>
+                <target>Vous devriez promouvoir une équipe en tant que défenseurs !</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

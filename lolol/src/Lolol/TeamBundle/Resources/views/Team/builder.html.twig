@@ -1,7 +1,7 @@
 {% extends "LololTeamBundle::layout.html.twig" %}
 {% block lololteam_title %}Team builder{% endblock %}
  
-{% block javascripts %} 
+ {% block javascripts %} 
 {{ parent() }}
 
 <!-- 
@@ -219,9 +219,19 @@
 		return false;
 	}
 	</script>
-{% endblock %} {% block lolol_alert %}
+{% endblock %}
+
+{% block lolol_help_body %}
+<ul>
+	<li>{{ 'builder.help.attackersOrDefenders'|trans }}</li>
+</ul>
+{% endblock %}
+
+{% block lolol_alert %}
 <div id="team-builder-alert" class="row"></div>
-{% endblock %} {% block lololteam_body %}
+{% endblock %}
+{% block lolol_title %}{{ 'team.builder'|trans }}{% endblock %}
+{% block lolol_main %}
 <div class="row team-builder compacted-gallery">
 	<form method="POST" action="">
 		<input id="idTeam" type="hidden" value="{% if teamChampions.team is not null %}{{ teamChampions.team.id }}{% endif %}" />

@@ -24,11 +24,17 @@ class User extends BaseUser {
 	private $champions;
 	
 	/**
+	 * @var boolean @ORM\Column(name="displayHelp", type="boolean")
+	 */
+	private $displayHelp;
+	
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		parent::__construct();
 		$this->champions = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->displayHelp = true;
 	}
 	
 	/**
@@ -69,4 +75,27 @@ class User extends BaseUser {
 	public function getChampions() {
 		return $this->champions;
 	}
+
+    /**
+     * Set displayHelp
+     *
+     * @param boolean $displayHelp
+     * @return User
+     */
+    public function setDisplayHelp($displayHelp)
+    {
+        $this->displayHelp = $displayHelp;
+
+        return $this;
+    }
+
+    /**
+     * Get displayHelp
+     *
+     * @return boolean 
+     */
+    public function getDisplayHelp()
+    {
+        return $this->displayHelp;
+    }
 }

@@ -27,6 +27,12 @@ class Champion {
 	
 	/**
 	 *
+	 * @var string @ORM\Column(name="subName", type="string", length=255)
+	 */
+	private $subName;
+	
+	/**
+	 *
 	 * @var string @ORM\Column(name="imgName", type="string", length=255)
 	 */
 	private $imgName;
@@ -651,5 +657,28 @@ class Champion {
     public function getBonusAttackSpeed()
     {
         return $this->bonusAttackSpeed;
+    }
+
+    /**
+     * Set subName
+     *
+     * @param string $subName
+     * @return Champion
+     */
+    public function setSubName($subName)
+    {
+        $this->subName = $subName;
+
+        return $this;
+    }
+
+    /**
+     * Get subName
+     *
+     * @return string 
+     */
+    public function getSubName()
+    {
+        return $this->subName;
     }
 }

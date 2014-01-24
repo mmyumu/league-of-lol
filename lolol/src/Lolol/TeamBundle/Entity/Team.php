@@ -32,6 +32,12 @@ class Team {
 	private $user;
 	
 	/**
+	 *	Tell whether the team is the defender or not (only one team defender per user)
+	 * @var boolean @ORM\Column(name="defender", type="boolean")
+	 */
+	private $defender;
+	
+	/**
 	 * Get id
 	 *
 	 * @return integer
@@ -60,27 +66,48 @@ class Team {
 	public function getName() {
 		return $this->name;
 	}
+	
+	/**
+	 * Set user
+	 *
+	 * @param \Lolol\UserBundle\Entity\User $user        	
+	 * @return Team
+	 */
+	public function setUser(\Lolol\UserBundle\Entity\User $user) {
+		$this->user = $user;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get user
+	 *
+	 * @return \Lolol\UserBundle\Entity\User
+	 */
+	public function getUser() {
+		return $this->user;
+	}
 
     /**
-     * Set user
+     * Set defender
      *
-     * @param \Lolol\UserBundle\Entity\User $user
+     * @param boolean $defender
      * @return Team
      */
-    public function setUser(\Lolol\UserBundle\Entity\User $user)
+    public function setDefender($defender)
     {
-        $this->user = $user;
+        $this->defender = $defender;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get defender
      *
-     * @return \Lolol\UserBundle\Entity\User 
+     * @return boolean 
      */
-    public function getUser()
+    public function isDefender()
     {
-        return $this->user;
+        return $this->defender;
     }
 }

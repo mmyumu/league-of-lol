@@ -102,6 +102,22 @@
 				<source>team.delete</source>
 				<target>Supprimer</target>
 			</trans-unit>
+			<trans-unit id="26">
+				<source>team.myTeams</source>
+				<target>Mes équipes</target>
+			</trans-unit>
+			<trans-unit id="27">
+				<source>team.builder</source>
+				<target>Builder</target>
+			</trans-unit>
+			<trans-unit id="28">
+				<source>team.list.help</source>
+				<target>Vous pouvez consulter toutes les équipes que vous avez créées. Pour chaque équipe, les slots sont dans l'ordre croissant de gauche à droite.</target>
+			</trans-unit>
+			<trans-unit id="29">
+				<source>builder.help.attackersOrDefenders</source>
+				<target>Vos équipes peuvent être utilisées en tant qu'attaquants ou défenseurs. La première équipe que vous créez est automatiquement promue en tant que défenseurs car vous devez toujours en avoir une.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

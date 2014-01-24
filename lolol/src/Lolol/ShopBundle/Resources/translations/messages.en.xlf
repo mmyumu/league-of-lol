@@ -10,6 +10,10 @@
                 <source>shop.confirm</source>
                 <target>Are you sure you want to buy %championName%?</target>
             </trans-unit>
+            <trans-unit id="3">
+                <source>shop.title</source>
+                <target>Shop</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

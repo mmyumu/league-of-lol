@@ -22,6 +22,18 @@
                 <source>alert.error</source>
                 <target>Erreur</target>
             </trans-unit>
+            <trans-unit id="16">
+                <source>app.homepage</source>
+                <target>Accueil</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>help.title</source>
+                <target>Aide</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>help.close</source>
+                <target>Fermer</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -23,3 +23,4 @@ parameters:
     team_size: 5
     vendor_security.authentication_handler: Lolol\UserBundle\Handler\AuthenticationHandler
     app_title: LoloL
+    languages: fr|en

@@ -38,6 +38,30 @@
                 <source>user.signIn.success</source>
                 <target>Vous avez été identifié. Attendez quelques instants.</target>
             </trans-unit>
+            <trans-unit id="10">
+                <source>menu.user.settings</source>
+                <target>Paramètres</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>user.settings</source>
+                <target>Paramètres</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>user.settings.submit</source>
+                <target>Enregistrer</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>user.settings.displayHelp</source>
+                <target>Afficher le bouton d'aide</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>user.settings.save</source>
+                <target>Paramètres sauvegardés.</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>user.settings.help</source>
+                <target>Vous pouvez modifier vos paramètres utilisateur sur cette page.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
