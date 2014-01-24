@@ -14,9 +14,13 @@
 </script>
 {% endblock %}
 
-{% block lololteam_title %}My teams{% endblock %}
-{% block lololteam_body %}
+{% block lolol_help_body %}
+{{ 'team.list.help'|trans }}
+{% endblock %}
 
+{% block lolol_title %}{{ 'team.myTeams'|trans }}{% endblock %}
+
+{% block lolol_main %}
 {% for result in results %}
 	{% if loop.first %}
 		<div class="row">
@@ -41,9 +45,9 @@
 						<i class="fa fa-caret-right"></i> {{ result.team.name }}
 					</div>
 					<div class="col-xs-12">
-						<a href="{{ path('lolol_team_teamBuilder', {'id': result.team.id } ) }}" alt="{{ 'team.consult'|trans }}"><i class="fa fa-search"></i></a>
-						<a href="{{ path('lolol_team_teamBuilder', {'id': result.team.id } ) }}" alt="{{ 'team.edit'|trans }}"><i class="fa fa-pencil"></i></a>
-						<a id="{{ result.team.name }}" href="{{ path('lolol_team_teamDelete', {'id': result.team.id } ) }}" class="delete" alt="{{ 'team.delete'|trans }}"><i class="fa fa-trash-o"></i></a>
+						<a href="{{ path('lolol_team_teamBuilder', {'id': result.team.id } ) }}" alt="{{ 'team.consult'|trans }}" title="{{ 'team.consult'|trans }}"><i class="fa fa-search"></i></a>
+						<a href="{{ path('lolol_team_teamBuilder', {'id': result.team.id } ) }}" alt="{{ 'team.edit'|trans }}" title="{{ 'team.edit'|trans }}"><i class="fa fa-pencil"></i></a>
+						<a id="{{ result.team.name }}" href="{{ path('lolol_team_teamDelete', {'id': result.team.id } ) }}" class="delete" alt="{{ 'team.delete'|trans }}" title="{{ 'team.delete'|trans }}"><i class="fa fa-trash-o"></i></a>
 					</div>
 				</div>
 				<div class="col-xs-9 gutter-1 compacted-gallery">
@@ -52,8 +56,8 @@
 						<div class="thumbnail text-center overflow-hidden">
 							<img 
 								src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ championTeam.champion.imgName ~suffixIcons) }}"
-								alt="{{ championTeam.champion.name }}" /> <a
-								href="{{ path('lolol_app_champion', { 'id': championTeam.champion.id }) }}"><small>{{
+								alt="{{ championTeam.champion.name }}" /> 
+								<a href="{{ path('lolol_app_champion', { 'id': championTeam.champion.id }) }}" title="{{ championTeam.champion.name }}"><small>{{
 									championTeam.champion.name }}</small></a>
 						</div>								
 					</div>

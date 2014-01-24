@@ -10,7 +10,14 @@
 		</ul>
 	</div>
 	<div class="col-xs-10">
-		<h3>{{ 'Shop'|trans }}</h3>
+		<div class="row">
+			<div class="col-xs-10">
+				<h4>{% block lolol_title %}{{ 'shop.title'|trans }}{% endblock %}</h4>
+			</div>
+			<div class="col-xs-2">
+				{% block lolol_help %}<button class="btn btn-primary">Help</button>{% endblock %}
+			</div>
+		</div>
 		<hr>
 		<div class="content">
 			{% block lololshop_body %} 

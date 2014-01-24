@@ -20,7 +20,7 @@ class LololPopulateChampions {
 	
 	/**
 	 * Initializes the service with injected services/parameters
-	 * 
+	 *
 	 * @param \Lolol\TeamBundle\Champions\LololChampions $championNames:
 	 *        	the service to get the campions list
 	 * @param string $folder:
@@ -37,101 +37,100 @@ class LololPopulateChampions {
 	
 	/**
 	 * Persists the champions retrieved in the database.
-	 * 
+	 *
 	 * @param \Doctrine\ORM\EntityManager $em        	
 	 * @return associative array containing the added/updated champions
 	 */
 	public function populate(\Doctrine\ORM\EntityManager $em) {
-		$functions = array (
-				'Attack damage' => array (
+		$functions = array(
+				'Attack damage' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setAttackDamage($base);
 							$champion->setBonusAttackDamage($bonus);
-						} ),
-				'Armor' => array (
+						}),
+				'Armor' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setArmor($base);
 							$champion->setBonusArmor($bonus);
-						} ),
-				'Health' => array (
+						}),
+				'Health' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setHealth($base);
 							$champion->setBonusHealth($bonus);
-						} ),
-				'Health regen.' => array (
+						}),
+				'Health regen.' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setHealthRegen($base);
 							$champion->setBonusHealthRegen($bonus);
-						} ),
-				'Mana' => array (
+						}),
+				'Mana' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setMana($base);
 							$champion->setBonusMana($bonus);
-						} ),
-				'Mana regen.' => array (
+						}),
+				'Mana regen.' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setManaRegen($base);
 							$champion->setBonusManaRegen($bonus);
-						} ),
-				'Magic res.' => array (
+						}),
+				'Magic res.' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusFloat,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setMagicResist($base);
 							$champion->setBonusMagicResist($bonus);
-						} ),
-				'Range' => array (
+						}),
+				'Range' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusRange,
 						'setter' => function ($champion, $base, $type) {
 							// Initialize the matching attribute
 							$champion->setAttackRange($base);
 							$champion->setAttackRangeType($type);
-						} ),
-				'Mov. speed' => array (
+						}),
+				'Mov. speed' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusEmpty,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setMoveSpeed($base);
 							$champion->setBonusMoveSpeed($bonus);
-						} ),
-				'Attack speed' => array (
+						}),
+				'Attack speed' => array(
 						'patternBase' => $this->patternBaseFloat,
 						'patternBonus' => $this->patternBonusPercent,
 						'setter' => function ($champion, $base, $bonus) {
 							// Initialize the matching attribute
 							$champion->setAttackSpeed($base);
 							$champion->setBonusAttackSpeed($bonus);
-						} ),
-				);
+						}));
 		
 		$fs = new Filesystem();
 		
-		$updated = array ();
-		$added = array ();
+		$updated = array();
+		$added = array();
 		
 		// Parse all the champion names
-		foreach ( $this->championNames->getList() as $championName ) {
+		foreach($this->championNames->getList() as $championName) {
 			/*
 			 * $aContext = array( 'http' => array( 'proxy' => 'proxy_aeropark:8080', 'request_fulluri' => true, ), ); $cxContext = stream_context_create($aContext);
 			 */
@@ -158,12 +157,7 @@ class LololPopulateChampions {
 			libxml_clear_errors();
 			// restore
 			libxml_use_internal_errors($libxml_previous_state);
-			
-			// Get the table containing the stats of the champion
-			$championTable = $DOM->getElementById('champion_info-lower');
-			
-			$items = $championTable->getElementsByTagName('td');
-			
+								
 			// Try to retrieve the existing champion from database
 			$champion = $em->getRepository('LololAppBundle:Champion')->findOneByName($championName);
 			
@@ -171,13 +165,38 @@ class LololPopulateChampions {
 				// Initialize the champion to be persisted
 				$champion = new Champion();
 				$champion->setName($championName);
-				$added [] = $championName;
+				$added[] = $championName;
 			}
 			else {
-				$updated [] = $championName;
+				$updated[] = $championName;
 			}
 			
 			$champion->setImgName($this->stringHelper->getImgName($championName));
+			
+			
+			// Get the table containing the infos of the champion
+			$championUpperTable = $DOM->getElementById('champion_info-upper');
+				
+			$tds = $championUpperTable->getElementsByTagName('td');
+				
+			foreach($tds as $td) {
+				$spans = $td->getElementsByTagName('span');
+				for($i = 0; $i < $spans->length; $i++) {
+					$node = $spans->item($i);
+					$value = trim($node->nodeValue);
+					if($value == $championName) {
+						$nextNode = $spans->item($i+1);
+						$nextValue = trim($nextNode->nodeValue);
+						$champion->setSubName($nextValue);
+						break;
+					}
+				}
+			}
+			
+			// Get the table containing the stats of the champion
+			$championTable = $DOM->getElementById('champion_info-lower');
+				
+			$items = $championTable->getElementsByTagName('td');
 			
 			for($i = 0; $i < $items->length; $i ++) {
 				$node = $items->item($i);
@@ -185,10 +204,10 @@ class LololPopulateChampions {
 				
 				// Gets the next cell
 				if (array_key_exists($value, $functions)) {
-					$patternBase = $functions [trim($value)] ['patternBase'];
-					$attribute = $this->parseAttribute($items->item($i + 1)->nodeValue, $patternBase, $functions [trim($value)] ['patternBonus']);
+					$patternBase = $functions[trim($value)]['patternBase'];
+					$attribute = $this->parseAttribute($items->item($i + 1)->nodeValue, $patternBase, $functions[trim($value)]['patternBonus']);
 					if ($attribute !== FALSE) {
-						$functions [trim($value)] ['setter']($champion, $attribute ['base'], $attribute ['bonus']);
+						$functions[trim($value)]['setter']($champion, $attribute['base'], $attribute['bonus']);
 						$i ++;
 					}
 				}
@@ -199,8 +218,8 @@ class LololPopulateChampions {
 		
 		$em->flush();
 		
-		$result ['added'] = $added;
-		$result ['updated'] = $updated;
+		$result['added'] = $added;
+		$result['updated'] = $updated;
 		
 		return $result;
 	}
@@ -222,12 +241,12 @@ class LololPopulateChampions {
 		
 		// Get base number
 		if ($attribute != '' && preg_match($patternBase, $attribute, $base) == 1 && preg_match($patternBonus, $attribute, $bonus) == 1) {
-			if (! isset($bonus [1]) || $bonus [1] == '') {
-				$bonus [1] = NULL;
+			if (!isset($bonus[1]) || $bonus[1] == '') {
+				$bonus[1] = NULL;
 			}
-			return array (
-					'base' => $base [0],
-					'bonus' => $bonus [1] );
+			return array(
+					'base' => $base[0],
+					'bonus' => $bonus[1]);
 		}
 		return FALSE;
 	}

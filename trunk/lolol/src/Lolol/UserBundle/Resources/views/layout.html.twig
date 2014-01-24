@@ -1,5 +1,3 @@
-{# src/Sdz/UserBundle/Resources/views/layout.html.twig #}
-
 {# On étend notre layout #}
 {% extends "::layout.html.twig" %}
 
@@ -7,16 +5,25 @@
 {% block body %}
 
 	{# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
-	<h3>{% block lololuser_title %}{{ 'User'|trans }}{% endblock %}</h3>
+	<div class="row">
+		<div class="col-xs-11">
+			<h3>{% block lololuser_title %}{{ 'menu.user'|trans }}{% endblock %}</h3>
+		</div>
+		<div class="col-xs-1">
+			{% block lololuser_help %}{% endblock %}
+		</div>
+	</div>
 
 	<hr>
 	
-  {# On affiche les messages flash que définissent les contrôleurs du bundle #}
-  {% for key, message in app.session.flashbag.all() %}
-    <div class="alert alert-{{ key }}">
-      {{ message|trans({}, 'FOSUserBundle') }}
-    </div>
-  {% endfor %}
+	{# On affiche les messages flash que définissent les contrôleurs du bundle #}
+	{% for key, messages in app.session.flashbag.all() %}
+		{% for message in messages %}
+    	<div class="alert alert-{{ key }}">
+      		{{ message|trans({}, 'FOSUserBundle') }}
+    	</div>
+		{% endfor %}
+	{% endfor %}
 
   {# On définit ce block, dans lequel vont venir s'insérer les autres vues du bundle #}
   {% block fos_user_content %}

@@ -102,6 +102,22 @@
 				<source>team.delete</source>
 				<target>Delete</target>
 			</trans-unit>
+			<trans-unit id="26">
+				<source>team.myTeams</source>
+				<target>My teams</target>
+			</trans-unit>
+			<trans-unit id="27">
+				<source>team.builder</source>
+				<target>Builder</target>
+			</trans-unit>
+			<trans-unit id="28">
+				<source>team.list.help</source>
+				<target>You can view all the teams you created. For each team, the slots are ascending order from left to right.</target>
+			</trans-unit>
+			<trans-unit id="29">
+				<source>builder.help.attackersOrDefenders</source>
+				<target>Your teams can be used both as attackers or defenders. The first team you are saving is promoted as defenders team because you always need one.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

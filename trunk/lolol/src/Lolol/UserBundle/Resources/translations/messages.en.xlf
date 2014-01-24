@@ -38,6 +38,30 @@
                 <source>user.signIn.success</source>
                 <target>You have been successfully authenticated. Please wait.</target>
             </trans-unit>
+            <trans-unit id="10">
+                <source>menu.user.settings</source>
+                <target>Settings</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>user.settings</source>
+                <target>Settings</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>user.settings.submit</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>user.settings.displayHelp</source>
+                <target>Display help button</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>user.settings.save</source>
+                <target>Settings saved.</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>user.settings.help</source>
+                <target>You can change your user settings on this page.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>{% block title %}Lolol{% endblock %}</title> 
+<title>{% block title %}{{ title }}{% endblock %}</title> 
 {% stylesheets
 'css/bootstrap.css' 'css/custom.css' 'css/font-awesome.css' 'css/crown.css' filter='cssrewrite' %}
 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -69,37 +69,26 @@ $(document).ready(function(){
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="navbar-collapse1">
 				<ul class="nav navbar-nav">
-				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_ranking' ? 'active' }}"><a href="#"><i class="fa fa-list-ol"></i> {{ 'ranking.menu'|trans }}</a></li>
+				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_ranking' ? 'active' }}"><a href="#"><i class="fa fa-list-ol"></i> {{ 'menu.ranking'|trans }}</a></li>
 				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+					<!-- Overview -->
+					<li class="{ app.request.attributes.get('_route') starts with 'lolol_overview' ? 'active' }}"><a href="#"><i class="fa fa-globe"></i> {{ 'menu.overview'|trans }}</a></li>
+					<!-- Battle -->
 					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_battle' ? 'active' }}">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa crown icon-crown"></i> {{ 'menu.battle'|trans }}
-							<b class="caret"></b>
-					</a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa crown icon-crown"></i> {{ 'menu.battle'|trans }}
+								<b class="caret"></b>
+						</a>
 						<ul class="dropdown-menu" role="menu"
 							aria-labelledby="dropdownMenu1">
 							<li role="presentation"><a role="menuItem" href="{{ path('lolol_battle_attack') }}"><i class="fa fa-bolt fa-fw"></i> {{ 'menu.battle.attack'|trans }}</a></li>
 							<li role="presentation"><a role="menuItem" href="{{ path('lolol_battle_defense') }}"><i class="fa fa-shield fa-fw"></i> {{ 'menu.battle.defense'|trans }}</a></li>
 						</ul>
 					</li>
-				{% endif %}
-				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-				<li class="{{ app.request.attributes.get('_route') starts with 'lolol_shop' ? 'active' }}">
-					<a href="{{ path('lolol_shop_champions') }}"><i class="fa fa-shopping-cart"></i> {{ 'shop.menu'|trans }}</a>
-				</li>
-				{% endif %}
-				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_team' ? 'active' }}">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"></span><i class="fa fa-users"></i> {{ 'menu.team'|trans }}
-							<b class="caret"></b>
-					</a>
-						<ul class="dropdown-menu" role="menu"
-							aria-labelledby="dropdownMenu1">
-							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_myTeams') }}"><i class="fa fa-bars fa-fw"></i> {{ 'menu.team.myTeams'|trans }}</a></li>
-							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_teamBuilder') }}"><i class="fa fa-plus-circle fa-fw"></i> {{ 'menu.team.createNewTeam'|trans }}</a></li>
-						</ul>
+					<!-- Shop -->
+					<li class="{{ app.request.attributes.get('_route') starts with 'lolol_shop' ? 'active' }}">
+						<a href="{{ path('lolol_shop_champions') }}"><i class="fa fa-shopping-cart"></i> {{ 'shop.menu'|trans }}</a>
 					</li>
-				{% endif %}
-				{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+					<!-- User -->
 					<li class="dropdown {{ app.request.attributes.get('_route') starts with 'lolol_user' ? 'active' }}">
 					<a href="#"
 						class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ 'menu.user'|trans }}
@@ -107,6 +96,11 @@ $(document).ready(function(){
 					</a>
 						<ul class="dropdown-menu" role="menu"
 							aria-labelledby="dropdownMenu1">
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_myTeams') }}"><i class="fa fa-users fa-fw"></i> {{ 'menu.team.myTeams'|trans }}</a></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_team_teamBuilder') }}"><i class="fa fa-plus-circle fa-fw"></i> {{ 'menu.team.createNewTeam'|trans }}</a></li>
+							<li class="divider"></li>
+							<li role="presentation"><a role="menuItem" href="{{ path('lolol_user_settings') }}"><i class="fa fa-wrench"></i> {{ 'menu.user.settings'|trans }}</a></li>
+							<li class="divider"></li>
 							<li role="presentation"><a role="menuItem" href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out"></i> {{ 'menu.user.logOut'|trans }}</a></li>
 						</ul>
 					</li>
@@ -178,7 +172,6 @@ $(document).ready(function(){
       		{% endfor %}
       		
       		{% if error is defined %}
-      		AEZAEZAEZAEZAEZAEa
 		      	<div class="row">
 					<div class="alert alert-danger col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 fade in">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><small>x</small></button>
@@ -189,8 +182,38 @@ $(document).ready(function(){
       		
       		{% block lolol_alert %} {% endblock %}
 
-    	
-		{% block body %} {% endblock %}
+    		{% block body %}
+			<div class="row">
+				<div class="col-xs-10">
+					<h4>{% block lolol_title %}{{ title }}{% endblock %}</h4>
+				</div>
+				<div class="col-xs-2">
+					{% if app.user.displayHelp %}<button class="btn btn-primary" data-toggle="modal" data-target="#helpModal">{{ 'help.title'|trans }}</button>{% endif %}
+					{% block lolol_help %}
+					<!-- Modal -->
+					<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="myModalLabel">{% block lolol_help_title %}{{ 'help.title'|trans }}{% endblock %}</h4>
+								</div>
+								<div class="modal-body">
+					        	{% block lolol_help_body %}{% endblock %}
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">{{ 'help.close'|trans }}</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+					{% endblock %}
+				</div>
+			</div>
+			<hr>
+			{% block lolol_main %}{% endblock %}
+			{% endblock %}
+		
 	    </div>
 
 		<hr>

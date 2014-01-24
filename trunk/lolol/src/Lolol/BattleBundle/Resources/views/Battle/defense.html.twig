@@ -1,6 +1,89 @@
 {% extends "LololBattleBundle::layout.html.twig" %}
-{% block lololbattle_title %}{{ 'battle.defense'|trans }}{% endblock %}
+{% block lolol_title %}{{ 'battle.defense'|trans }}{% endblock %}
 
-{% block lololbattle_body %}
+{% block lolol_help_body %}
+Dans LoloL vous pouvez vous faire attaquer à tout moment, que vous soyez connecté ou non. 
+Choisissez l'équipe la plus adaptée à se défendre contre les autres équipes.
+Une équipe adaptée au metagame actuel aura sans doute plus de chances de se défendre avec succès !
+{% endblock %}
 
+
+{% block lolol_main %}
+<div class="row">
+	<div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-centered">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-shield fa-lg"></i> <strong> {{ 'battle.defender'|trans }}</strong> {% if defender %} {{ defender.team.name }} {% else %} no team {% endif %}</h3>
+			</div>
+			<div class="panel-body ">
+				<div class="row gutter-1 overflow-hidden">
+				{% if defender %}
+					<div class="col-xs-1">
+					&nbsp;
+					</div>
+		    		{% for championTeam in defender.champions %}
+						<div class="col-xs-2">
+							<div class="thumbnail text-center overflow-hidden">
+								<img 
+									src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ championTeam.champion.imgName ~suffixIcons) }}"
+									alt="{{ championTeam.champion.name }}" /> 
+								<a href="{{ path('lolol_app_champion', { 'id': championTeam.champion.id }) }}" title="{{ championTeam.champion.name }}"><small>{{
+										championTeam.champion.name }}</small></a>
+							</div>								
+						</div>
+		    		{% endfor %}
+		    	{% else %}
+		    		{{ 'battle.noDefenders'|trans }}
+	    		{% endif %}
+	    		</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% for result in results %}
+	{% if loop.first %}
+		<div class="row">
+			<div class="col-xs-12">
+				<strong>{{ 'battle.otherTeams'|trans }}</strong>
+			</div>
+		</div>
+		<br />
+	{% endif %}
+	<div class="row">
+		<div class="col-xs-12 col-sm-10 col-md-8">
+			<div class="col-xs-3">
+				<div class="col-xs-12">
+					<i class="fa fa-caret-right"></i> {{ result.team.name }}
+				</div>
+				<div class="col-xs-12">
+					<a href="{{ path('lolol_team_teamBuilder', {'id': result.team.id } ) }}" alt="{{ 'team.consult'|trans }}" title="{{ 'team.consult'|trans }}"><i class="fa fa-search"></i></a>
+					<a href="{{ path('lolol_team_teamBuilder', {'id': result.team.id } ) }}" alt="{{ 'team.edit'|trans }}" title="{{ 'team.edit'|trans }}"><i class="fa fa-pencil"></i></a>
+				</div>
+			</div>
+			<div class="col-xs-9 gutter-1 compacted-gallery">
+				{% for championTeam in result.champions %}
+				<div class="col-xs-2">
+					<div class="thumbnail text-center overflow-hidden">
+						<img 
+							src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ championTeam.champion.imgName ~suffixIcons) }}"
+							alt="{{ championTeam.champion.name }}" /> 
+						<a href="{{ path('lolol_app_champion', { 'id': championTeam.champion.id }) }}" title="{{ championTeam.champion.name }}"><small>{{
+								championTeam.champion.name }}</small></a>
+					</div>								
+				</div>
+				{% else %}
+				BUG: empty team
+				{% endfor %}
+				<div class="col-xs-2 text-center">
+					<a href="{{ path('lolol_battle_defense_promote', {'id':result.team.id}) }}" title="{{ 'battle.promote'|trans }}">
+						<i class="fa fa-arrow-up fa-lg"></i><br />
+						<i class="fa fa-shield fa-3x"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% else %}
+	<p>{{ 'team.myTeams.empty'|trans }}</p>
+{% endfor %}
 {% endblock %}

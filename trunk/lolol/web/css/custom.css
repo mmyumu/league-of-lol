@@ -94,6 +94,23 @@ img.desaturate {
 .champion-selected {
 	border-color: #428bca;
 }
+.vgutter-2 {
+	margin-bottom: 2px;
+}
+.vgutter-10 {
+	margin-bottom: 2px;
+}
+
+.popover.in {
+    z-index: 9999;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+/* Debug */
 .red {
 	background-color: red;	
 }
@@ -105,14 +122,4 @@ img.desaturate {
 }
 .yellow {
 	background-color: yellow;	
-}
-.vgutter-2 {
-	margin-bottom: 2px;
-}
-.vgutter-10 {
-	margin-bottom: 2px;
-}
-
-.popover.in {
-    z-index: 9999;
 }
