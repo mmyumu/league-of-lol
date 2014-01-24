@@ -1,0 +1,21 @@
+{% extends "LololTeamBundle::layout.html.twig" %}
+{% block lolol_title %}{{ 'user.settings'|trans }}{% endblock %}
+
+{% block lolol_help_body %}
+{{ 'user.settings.help'|trans }}
+{% endblock %}
+
+{% block lolol_main %}
+<div class="row">
+	<div class="col-xs-8 col-sm-6 col-md-5">
+		<form action="{{ path('lolol_user_settings_save') }}" method="POST" role="form">
+			 <div class="checkbox">
+			    <label><input type="checkbox" name="displayHelp" {% if app.user.displayHelp %}checked{% endif %}>{{ 'user.settings.displayHelp'|trans }}</label>
+			</div>
+			<div>
+				<input type="submit" value="{{ 'user.settings.submit'|trans }}" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}
