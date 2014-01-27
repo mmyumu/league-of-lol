@@ -188,7 +188,9 @@ $(document).ready(function(){
 					<h4>{% block lolol_title %}{{ title }}{% endblock %}</h4>
 				</div>
 				<div class="col-xs-2">
+					{% if app.user %}
 					{% if app.user.displayHelp %}<button class="btn btn-primary" data-toggle="modal" data-target="#helpModal">{{ 'help.title'|trans }}</button>{% endif %}
+					{% endif %}
 					{% block lolol_help %}
 					<!-- Modal -->
 					<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

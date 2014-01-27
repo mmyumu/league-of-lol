@@ -12,18 +12,18 @@ Une équipe adaptée au metagame actuel aura sans doute plus de chances de se défe
 <div class="row">
 	<div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-centered">
 		<div class="panel panel-primary">
-			<div class="panel-heading">
+			<div class="panel-heading vpadding-4">
 				<h3 class="panel-title"><i class="fa fa-shield fa-lg"></i> <strong> {{ 'battle.defender'|trans }}</strong> {% if defender %} {{ defender.team.name }} {% else %} no team {% endif %}</h3>
 			</div>
-			<div class="panel-body ">
-				<div class="row gutter-1 overflow-hidden">
+			<div class="panel-body vpadding-0">
+				<div class="row gutter-1 overflow-hidden vpadding-0">
 				{% if defender %}
 					<div class="col-xs-1">
 					&nbsp;
 					</div>
 		    		{% for championTeam in defender.champions %}
 						<div class="col-xs-2">
-							<div class="thumbnail text-center overflow-hidden">
+							<div class="thumbnail text-center overflow-hidden vgutter-2">
 								<img 
 									src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ championTeam.champion.imgName ~suffixIcons) }}"
 									alt="{{ championTeam.champion.name }}" /> 
