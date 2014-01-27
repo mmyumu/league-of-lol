@@ -24,9 +24,16 @@ class User extends BaseUser {
 	private $champions;
 	
 	/**
+	 *
 	 * @var boolean @ORM\Column(name="displayHelp", type="boolean")
 	 */
 	private $displayHelp;
+	
+	/**
+	 *
+	 * @var float @ORM\Column(name="elo", type="float")
+	 */
+	private $elo;
 	
 	/**
 	 * Constructor
@@ -53,7 +60,7 @@ class User extends BaseUser {
 	 * @return User
 	 */
 	public function addChampion(Champion $champions) {
-		$this->champions [] = $champions;
+		$this->champions[] = $champions;
 		
 		return $this;
 	}
@@ -75,27 +82,46 @@ class User extends BaseUser {
 	public function getChampions() {
 		return $this->champions;
 	}
-
-    /**
-     * Set displayHelp
-     *
-     * @param boolean $displayHelp
-     * @return User
-     */
-    public function setDisplayHelp($displayHelp)
-    {
-        $this->displayHelp = $displayHelp;
-
-        return $this;
-    }
-
-    /**
-     * Get displayHelp
-     *
-     * @return boolean 
-     */
-    public function getDisplayHelp()
-    {
-        return $this->displayHelp;
-    }
+	
+	/**
+	 * Set displayHelp
+	 *
+	 * @param boolean $displayHelp        	
+	 * @return User
+	 */
+	public function setDisplayHelp($displayHelp) {
+		$this->displayHelp = $displayHelp;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get displayHelp
+	 *
+	 * @return boolean
+	 */
+	public function getDisplayHelp() {
+		return $this->displayHelp;
+	}
+	
+	/**
+	 * Set elo
+	 *
+	 * @param float $elo        	
+	 * @return User
+	 */
+	public function setElo($elo) {
+		$this->elo = $elo;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get elo
+	 *
+	 * @return float
+	 */
+	public function getElo() {
+		return $this->elo;
+	}
 }
