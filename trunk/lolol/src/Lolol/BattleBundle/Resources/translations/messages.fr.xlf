@@ -42,6 +42,26 @@
                 <source>battle.noDefenders</source>
                 <target>Vous devriez promouvoir une équipe en tant que défenseurs !</target>
             </trans-unit>
+            <trans-unit id="11">
+                <source>battle.attack.chooseOpponent</source>
+                <target>Choisissez votre adversaire</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>battle.attack.chooseAttackers</source>
+                <target>Choisissez votre équipe pour attaquer</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>battle.attack.noOpponent</source>
+                <target>Vous devez choisir un adversaire</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>battle.attack.noAttacker</source>
+                <target>Vous devez choisir une équipe pour attaquer</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>battle.report</source>
+                <target>Rapport de bataille</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

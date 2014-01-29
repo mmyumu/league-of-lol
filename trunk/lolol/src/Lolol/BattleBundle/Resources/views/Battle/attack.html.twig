@@ -1,4 +1,58 @@
 {% extends "LololBattleBundle::layout.html.twig" %}
+
+{% block javascripts %} 
+{{ parent() }}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.attack').on('click', function() {
+			return checkInputs();
+		});
+	});
+
+	function checkInputs() {
+		var errorMsg = "<ul>";
+		var error = false;
+		
+		if(!checkOpponent()) {
+			errorMsg += "<li>{{ 'battle.attack.noOpponent'|trans }}</li>";
+			error = true;
+		}
+		if(!checkAttacker()) {
+			errorMsg += "<li>{{ 'battle.attack.noAttacker'|trans }}</li>";
+			error = true;
+		}
+		
+		errorMsg += "</ul>";
+		
+		var info = 	
+			'<div class="alert alert-danger col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 fade in">'+
+			'	<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><small>x</small></button>'+
+			'	<p><strong>{{ 'alert.error'|trans }}</strong></p><p>'+errorMsg+'</p>'+
+			'</div>';
+			
+		if(error) {
+			$('#attack-alert').hide();
+			$('#attack-alert').html(info);
+			$('#attack-alert').show('fast');
+		}
+		return !error;
+	}
+
+	function checkOpponent() {
+		return $(':radio[name="opponentTeam"]:checked', '#attackForm').length == 1;
+	}
+
+	function checkAttacker() {
+		return $(':radio[name="attackerTeam"]:checked', '#attackForm').length == 1;
+	}
+	
+</script>
+{% endblock %}
+
+{% block lolol_alert %}
+<div id="attack-alert" class="row"></div>
+{% endblock %}
+
 {% block lolol_title %}{{ 'battle.attack'|trans }}{% endblock %}
 
 {% block lolol_help_body %}
@@ -9,39 +63,101 @@ Choisissez un adversaire à votre portée et cliquez sur l'icône d'attaque.
 
 {% block lolol_main %}
 
-{% for result in results %}
-	{% if loop.first %}
-		<div class="row">
-			<div class="col-xs-12">
-				<strong>{{ 'battle.otherTeams'|trans }}</strong>
-			</div>
+<form id="attackForm" action="{{ path('lolol_battle_attackProcess') }}" method="POST">
+<div class="row">
+	<div class="col-xs-12">
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseOpponent">
+							{{ 'battle.attack.chooseOpponent'|trans }}
+						</a>
+					</h4>
+				</div>
+			    <div id="collapseOpponent" class="panel-collapse collapse in">
+					<div class="panel-body gutter-1">
+						{% for opponent in opponents %}
+						<div class="col-xs-12">
+							<div class="col-xs-12">
+								<input type="radio" href="#collapseAttacker" name="opponentTeam" id="opponent-{{ opponent.team.id }}" value="{{ opponent.team.id }}" />
+								<label for="opponent-{{ opponent.team.id }}">{{ opponent.team.user.username }} - {{ opponent.team.name }}</label>
+							</div>
+							<div class="col-xs-10 col-sm-8 col-md-6">
+								{% for championTeam in opponent.champions %}
+								<div class="col-xs-2 {% if loop.first %}col-xs-offset-1{% endif %}">
+									<div class="thumbnail text-center overflow-hidden thumbnail-padding-1">
+										<img 
+											src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ championTeam.champion.imgName ~suffixIcons) }}"
+											alt="{{ championTeam.champion.name }}" /> 
+										<a href="{{ path('lolol_app_champion', { 'id': championTeam.champion.id }) }}" title="{{ championTeam.champion.name }}"><small>{{
+												championTeam.champion.name }}</small></a>
+									</div>
+								</div>
+								{% else %}
+								BUG: empty team
+								{% endfor %}
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+			    </div>
+		  	</div>
+		  	<div class="panel panel-default">
+		    	<div class="panel-heading">
+		      		<h4 class="panel-title">
+		        		<a data-toggle="collapse" data-parent="#accordion" href="#collapseAttacker">
+		          			{{ 'battle.attack.chooseAttackers'|trans }}
+		        		</a>
+		      		</h4>
+		    	</div>
+		    	<div id="collapseAttacker" class="panel-collapse collapse">
+		      		<div class="panel-body">
+		      			<a href="#">+ Filters</a>
+						<div id="filters" class="col-xs-12 well">
+							<div class="col-xs-6">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon"><i class="fa fa-users"></i></span>
+									<input type="text" class="form-control" placeholder="{{ 'attack.filter'|trans }}">
+								</div>
+							</div>
+						</div>
+		      			<div class="col-xs-10 col-sm-8 col-md-6 gutter-1">
+				      		{% for result in results %}
+								<div class="col-xs-12">
+									<input type="radio" name="attackerTeam" id="team-{{ result.team.id }}" value="{{ result.team.id }}" />
+									<label for="team-{{ result.team.id }}">{{ result.team.name }}</label>
+								</div>
+								<div class="col-xs-12">
+									{% for championTeam in result.champions %}
+									<div class="col-xs-2 {% if loop.first %}col-xs-offset-1{% endif %}">
+										<div class="thumbnail text-center overflow-hidden thumbnail-padding-1">
+											<img 
+												src="{{ asset(folder ~ '/img/' ~ prefixIcons48 ~ championTeam.champion.imgName ~suffixIcons) }}"
+												alt="{{ championTeam.champion.name }}" /> 
+											<a href="{{ path('lolol_app_champion', { 'id': championTeam.champion.id }) }}" title="{{ championTeam.champion.name }}"><small>{{
+													championTeam.champion.name }}</small></a>
+										</div>								
+									</div>
+									{% else %}
+									BUG: empty team
+									{% endfor %}
+								</div>
+							{% else %}
+								<p>{{ 'team.myTeams.empty'|trans }}</p>
+							{% endfor %}
+						</div>
+		      		</div>
+		    	</div>
+		  	</div>
 		</div>
-		<br />
-	{% endif %}
-	<div class="row">
-		<div class="col-xs-12 col-sm-6 gutter-1">
-			<div class="col-xs-12">
-				{{ result.team.name }}
-			</div>
-			<div class="col-xs-1">
-				<input type="radio">
-			</div>
-			{% for championTeam in result.champions %}
-			<div class="col-xs-1">
-				<div class="thumbnail text-center overflow-hidden">
-					<img 
-						src="{{ asset(folder ~ '/img/' ~ prefixIcons20 ~ championTeam.champion.imgName ~suffixIcons) }}"
-						alt="{{ championTeam.champion.name }}" /> 
-					<a href="{{ path('lolol_app_champion', { 'id': championTeam.champion.id }) }}" title="{{ championTeam.champion.name }}"><small>{{
-							championTeam.champion.name }}</small></a>
-				</div>								
-			</div>
-			{% else %}
-			BUG: empty team
-			{% endfor %}
-		</div><!-- /input-group -->
 	</div>
-{% else %}
-	<p>{{ 'team.myTeams.empty'|trans }}</p>
-{% endfor %}
+</div>
+<br />
+<div class="row">
+	<div class="col-xs-12">
+		<button type="submit" class="btn btn-primary attack"><i class="fa fa-bolt"></i> {{ 'battle.attack'|trans }}</button>
+	</div>
+</div>
+</form>
 {% endblock %}

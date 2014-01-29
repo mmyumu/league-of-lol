@@ -1,0 +1,24 @@
+{% extends "LololBattleBundle::layout.html.twig" %}
+
+{% block javascripts %} 
+{{ parent() }}
+
+{% endblock %}
+
+{% block lolol_alert %}
+{% endblock %}
+
+{% block lolol_title %}{{ 'battle.report'|trans }}{% endblock %}
+
+{% block lolol_help_body %}
+
+{% endblock %}
+
+
+{% block lolol_main %}
+
+{% for log in logs %}
+{{ log.text }}<br />
+{% endfor %}
+
+{% endblock %}

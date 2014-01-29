@@ -42,6 +42,7 @@ class User extends BaseUser {
 		parent::__construct();
 		$this->champions = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->displayHelp = true;
+		$this->elo = 0;
 	}
 	
 	/**

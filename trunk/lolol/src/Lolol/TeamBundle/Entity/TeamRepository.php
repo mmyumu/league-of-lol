@@ -12,19 +12,39 @@ use Lolol\UserBundle\Entity\User;
  * repository methods below.
  */
 class TeamRepository extends EntityRepository {
-	public function getTeamsWithChampionsByUser(User $user) {
+	public function findOpponents(User $user) {
 		$qb = $this->_em->createQueryBuilder();
-	
-		$qb->select('ct')
-			->from('LololTeamBundle:ChampionTeam', 'ct')
-			->leftJoin('ct.team', 't')
-			->addSelect('t')
-			->leftJoin('ct.champion', 'c')
-			->addSelect('c')
-			->where('t.user = :userId')
-			->setParameter('userId', $user->getId());
-	
+		
+		$qb->select('t')
+		->from('LololTeamBundle:Team', 't')
+		->leftJoin('t.user', 'u')
+		->addSelect('u')
+		->where('t.defender = 1')
+		->andWhere('u.id <> :userId')
+		->setParameter('userId', $user->getId());
+		
 		return $qb->getQuery()
-				->getResult();
+		->getResult();
+	}
+	
+	public function findOneByTeamWithChampions(Team $team) {
+		return $this->findOneByIdWithChampions($team->getId());
+	}
+	
+	public function findOneByIdWithChampions($id, $orderBy = 'ct.position') {
+		$qb = $this->_em->createQueryBuilder();
+		
+		$qb->select('t')
+		->from('LololTeamBundle:Team', 't')
+		->leftJoin('t.championsTeam', 'ct')
+		->addSelect('ct')
+		->leftJoin('ct.champion', 'c')
+		->addSelect('c')
+		->andWhere('t.id = :teamId')
+		->orderBy($orderBy, 'ASC')
+		->setParameter('teamId', $id);
+		
+		return $qb->getQuery()
+		->getSingleResult();
 	}
 }

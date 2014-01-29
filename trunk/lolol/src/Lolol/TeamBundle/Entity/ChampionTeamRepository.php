@@ -12,32 +12,20 @@ use Lolol\TeamBundle\Entity\Team;
  * repository methods below.
  */
 class ChampionTeamRepository extends EntityRepository {
-	public function getTeamsWithChampionsByUser(User $user) {
-		$qb = $this->_em->createQueryBuilder();
-	
-		$qb->select('ct')
-			->from('LololTeamBundle:ChampionTeam', 'ct')
-			->leftJoin('ct.team', 't')
-			->addSelect('t')
-			->leftJoin('ct.champion', 'c')
-			->addSelect('c')
-			->where('t.user = :userId')
-			->setParameter('userId', $user->getId());
-	
-		return $qb->getQuery()
-				->getResult();
+	public function getWithChampionsByTeam(Team $team, $orderBy = 'ct.position') {		
+		return $this->findTeamWithChampionsById($team->getId(), $orderBy);
 	}
 	
-	public function getWithChampionsByTeam(Team $team, $orderBy = 'ct.position') {
+	public function findTeamWithChampionsById($id, $orderBy = 'ct.position') {
 		$qb = $this->_em->createQueryBuilder();
 		
 		$qb->select('ct')
-			->from('LololTeamBundle:ChampionTeam', 'ct')
-			->leftJoin('ct.champion', 'c')
-			->addSelect('c')
-			->where('ct.team = :teamId')
-			->setParameter('teamId', $team->getId())
-			->orderBy($orderBy, 'ASC');
+		->from('LololTeamBundle:ChampionTeam', 'ct')
+		->leftJoin('ct.champion', 'c')
+		->addSelect('c')
+		->where('ct.team = :teamId')
+		->setParameter('teamId', $id)
+		->orderBy($orderBy, 'ASC');
 		
 		return $qb->getQuery()
 		->getResult();

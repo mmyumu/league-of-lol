@@ -17,7 +17,7 @@ class ChampionTeam {
 	
 	/**
 	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team")
+	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team", inversedBy="championsTeam")
 	 */
 	private $team;
 	

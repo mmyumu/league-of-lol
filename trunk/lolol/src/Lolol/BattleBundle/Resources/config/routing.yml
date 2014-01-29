@@ -10,3 +10,6 @@ lolol_battle_defense:
 lolol_battle_defense_promote:
     pattern:  /defense/promote/{id}
     defaults: { _controller: LololBattleBundle:Battle:defensePromote, id: 0  }
+lolol_battle_attackProcess:
+    pattern:  /report
+    defaults: { _controller: LololBattleBundle:Battle:attackProcess}
