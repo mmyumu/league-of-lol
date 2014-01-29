@@ -73,6 +73,17 @@ img.desaturate {
   vertical-align: middle;
 }
 
+.thumbnail-padding-1 {
+	padding: 2px;
+}
+
+.collapse.width {
+    height: auto;
+    -webkit-transition: width 0.35s ease;
+    -moz-transition: width 0.35s ease;
+    -o-transition: width 0.35s ease;
+    transition: width 0.35s ease;
+}
 
 /** Horizontal gutters */
 .gutter-0 {
@@ -102,6 +113,11 @@ img.desaturate {
   padding-left:10px;
 }
 
+/** Horizontal padding */
+.hpadding-10 {
+	padding-right: 10px;
+	padding-left: 10px;
+}
 
 /** Vertical gutters */
 .vgutter-1 {

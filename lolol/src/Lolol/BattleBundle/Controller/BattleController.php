@@ -4,6 +4,7 @@ namespace Lolol\BattleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Lolol\TeamBundle\Entity\Team;
+use Lolol\BattleBundle\Entity\Battle;
 
 class BattleController extends Controller {
 	public function indexAction() {
@@ -11,12 +12,12 @@ class BattleController extends Controller {
 	}
 	
 	/**
-	 *	Display attack page 
+	 * Display attack page
 	 */
 	public function attackAction() {
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
-		$prefixIcons20 = $this->container->getParameter('champions_icons20_prefix');
+		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
 		$suffixIcons = $this->container->getParameter('champions_icons_suffix');
 		$teamSize = $this->container->getParameter('team_size');
 		
@@ -33,26 +34,36 @@ class BattleController extends Controller {
 			$champions = $championRepo->getWithChampionsByTeam($team, 'ct.position');
 			$result[$i]['team'] = $team;
 			$result[$i]['champions'] = $champions;
-				
-			// Initialize the defender team
-			if ($team->isDefender()) {
-				$defender['team'] = $team;
-				$defender['champions'] = $champions;
-			}
+			
+			$i ++;
+		}
+		
+		// Get opponents
+		$opponentTeams = $em->getRepository('LololTeamBundle:Team')->findOpponents($this->getUser());
+		
+		// Get champions by teams
+		$i = 0;
+		$opponents = array();
+		$defender = array();
+		foreach($opponentTeams as $opponentTeam) {
+			$champions = $championRepo->getWithChampionsByTeam($opponentTeam, 'ct.position');
+			$opponents[$i]['team'] = $opponentTeam;
+			$opponents[$i]['champions'] = $champions;
+			
 			$i ++;
 		}
 		
 		return $this->render('LololBattleBundle:Battle:attack.html.twig', array(
 				'results' => $result,
-				'defender' => $defender,
+				'opponents' => $opponents,
 				'folder' => $folder,
-				'prefixIcons20' => $prefixIcons20,
+				'prefixIcons48' => $prefixIcons48,
 				'suffixIcons' => $suffixIcons,
 				'teamSize' => $teamSize));
 	}
 	
 	/**
-	 *	Display defense page
+	 * Display defense page
 	 */
 	public function defenseAction() {
 		// Get the parameters
@@ -113,5 +124,65 @@ class BattleController extends Controller {
 		$em->flush();
 		
 		return $this->redirect($this->generateUrl('lolol_battle_defense'));
+	}
+	
+	/**
+	 * Process the attack.
+	 */
+	public function attackProcessAction() {
+		// Get the services
+		$translator = $this->get('translator');
+		$logger = $this->get('logger');
+		
+		// Get the parameters
+		$folder = $this->container->getParameter('champions_folder');
+		$prefixIcons48 = $this->container->getParameter('champions_icons48_prefix');
+		$suffixIcons = $this->container->getParameter('champions_icons_suffix');
+		$teamSize = $this->container->getParameter('team_size');
+		
+		// Get the opponent/attacker teams
+		$request = $this->getRequest();
+		$opponentTeamId = $request->request->get('opponentTeam');
+		$attackerTeamId = $request->request->get('attackerTeam');
+		
+		// Check the inputs
+		$inputsError = false;
+		if (empty($opponentTeamId)) {
+			$message = $translator->trans('battle.attack.noOpponent');
+			$this->get('session')->getFlashBag()->add('error', $message);
+			
+			$inputsError = true;
+		}
+		
+		if (empty($attackerTeamId)) {
+			$message = $translator->trans('battle.attack.noAttacker');
+			$this->get('session')->getFlashBag()->add('error', $message);
+			
+			$inputsError = true;
+		}
+		
+		if ($inputsError) {
+			return $this->redirect($this->generateUrl('lolol_battle_attack'));
+		}
+		
+		// Battle
+		$logger->info('Battle starts');
+		$em = $this->getDoctrine()->getManager();
+		$opponentTeam = $em->getRepository('LololTeamBundle:Team')->findOneByIdWithChampions($opponentTeamId);
+		$attackerTeam = $em->getRepository('LololTeamBundle:Team')->findOneByIdWithChampions($attackerTeamId);
+		
+		$battle = new Battle($attackerTeam, $opponentTeam);
+			
+		// Fight
+		$battle->fight();
+		
+		$logs = $battle->getLogs();
+				
+		return $this->render('LololBattleBundle:Battle:report.html.twig', array(
+				'folder' => $folder,
+				'logs' => $logs,
+				'prefixIcons48' => $prefixIcons48,
+				'suffixIcons' => $suffixIcons,
+				'teamSize' => $teamSize));
 	}
 }
