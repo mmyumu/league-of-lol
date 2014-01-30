@@ -172,95 +172,11 @@ class Champion {
 	 */
 	private $lastAttackTime;
 	
+	private $attacker;
+	
 	// TODO MLA: Add the attack power, difficulty and stuff and draw lines (like wiki)
 	// TODO MLA: Add the role like primary: tank secondary: mage
 	public function __construct() {
-	}
-	
-	/**
-	 * Prepare the champion for the battle.
-	 */
-	public function prepare() {
-		$this->currentHealth = $this->health;
-	}
-	
-	/**
-	 * Function isAlive()
-	 * Indique si le Champion est encore en vie
-	 *
-	 * @return boolean Champion est-il encore en vie ? Vrai s'il est vivant, faux sinon
-	 */
-	public function isAlive(&$logs) {
-		if ($this->currentHealth > 0) {
-			$logs[]['text'] = 'Le Champion ' . $this->getName() . ' est encore en vie';
-		}
-		else {
-			$logs[]['text'] = 'Le Champion ' . $this->getName() . ' est KO';
-		}
-		return ($this->currentHealth > 0);
-	}
-	
-	/**
-	 * Function play()
-	 * Permet de faire jouer le Champion, s'il peut jouer
-	 * Retourne soit une blessure à infliger, soit false s'il n'a aucun cooldown prêt
-	 *
-	 * @param	float	$p_time	Le moment dans la partie
-	 * @return	IInjury	La blessure à infliger, ou false sinon
-	 */
-	public function play($time = 0, &$logs) {
-		// On n'a rien fait, jusqu'à preuve du contraire
-		$action = false;
-		// Ici l'intelligence du joueur entre en oeuvre
-		// On va prendre en compte ses choix de priorités pour déterminer
-		// ce que fait le Champion selon ses cooldowns
-		/**
-		 * pour l'instant, seule l'attaque par défaut est utilisée
-		 */
-		if ($this->isAlive($logs)) {
-			$action = $this->defaultAttack($time, $logs);
-		}
-		return $action;
-	}
-	
-	/**
-	 * Function defaultAttack()
-	 * Permet d'exécuter une attaque par défaut
-	 * Retourne la blessure à infliger à l'autre équipe
-	 *
-	 * @param	float	$p_time	Le moment dans la partie
-	 * @return	IInjury	La blessure à infliger
-	 */
-	public function defaultAttack($time = 0, &$logs) {
-		// Par défaut, l'attaque est en cooldown
-		$injury = false;
-		$logs[]['text'] = 'Le Champion ' . $this->getName() . ' essaie d\'utiliser son attaque par défaut au round ' . $time;
-		// Vérification du temps écoulé depuis la dernière attaque de ce type
-		$up = $this->lastAttackTime + (1 / $this->attackSpeed) * 2;
-		if ($time >= $up) {
-			// Attaque disponible
-			$logs[]['text'] = 'Le Champion ' . $this->getName() . ' fait une attaque par défaut pour ' . $this->attackDamage . ' dégâts';
-			$injury = new Injury($this->attackDamage);
-			$this->lastAttackTime = $time;
-		}
-		else {
-			// Cooldown
-			$logs[]['text'] = 'Le Champion ' . $this->getName() . ' a son attaque par défaut en cooldown jusqu\'au round ' . ceil($up);
-		}
-		return $injury;
-	}
-	
-	/**
-	 * Function setInjury()
-	 * Inflige la blessure passée en paramètre au Champion
-	 *
-	 * @param	IInjury	p_injury	La blessure à infliger
-	 */
-	public function setInjury(Injury $injury, &$logs) {
-		$logs[]['text'] = 'Le Champion ' . $this->getName() . ' subit une blessure de ' . $injury->getNormalAmount() . ' HP';
-		$logs[]['text'] = 'Le Champion ' . $this->getName() . ' absorbe ' . $this->armor . ' dégâts grâce à son armure';
-		$this->currentHealth -= ($injury->getNormalAmount() - $this->armor);
-		$logs[]['text'] = 'Il reste au Champion ' . $this->getName() . ' ' . $this->currentHealth . ' HP';
 	}
 	
 	/**
@@ -774,5 +690,31 @@ class Champion {
 	 */
 	public function getSubName() {
 		return $this->subName;
+	}
+	public function setCurrentHealth($currentHealth) {
+		$this->currentHealth = $currentHealth;
+	}
+	public function getCurrentHealth() {
+		return $this->currentHealth;
+	}
+	public function setLastAttackTime($lastAttackTime) {
+		$this->lastAttackTime = $lastAttackTime;
+	}
+	public function getLastAttackTime() {
+		return $this->lastAttackTime;
+	}
+	public function setAttacker($attacker) {
+		$this->attacker = $attacker;
+	}
+	public function isAttacker() {
+		return $this->attacker;
+	}
+	public function getIcon() {
+		if ($this->isAttacker()) {
+			return BattleIcon::ATTACKER;
+		}
+		else {
+			return BattleIcon::DEFENDER;
+		}
 	}
 }

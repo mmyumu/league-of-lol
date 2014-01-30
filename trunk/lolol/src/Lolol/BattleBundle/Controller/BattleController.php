@@ -133,6 +133,7 @@ class BattleController extends Controller {
 		// Get the services
 		$translator = $this->get('translator');
 		$logger = $this->get('logger');
+		$battleManager = $this->get('lolol_battle.battleManager');
 		
 		// Get the parameters
 		$folder = $this->container->getParameter('champions_folder');
@@ -171,15 +172,17 @@ class BattleController extends Controller {
 		$opponentTeam = $em->getRepository('LololTeamBundle:Team')->findOneByIdWithChampions($opponentTeamId);
 		$attackerTeam = $em->getRepository('LololTeamBundle:Team')->findOneByIdWithChampions($attackerTeamId);
 		
-		$battle = new Battle($attackerTeam, $opponentTeam);
-			
 		// Fight
-		$battle->fight();
+		$battle = $battleManager->fight($opponentTeam, $attackerTeam);
 		
-		$logs = $battle->getLogs();
-				
+		$logs = $battleManager->getBattleLogger()->getLogs();
+		$logs[]['text'] = 'test';
+		
+		$logs = $battleManager->getBattleLogger()->getLogs();
+
 		return $this->render('LololBattleBundle:Battle:report.html.twig', array(
 				'folder' => $folder,
+				'result' => $battle->getResult(),
 				'logs' => $logs,
 				'prefixIcons48' => $prefixIcons48,
 				'suffixIcons' => $suffixIcons,

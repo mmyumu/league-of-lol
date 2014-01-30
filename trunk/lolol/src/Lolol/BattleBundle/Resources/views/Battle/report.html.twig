@@ -16,9 +16,23 @@
 
 
 {% block lolol_main %}
-
-{% for log in logs %}
-{{ log.text }}<br />
-{% endfor %}
+<div class="panel-group" id="accordion">
+  <div class="panel panel-{% if result == 0 %}warning{% elseif result == 1 %}success{% elseif 2 %}danger{% endif %}">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+			+ {% if result == 0 %}{{ 'battle.report.draw'|trans }}{% elseif result == 1 %}{{ 'battle.report.win'|trans }}{% elseif 2 %}{{ 'battle.report.loose'|trans }}{% endif %}
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">
+		{% for log in logs %}
+		<p class="{{ log.class }}">{% if log.strong %}<strong>{% endif %}{% if log.icon %}<i class="fa {{ log.icon }} fa-fw"></i> {% endif %}{% if log.text is empty %}&nbsp;{% else %}{{ log.text }}{% endif %}{% if log.strong %}</strong>{% endif %}</p>
+		{% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

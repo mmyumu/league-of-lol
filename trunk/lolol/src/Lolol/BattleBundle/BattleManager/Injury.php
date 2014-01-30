@@ -1,6 +1,6 @@
 <?php
 
-namespace Lolol\BattleBundle\Entity;
+namespace Lolol\BattleBundle\BattleManager;
 
 class Injury {
 	
