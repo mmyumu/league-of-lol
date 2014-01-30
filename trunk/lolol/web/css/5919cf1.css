@@ -5987,42 +5987,6 @@ td > label {
 	font-weight: normal;
 }
 
-.gutter-0 {
-	margin-left: 0px;
-	margin-right: 0px;
-}
-.gutter-0 [class*="col-"] {
-  padding-right:0px;
-  padding-left:0px;
-}
-
-.gutter-1 {
-	margin-left: -1px;
-	margin-right: -1px;
-}
-.gutter-1 [class*="col-"] {
-  padding-right:1px;
-  padding-left:1px;
-}
-
-.gutter-10 {
-	margin-left: -10px;
-	margin-right: -10px;
-}
-.gutter-10 [class*="col-"] {
-  padding-right:10px;
-  padding-left:10px;
-}
-
-.vgutter-1 {
-	margin-top: -1px;
-	margin-bottom: -1px;
-}
-.vgutter-1 [class*="col-"] {
-  padding-top:1px;
-  padding-bottom:1px;
-}
-
 .compacted-gallery a {
 	overflow: hidden;
 }
@@ -6062,6 +6026,100 @@ img.desaturate {
 .champion-selected {
 	border-color: #428bca;
 }
+
+.popover.in {
+    z-index: 9999;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.center-y {
+  margin-top: -1px;
+  vertical-align: middle;
+}
+
+.thumbnail-padding-1 {
+	padding: 2px;
+}
+
+.collapse.width {
+    height: auto;
+    -webkit-transition: width 0.35s ease;
+    -moz-transition: width 0.35s ease;
+    -o-transition: width 0.35s ease;
+    transition: width 0.35s ease;
+}
+
+/** Horizontal gutters */
+.gutter-0 {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.gutter-0 [class*="col-"] {
+  padding-right:0px;
+  padding-left:0px;
+}
+
+.gutter-1 {
+	margin-left: -1px;
+	margin-right: -1px;
+}
+.gutter-1 [class*="col-"] {
+  padding-right:1px;
+  padding-left:1px;
+}
+
+.gutter-10 {
+	margin-left: -10px;
+	margin-right: -10px;
+}
+.gutter-10 [class*="col-"] {
+  padding-right:10px;
+  padding-left:10px;
+}
+
+/** Horizontal padding */
+.hpadding-10 {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+/** Vertical gutters */
+.vgutter-1 {
+	margin-top: -1px;
+	margin-bottom: -1px;
+}
+.vgutter-1 [class*="col-"] {
+  padding-top:1px;
+  padding-bottom:1px;
+}
+.vgutter-2 {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+.vgutter-2 {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+.vgutter-10 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.vpadding-0 {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.vpadding-4 {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+/* Debug */
 .red {
 	background-color: red;	
 }
@@ -6073,16 +6131,6 @@ img.desaturate {
 }
 .yellow {
 	background-color: yellow;	
-}
-.vgutter-2 {
-	margin-bottom: 2px;
-}
-.vgutter-10 {
-	margin-bottom: 2px;
-}
-
-.popover.in {
-    z-index: 9999;
 }
 /*!
  *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
