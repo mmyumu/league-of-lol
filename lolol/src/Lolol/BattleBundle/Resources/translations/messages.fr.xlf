@@ -62,6 +62,22 @@
                 <source>battle.report</source>
                 <target>Rapport de bataille</target>
             </trans-unit>
+            <trans-unit id="16">
+                <source>battle.report.logs</source>
+                <target>Logs</target>
+            </trans-unit>
+           <trans-unit id="17">
+                <source>battle.report.draw</source>
+                <target>Match nul</target>
+            </trans-unit>
+           <trans-unit id="18">
+                <source>battle.report.victory</source>
+                <target>Victoire</target>
+            </trans-unit>
+           <trans-unit id="19">
+                <source>battle.report.defeat</source>
+                <target>Défaite</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

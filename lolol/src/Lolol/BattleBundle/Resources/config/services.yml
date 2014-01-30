@@ -2,6 +2,14 @@ parameters:
 #    lolol_battle.example.class: Lolol\BattleBundle\Example
 
 services:
+    lolol_battle.battleManager:
+        class: Lolol\BattleBundle\BattleManager\BattleManager
+        arguments: [@lolol_battle.logger, @lolol_team.teamManager]
+        
+    lolol_battle.logger:
+        class: Lolol\BattleBundle\BattleManager\BattleLogger
+#        arguments: [@service_id, "plain_value", %parameter%]
+
 #    lolol_battle.example:
 #        class: %lolol_battle.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
