@@ -158,21 +158,6 @@ class Champion {
 	 */
 	private $bonusAttackSpeed;
 	
-	/**
-	 * Current health during battle
-	 *
-	 * @var float
-	 */
-	private $currentHealth;
-	
-	/**
-	 * Time of last attack
-	 *
-	 * @var float
-	 */
-	private $lastAttackTime;
-	
-	private $attacker;
 	
 	// TODO MLA: Add the attack power, difficulty and stuff and draw lines (like wiki)
 	// TODO MLA: Add the role like primary: tank secondary: mage
@@ -690,31 +675,5 @@ class Champion {
 	 */
 	public function getSubName() {
 		return $this->subName;
-	}
-	public function setCurrentHealth($currentHealth) {
-		$this->currentHealth = $currentHealth;
-	}
-	public function getCurrentHealth() {
-		return $this->currentHealth;
-	}
-	public function setLastAttackTime($lastAttackTime) {
-		$this->lastAttackTime = $lastAttackTime;
-	}
-	public function getLastAttackTime() {
-		return $this->lastAttackTime;
-	}
-	public function setAttacker($attacker) {
-		$this->attacker = $attacker;
-	}
-	public function isAttacker() {
-		return $this->attacker;
-	}
-	public function getIcon() {
-		if ($this->isAttacker()) {
-			return BattleIcon::ATTACKER;
-		}
-		else {
-			return BattleIcon::DEFENDER;
-		}
 	}
 }

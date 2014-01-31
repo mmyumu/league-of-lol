@@ -3,8 +3,9 @@
 namespace Lolol\BattleBundle\BattleManager;
 
 use Lolol\TeamBundle\TeamManager\TeamManager as TeamManager;
-use Lolol\TeamBundle\Entity\Team as Team;
+use Lolol\BattleBundle\BattleManager\BattleTeam as BattleTeam;
 use Lolol\BattleBundle\Entity\Battle as Battle;
+use Lolol\TeamBundle\Entity\Team as Team;
 
 class BattleManager {
 	private $battleLogger;
@@ -15,9 +16,11 @@ class BattleManager {
 		$this->teamManager = $teamManager;
 	}
 	public function fight(Team $opponentTeam, Team $attackerTeam) {
-		$battle = new Battle($attackerTeam, $opponentTeam);
-		$attackerTeam->setAttacker(true);
-		$opponentTeam->setAttacker(false);
+		// Initialize battle teams
+		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $this->battleLogger);
+		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $this->battleLogger);
+		
+		$battle = new Battle($opponentTeam, $attackerTeam);
 		
 		$this->battleLogger->log('Attacker team: ' . $attackerTeam->getName(), '', true, BattleIcon::ATTACKER);
 		$this->battleLogger->log($attackerTeam->championsToString(), '', false, BattleIcon::ATTACKER);
@@ -29,12 +32,10 @@ class BattleManager {
 		
 		$this->battleLogger->log('Battle starts', '', true, BattleIcon::CLOCK);
 		
-		$this->prepare($battle);
-		
 		$time = 0;
 		
-		$loosers = $this->getLoosers($battle);
-		while (count($loosers) == 0) {
+		$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam);
+		while ($battleResult == null) {
 			// Le combat continue jusqu'à ce qu'une équipe ait perdu
 			$this->battleLogger->log('Début round ' . $time, '', false, BattleIcon::CLOCK);
 			$actionOpponent = true;
@@ -59,28 +60,33 @@ class BattleManager {
 			$this->battleLogger->log('On vérifie si chacune des deux équipes a bien au moins un Champion encore debout');
 			
 			$time ++;
-			$loosers = $this->getLoosers($battle);
+			$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam);
 		}
 
-		// Initialize the result of the battle
-		if(count($loosers) == 2) {
-			$battle->setResult(BattleResult::DRAW);
-		} else {
-			if($loosers[0] == $opponentTeam) {
-				$battle->setResult(BattleResult::WIN);
-			} else {
-				$battle->setResult(BattleResult::LOOSE);
-			}
-		}
+		$battle->setResult($battleResult);
 		
 		$this->battleLogger->log('end fight');
 		
 		return $battle;
 	}
-	public function prepare(Battle $battle) {
-		$this->teamManager->prepare($battle->getOpponentTeam(), false);
-		$this->teamManager->prepare($battle->getAttackerTeam(), true);
+
+	/**
+	 * Compute the result of the battle, DRAW, WIN, LOOSE
+	 * @return the result or null if the battle is not finished
+	 */
+	public function computeResult(BattleTeam $opponentBattleTeam, BattleTeam $attackerBattleTeam) {
+		if($opponentBattleTeam->hasLost() && $attackerBattleTeam->hasLost()) {
+			return BattleResult::DRAW;
+		}
+		if($opponentBattleTeam->hasLost()) {
+			return BattleResult::WIN;
+		}
+		if($attackerBattleTeam->hasLost()) {
+			return BattleResult::LOST;
+		}
+		return null;
 	}
+	
 	public function getLoosers(Battle $battle) {
 		$loosers = array();
 		if($this->teamManager->hasLost($battle->getOpponentTeam())) {

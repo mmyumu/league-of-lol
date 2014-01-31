@@ -4,6 +4,7 @@ namespace Lolol\BattleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Lolol\TeamBundle\Entity\Team;
+use Lolol\BattleBundle\BattleManager\BattleTeam;
 use Lolol\BattleBundle\Entity\Battle;
 
 class BattleController extends Controller {
@@ -182,6 +183,7 @@ class BattleController extends Controller {
 
 		return $this->render('LololBattleBundle:Battle:report.html.twig', array(
 				'folder' => $folder,
+				'team' => $opponentBattleTeam,
 				'result' => $battle->getResult(),
 				'logs' => $logs,
 				'prefixIcons48' => $prefixIcons48,
