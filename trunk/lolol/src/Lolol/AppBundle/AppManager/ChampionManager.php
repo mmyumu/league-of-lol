@@ -11,49 +11,9 @@ class ChampionManager {
 	public function __construct(BattleLogger $battleLogger) {
 		$this->battleLogger = $battleLogger;
 	}
-	public function prepare(Champion $champion, $attacker) {
+	public function prepare(BattleChampion $champion, $attacker) {
 		$champion->setAttacker($attacker);
 		$champion->setCurrentHealth($champion->getHealth());
-	}
-	
-	/**
-	 * Function isAlive()
-	 * Indique si le Champion est encore en vie
-	 *
-	 * @return boolean Champion est-il encore en vie ? Vrai s'il est vivant, faux sinon
-	 */
-	public function isAlive(Champion $champion) {
-		if ($champion->getCurrentHealth() > 0) {
-			$this->battleLogger->log('Le Champion ' . $champion->getName() . ' est encore en vie', '', false, $champion->getIcon());
-		}
-		else {
-			$this->battleLogger->log('Le Champion ' . $champion->getName() . ' est KO', '', false, $champion->getIcon());
-		}
-		return ($champion->getCurrentHealth() > 0);
-	}
-	
-	/**
-	 * Function play()
-	 * Permet de faire jouer le Champion, s'il peut jouer
-	 * Retourne soit une blessure à infliger, soit false s'il n'a aucun cooldown prêt
-	 *
-	 * @param float $p_time
-	 *        	dans la partie
-	 * @return IInjury blessure à infliger, ou false sinon
-	 */
-	public function play(Champion $champion, $time = 0) {
-		// On n'a rien fait, jusqu'à preuve du contraire
-		$action = false;
-		// Ici l'intelligence du joueur entre en oeuvre
-		// On va prendre en compte ses choix de priorités pour déterminer
-		// ce que fait le Champion selon ses cooldowns
-		/**
-		 * pour l'instant, seule l'attaque par défaut est utilisée
-		 */
-		if ($this->isAlive($champion)) {
-			$action = $this->defaultAttack($champion, $time);
-		}
-		return $action;
 	}
 	
 	/**

@@ -44,7 +44,7 @@ class Team {
 	 */
 	private $defender;
 	
-	private $attacker;
+	
 	
 	/**
 	 * Constructor
@@ -175,22 +175,5 @@ class Team {
 	 */
 	public function getChampionsTeam() {
 		return $this->championsTeam;
-	}
-	public function setCurrentHealth($currentHealth) {
-		$this->currentHealth = $currentHealth;
-	}
-	public function setAttacker($attacker) {
-		$this->attacker = $attacker;
-	}
-	public function isAttacker() {
-		return $this->attacker;
-	}
-	public function getIcon() {
-		if ($this->isAttacker()) {
-			return BattleIcon::ATTACKER;
-		}
-		else {
-			return BattleIcon::DEFENDER;
-		}
 	}
 }

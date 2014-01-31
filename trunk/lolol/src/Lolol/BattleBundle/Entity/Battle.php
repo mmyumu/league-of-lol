@@ -36,12 +36,12 @@ class Battle {
 	/**
 	 * Constructor.
 	 *
+	 * @param Team $opponentTeam
 	 * @param Team $attackerTeam        	
-	 * @param Team $opponentTeam        	
 	 */
-	public function __construct(Team $attackerTeam, Team $opponentTeam) {
-		$this->attackerTeam = $attackerTeam;
+	public function __construct(Team $opponentTeam, Team $attackerTeam) {
 		$this->opponentTeam = $opponentTeam;
+		$this->attackerTeam = $attackerTeam;
 	}
 		
 	/**
