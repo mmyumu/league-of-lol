@@ -183,7 +183,6 @@ class BattleController extends Controller {
 
 		return $this->render('LololBattleBundle:Battle:report.html.twig', array(
 				'folder' => $folder,
-				'team' => $opponentBattleTeam,
 				'result' => $battle->getResult(),
 				'logs' => $logs,
 				'prefixIcons48' => $prefixIcons48,

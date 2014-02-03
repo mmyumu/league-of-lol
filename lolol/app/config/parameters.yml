@@ -19,7 +19,8 @@ parameters:
     champions_icons_suffix: Square.png
     champions_icons_suffix_sp: _Cuadrado.png
     wiki_url: 'http://leagueoflegends.wikia.com/wiki/'
-    http_proxy: 'proxy_aeropark:8080'
+    #http_proxy: 'proxy_aeropark:8080'
+    http_proxy: 
     team_size: 5
     vendor_security.authentication_handler: Lolol\UserBundle\Handler\AuthenticationHandler
     app_title: LoloL

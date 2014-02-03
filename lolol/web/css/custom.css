@@ -21,6 +21,7 @@ td > label {
 
 .compacted-gallery a {
 	overflow: hidden;
+	white-space: nowrap;
 }
 
 .stat-title{

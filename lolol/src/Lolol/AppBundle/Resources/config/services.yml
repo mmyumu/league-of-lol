@@ -5,9 +5,6 @@ services:
     lolol_app.stringHelper:
         class: Lolol\AppBundle\StringHelper\LololStringHelper
         arguments: [%champions_folder%,%champions_icons48_prefix%, %champions_icons20_prefix%, %champions_icons_suffix%]
-    lolol_app.championManager:
-        class: Lolol\AppBundle\AppManager\ChampionManager
-        arguments: [@lolol_battle.logger]
 #    lolol_app.example:
 #        class: %lolol_app.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
