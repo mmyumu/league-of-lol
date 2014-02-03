@@ -4,7 +4,7 @@ parameters:
 services:
     lolol_battle.battleManager:
         class: Lolol\BattleBundle\BattleManager\BattleManager
-        arguments: [@lolol_battle.logger, @lolol_team.teamManager]
+        arguments: [@lolol_battle.logger, @translator]
         
     lolol_battle.logger:
         class: Lolol\BattleBundle\BattleManager\BattleLogger

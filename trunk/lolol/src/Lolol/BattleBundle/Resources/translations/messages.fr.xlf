@@ -78,6 +78,22 @@
                 <source>battle.report.defeat</source>
                 <target>Défaite</target>
             </trans-unit>
+           <trans-unit id="20">
+                <source>battle.report.attacker</source>
+                <target>Attaquants </target>
+            </trans-unit>
+           <trans-unit id="21">
+                <source>battle.report.opponent</source>
+                <target>Adversaires </target>
+            </trans-unit>
+           <trans-unit id="22">
+                <source>battle.report.start</source>
+                <target>La bataille commence</target>
+            </trans-unit>
+           <trans-unit id="23">
+                <source>battle.report.roundBegin</source>
+                <target>Début du round %roundNumber%</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

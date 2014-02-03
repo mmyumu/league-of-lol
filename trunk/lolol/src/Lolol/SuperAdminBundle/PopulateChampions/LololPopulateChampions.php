@@ -134,8 +134,8 @@ class LololPopulateChampions {
 			/*
 			 * $aContext = array( 'http' => array( 'proxy' => 'proxy_aeropark:8080', 'request_fulluri' => true, ), ); $cxContext = stream_context_create($aContext);
 			 */
-			
-			$filename = $this->folder . '/' . $championName . $this->statExtension;
+			$championFileName = str_replace(' ', '_', $championName);
+			$filename = $this->folder . '/' . $championFileName . $this->statExtension;
 			
 			// If there is a matching wiki file, user it to add/update champion in DB, otherwise skip this champion
 			if ($fs->exists($filename)) {
@@ -184,7 +184,7 @@ class LololPopulateChampions {
 				for($i = 0; $i < $spans->length; $i++) {
 					$node = $spans->item($i);
 					$value = trim($node->nodeValue);
-					if($value == $championName) {
+					if(strpos($value, $championName) !== FALSE) {
 						$nextNode = $spans->item($i+1);
 						$nextValue = trim($nextNode->nodeValue);
 						$champion->setSubName($nextValue);

@@ -108,7 +108,7 @@ class BattleTeam {
 	 */
 	public function play($time = 0) {
 		// On n'a rien fait, jusqu'à preuve du contraire
-		$this->battleLogger->log('L\'équipe ' . $team->getName() . ' regarde qui peut jouer au round ' . $time, '', false, $this->getIcon());
+		$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' regarde qui peut jouer au round ' . $time, '', false, $this->getIcon());
 		$action = false;
 	
 		// Recherche d'un champion qui peut jouer
@@ -129,5 +129,24 @@ class BattleTeam {
 			$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' n\'a plus de Champion activable au tour ' . $time, '', false, $this->getIcon());
 		}
 		return $action;
+	}
+	
+	/**
+	 * Function setInjury()
+	 * Inflige la blessure passée en paramètre à un Champion de l'équipe
+	 *
+	 * @param
+	 *        	IInjury	p_injury	La blessure à infliger
+	 */
+	public function setInjury(Injury $injury) {
+		$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' regarde à quel Champion infliger la blessure');
+		// Recherche d'un champion encore en vie
+		foreach($this->battleChampions as $battleChampion) {
+			if ($battleChampion->isAlive()) {
+				$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' inflige la blessure à ' . $battleChampion->getChampion()->getName() . ' car il est encore en vie');
+				$battleChampion->setInjury($injury);
+				break;
+			}
+		}
 	}
 }

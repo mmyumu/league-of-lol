@@ -24,13 +24,14 @@ class ShopController extends Controller {
 		
 		$em = $this->getDoctrine()->getManager();
 		
-		$champions = $em->getRepository('LololAppBundle:Champion')->findAll();
+		$champions = $em->getRepository('LololAppBundle:Champion')->findBy(array(), array('name' => 'ASC'));
 		
 		return $this->render('LololShopBundle:Shop:champions.html.twig', array(
 				'champions' => $champions,
 				'folder' => $folder,
 				'prefixIcons48' => $prefixIcons48,
-				'suffixIcons' => $suffixIcons));
+				'suffixIcons' => $suffixIcons
+		));
 	}
 	
 	/**
@@ -54,13 +55,14 @@ class ShopController extends Controller {
 		foreach($user->getChampions() as $userChampion) {
 			if ($userChampion->getId() == $champion->getId()) {
 				$this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('champion.owned.error', array(
-						'%championName%' => $champion->getName())));
+						'%championName%' => $champion->getName()
+				)));
 				$owned = true;
 				break;
 			}
 		}
 		
-		if (! $owned) {
+		if (!$owned) {
 			$user->addChampion($champion);
 			$em->persist($user);
 			$em->flush();
