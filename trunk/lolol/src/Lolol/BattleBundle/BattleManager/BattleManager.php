@@ -17,8 +17,8 @@ class BattleManager {
 	}
 	public function fight(Team $opponentTeam, Team $attackerTeam) {
 		// Initialize battle teams
-		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $this->battleLogger);
-		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $this->battleLogger);
+		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $this->battleLogger, $this->translator);
+		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $this->battleLogger, $this->translator);
 		
 		$battle = new Battle($opponentTeam, $attackerTeam);
 		
@@ -58,16 +58,14 @@ class BattleManager {
 			}
 			// Tout le monde a donc joué simultannément, sans vérification d'une victoire intermédiaire
 			// C'est seulement après que chacun ait fait son action du moment qu'on avance le temps
-			$this->battleLogger->log('Fin round ' . $time);
-			$this->battleLogger->log('On vérifie si chacune des deux équipes a bien au moins un Champion encore debout');
+			
+			$this->battleLogger->log($this->translator->trans('battle.report.roundEnd', array('%roundNumber%' => $time)), '', true);
 			
 			$time ++;
 			$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam);
 		}
 
 		$battle->setResult($battleResult);
-		
-		$this->battleLogger->log('end fight');
 		
 		return $battle;
 	}
@@ -80,16 +78,16 @@ class BattleManager {
 		$opponentLost = $opponentBattleTeam->hasLost();
 		$attackerLost = $attackerBattleTeam->hasLost();
 		if($opponentLost && $attackerLost) {
-			$this->battleLogger->log('DRAW');
+			$this->battleLogger->log($this->translator->trans('battle.report.draw'), 'text-warning', true);
 			return BattleResult::DRAW;
 		}
 		if($opponentLost) {
-			$this->battleLogger->log('WIN');
-			return BattleResult::WIN;
+			$this->battleLogger->log($this->translator->trans('battle.report.victory'), 'text-success', true);
+			return BattleResult::VICTORY;
 		}
 		if($attackerLost) {
-			$this->battleLogger->log('LOST');
-			return BattleResult::LOST;
+			$this->battleLogger->log($this->translator->trans('battle.report.defeat'), 'text-danger', true);
+			return BattleResult::DEFEAT;
 		}
 		return null;
 	}

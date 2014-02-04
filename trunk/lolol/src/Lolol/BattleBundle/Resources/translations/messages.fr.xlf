@@ -94,6 +94,22 @@
                 <source>battle.report.roundBegin</source>
                 <target>Début du round %roundNumber%</target>
             </trans-unit>
+           <trans-unit id="24">
+                <source>battle.report.roundEnd</source>
+                <target>Fin du round %roundNumber%</target>
+            </trans-unit>
+           <trans-unit id="25">
+                <source>battle.report.team.canPlay</source>
+                <target>L'équipe %teamName% regarde qui peut jouer au round %roundNumber%...</target>
+            </trans-unit>
+           <trans-unit id="26">
+                <source>battle.report.team.askChampion</source>
+                <target>...l'équipe %teamName% demande au Champion %championName%...</target>
+            </trans-unit>
+           <trans-unit id="27">
+                <source>battle.report.team.championPlayed</source>
+                <target>L'équipe %teamName% a fait jouer son Champion %championName%...</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

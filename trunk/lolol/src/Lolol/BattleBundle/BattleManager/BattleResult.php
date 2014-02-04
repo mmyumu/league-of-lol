@@ -6,6 +6,6 @@ use Lolol\AppBundle\BasicEnum\BasicEnum as BasicEnum;
 
 abstract class BattleResult extends BasicEnum {
     const DRAW = 0;
-    const WIN = 1;
-    const LOOSE = 2;
+    const VICTORY = 1;
+    const DEFEAT = 2;
 }

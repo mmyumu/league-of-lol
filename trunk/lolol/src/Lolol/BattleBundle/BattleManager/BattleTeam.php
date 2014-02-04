@@ -3,6 +3,7 @@
 namespace Lolol\BattleBundle\BattleManager;
 
 use Lolol\TeamBundle\Entity\Team as Team;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class BattleTeam {
 	
@@ -28,6 +29,13 @@ class BattleTeam {
 	private $battleLogger;
 	
 	/**
+	 * The translator service
+	 * 
+	 * @var TranslatorInterface
+	 */
+	private $translator;
+	
+	/**
 	 * The champions of the team
 	 * 
 	 * @var BattleChampion
@@ -40,10 +48,11 @@ class BattleTeam {
 	 * @param Team $team        	
 	 * @param boolean $attacker        	
 	 */
-	public function __construct(Team $team, $attacker, $battleLogger) {
+	public function __construct(Team $team, $attacker, $battleLogger, TranslatorInterface $translator) {
 		$this->team = $team;
 		$this->attacker = $attacker;
 		$this->battleLogger = $battleLogger;
+		$this->translator = $translator;
 		
 		foreach($team->getChampionsTeam() as $championTeam) {
 			$this->battleChampions[$championTeam->getPosition()] = new BattleChampion($championTeam->getChampion(), $attacker, $battleLogger);
@@ -108,17 +117,17 @@ class BattleTeam {
 	 */
 	public function play($time = 0) {
 		// On n'a rien fait, jusqu'à preuve du contraire
-		$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' regarde qui peut jouer au round ' . $time, '', false, $this->getIcon());
+		$this->battleLogger->log($this->translator->trans('battle.report.team.canPlay', array('%teamName%' => $this->team->getName(), '%roundNumber%' => $time)), '', false, $this->getIcon());
 		$action = false;
 	
 		// Recherche d'un champion qui peut jouer
 		foreach($this->battleChampions as $battleChampion) {
-			$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' demande au Champion ' . $battleChampion->getChampion()->getName(), '', false, $this->getIcon());
+			$this->battleLogger->log($this->translator->trans('battle.report.team.askChampion', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), '', false, $this->getIcon());
 				
 			$injury = $battleChampion->play($time);
 			$action = $injury;
 			if ($injury !== false) {
-				$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' a fait jouer son Champion ' . $battleChampion->getChampion()->getName(), '', false, $this->getIcon());
+				$this->battleLogger->log($this->translator->trans('battle.report.team.championPlayed', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), '', false, $this->getIcon());
 				break;
 			}
 			else {
