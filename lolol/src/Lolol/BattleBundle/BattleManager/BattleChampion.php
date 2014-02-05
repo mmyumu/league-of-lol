@@ -3,6 +3,7 @@
 namespace Lolol\BattleBundle\BattleManager;
 
 use Lolol\AppBundle\Entity\Champion as Champion;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class BattleChampion extends Champion {
 	
@@ -29,9 +30,16 @@ class BattleChampion extends Champion {
 	/**
 	 * The logger of the battle.
 	 * 
-	 * @var string
+	 * @var BattleLogger
 	 */
 	private $battleLogger;
+	
+	/**
+	 * 
+	 * 
+	 * @var TranslatorInterface
+	 */
+	private $translator;
 	
 	/**
 	 * Initialize the champion for the battle
@@ -39,10 +47,11 @@ class BattleChampion extends Champion {
 	 * @param boolean $attacker
 	 * @param string $logs
 	 */
-	public function __construct(Champion $champion, $attacker, $battleLogger) {
+	public function __construct(Champion $champion, $attacker, BattleLogger $battleLogger, TranslatorInterface $translator) {
 		$this->champion = $champion;
 		$this->attacker = $attacker;
 		$this->battleLogger = $battleLogger;
+		$this->translator = $translator;
 		$lastAttackTime = 0;
 		$this->currentHealth = $champion->getHealth();
 	}
@@ -93,10 +102,10 @@ class BattleChampion extends Champion {
 	 */
 	public function isAlive() {
 		if ($this->getCurrentHealth() > 0) {
-			$this->battleLogger->log('Le Champion ' . $this->champion->getName() . ' est encore en vie', 'text-success', false, $this->getIcon());
+			$this->battleLogger->log($this->translator->trans('battle.report.champion.alive', array('%championName%' => $this->getChampion()->getName())), 'text-success', false, $this->getIcon());
 		}
 		else {
-			$this->battleLogger->log('Le Champion ' . $this->champion->getName() . ' est KO', 'text-danger', false, $this->getIcon());
+			$this->battleLogger->log($this->translator->trans('battle.report.champion.ko', array('%championName%' => $this->getChampion()->getName())), 'text-danger', false, $this->getIcon());
 		}
 		return ($this->getCurrentHealth() > 0);
 	}
@@ -137,19 +146,19 @@ class BattleChampion extends Champion {
 	public function defaultAttack($time = 0) {
 		// Par défaut, l'attaque est en cooldown
 		$injury = false;
-		$this->battleLogger->log('Le Champion ' . $this->champion->getName() . ' essaie d\'utiliser son attaque par défaut au round ' . $time, '', false, $this->getIcon());
+		$this->battleLogger->log($this->translator->trans('battle.report.champion.tryDefaultAttack', array('%championName%' => $this->getChampion()->getName(), '%time%' => $time)), 'text-muted', false, $this->getIcon());
 		// Vérification du temps écoulé depuis la dernière attaque de ce type
 		$up = $this->getLastAttackTime() + (1 / $this->champion->getAttackSpeed()) * 2;
 		if ($time >= $up) {
 			// Attaque disponible
-			$this->battleLogger->log('Le Champion ' . $this->champion->getName() . ' fait une attaque par défaut pour ' . $this->champion->getAttackDamage() . ' dégâts', '', false, $this->getIcon());
+			$this->battleLogger->log($this->translator->trans('battle.report.champion.defaultAttack', array('%championName%' => $this->getChampion()->getName(), '%attackDamage%' => $this->champion->getAttackDamage())), 'text-primary', false, $this->getIcon());
 			$injury = new Injury($this->champion->getAttackDamage());
 			$this->setLastAttackTime($time);
 			// $this->lastAttackTime = $time;
 		}
 		else {
 			// Cooldown
-			$this->battleLogger->log('Le Champion ' . $this->champion->getName() . ' a son attaque par défaut en cooldown jusqu\'au round ' . ceil($up), '', false, $this->getIcon());
+			$this->battleLogger->log($this->translator->trans('battle.report.champion.defaultAttackCooldown', array('%championName%' => $this->getChampion()->getName(), '%time%' => ceil($up))), 'text-muted', false, $this->getIcon());
 		}
 		return $injury;
 	}
@@ -162,9 +171,9 @@ class BattleChampion extends Champion {
 	 *        	IInjury	p_injury	La blessure à infliger
 	 */
 	public function setInjury(Injury $injury) {
-		$this->battleLogger->log('Le Champion ' . $this->champion->getName() . ' subit une blessure de ' . $injury->getNormalAmount() . ' HP', '', false, $this->getIcon());
-		$this->battleLogger->log('Le Champion ' . $this->champion->getName() . ' absorbe ' . $this->champion->getArmor() . ' dégâts grâce à son armure', '', false, $this->getIcon());
+		$this->battleLogger->log($this->translator->trans('battle.report.champion.injured', array('%championName%' => $this->getChampion()->getName(), '%damage%' => $injury->getNormalAmount())), 'text-danger', false, $this->getIcon());
+		$this->battleLogger->log($this->translator->trans('battle.report.champion.armorAbsorption', array('%championName%' => $this->getChampion()->getName(), '%armor%' => $this->champion->getArmor())), 'text-warning', false, $this->getIcon());
 		$this->setCurrentHealth($this->getCurrentHealth() - ($injury->getNormalAmount() - $this->champion->getArmor()));
-		$this->battleLogger->log('Il reste au Champion ' . $this->champion->getName() . ' ' . $this->getCurrentHealth() . ' HP', '', false, $this->getIcon());
+		$this->battleLogger->log($this->translator->trans('battle.report.champion.hp', array('%championName%' => $this->getChampion()->getName(), '%currentHP%' => $this->getCurrentHealth())), 'text-info', false, $this->getIcon());
 	}
 }
