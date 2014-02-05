@@ -92,15 +92,15 @@
             </trans-unit>
            <trans-unit id="23">
                 <source>battle.report.roundBegin</source>
-                <target>Début du round %roundNumber%</target>
+                <target>Début du round %time%</target>
             </trans-unit>
            <trans-unit id="24">
                 <source>battle.report.roundEnd</source>
-                <target>Fin du round %roundNumber%</target>
+                <target>Fin du round %time%</target>
             </trans-unit>
            <trans-unit id="25">
                 <source>battle.report.team.canPlay</source>
-                <target>L'équipe %teamName% regarde qui peut jouer au round %roundNumber%...</target>
+                <target>L'équipe %teamName% regarde qui peut jouer au round %time%...</target>
             </trans-unit>
            <trans-unit id="26">
                 <source>battle.report.team.askChampion</source>
@@ -108,7 +108,55 @@
             </trans-unit>
            <trans-unit id="27">
                 <source>battle.report.team.championPlayed</source>
-                <target>L'équipe %teamName% a fait jouer son Champion %championName%...</target>
+                <target>L'équipe %teamName% a fait jouer son Champion %championName%</target>
+            </trans-unit>
+           <trans-unit id="28">
+                <source>battle.report.team.championCannotPlay</source>
+                <target>L'équipe %teamName% n'a pas pu faire jouer son Champion %championName%</target>
+            </trans-unit>
+           <trans-unit id="29">
+                <source>battle.report.team.noMoreChampions</source>
+                <target>L'équipe %teamName% n'a plus de Champion activable au tour %time%</target>
+            </trans-unit>
+           <trans-unit id="30">
+                <source>battle.report.team.injuryWhichChampion</source>
+                <target>L'équipe %teamName% regarde à quel Champion infliger la blessure</target>
+            </trans-unit>
+           <trans-unit id="31">
+                <source>battle.report.team.injureChampion</source>
+                <target>L'équipe %teamName% inflige la blessure à %championName% car il est encore en vie</target>
+            </trans-unit>
+           <trans-unit id="32">
+                <source>battle.report.champion.alive</source>
+                <target>Le Champion %championName% est encore en vie</target>
+            </trans-unit>
+           <trans-unit id="33">
+                <source>battle.report.champion.ko</source>
+                <target>Le Champion %championName% est KO</target>
+            </trans-unit>
+           <trans-unit id="34">
+                <source>battle.report.champion.tryDefaultAttack</source>
+                <target>Le Champion %championName% essaie d'utiliser son attaque par défaut au round %time%</target>
+            </trans-unit>
+           <trans-unit id="35">
+                <source>battle.report.champion.defaultAttack</source>
+                <target>Le Champion %championName% fait une attaque par défaut pour %attackDamage% dégâts</target>
+            </trans-unit>
+           <trans-unit id="36">
+                <source>battle.report.champion.defaultAttackCooldown</source>
+                <target>Le Champion %championName% a son attaque par défaut en cooldown jusqu'au round %time%</target>
+            </trans-unit>
+           <trans-unit id="37">
+                <source>battle.report.champion.injured</source>
+                <target>Le Champion %championName% subit une blessure de %damage% HP</target>
+            </trans-unit>
+           <trans-unit id="38">
+                <source>battle.report.champion.armorAbsorption</source>
+                <target>Le Champion %championName% absorbe %armor% dégâts grâce à son armure</target>
+            </trans-unit>
+           <trans-unit id="39">
+                <source>battle.report.champion.hp</source>
+                <target>Il reste au Champion %championName% %currentHP% HP</target>
             </trans-unit>
         </body>
     </file>

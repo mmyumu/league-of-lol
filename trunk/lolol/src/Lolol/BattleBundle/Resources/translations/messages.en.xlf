@@ -78,6 +78,86 @@
                 <source>battle.report.defeat</source>
                 <target>Defeat</target>
             </trans-unit>
+           <trans-unit id="20">
+                <source>battle.report.attacker</source>
+                <target>Attackers</target>
+            </trans-unit>
+           <trans-unit id="21">
+                <source>battle.report.opponent</source>
+                <target>Opponents</target>
+            </trans-unit>
+           <trans-unit id="22">
+                <source>battle.report.start</source>
+                <target>The battle starts</target>
+            </trans-unit>
+           <trans-unit id="23">
+                <source>battle.report.roundBegin</source>
+                <target>Round %time%</target>
+            </trans-unit>
+           <trans-unit id="24">
+                <source>battle.report.roundEnd</source>
+                <target>End of round %time%</target>
+            </trans-unit>
+           <trans-unit id="25">
+                <source>battle.report.team.canPlay</source>
+                <target>The team %teamName% is looking for available champions at round %time%...</target>
+            </trans-unit>
+           <trans-unit id="26">
+                <source>battle.report.team.askChampion</source>
+                <target>...the team %teamName% asks Champion %championName%...</target>
+            </trans-unit>
+           <trans-unit id="27">
+                <source>battle.report.team.championPlayed</source>
+                <target>The team %teamName% played its Champion %championName%</target>
+            </trans-unit>
+           <trans-unit id="28">
+                <source>battle.report.team.championCannotPlay</source>
+                <target>The team %teamName% couldn't play its Champion %championName%</target>
+            </trans-unit>
+           <trans-unit id="29">
+                <source>battle.report.team.noMoreChampions</source>
+                <target>The team %teamName% doesn't have any available Champion for round %time%</target>
+            </trans-unit>
+           <trans-unit id="30">
+                <source>battle.report.team.injuryWhichChampion</source>
+                <target>The team %teamName% is choosing the champion to injure.</target>
+            </trans-unit>
+           <trans-unit id="31">
+                <source>battle.report.team.injureChampion</source>
+                <target>The team %teamName% injures the Champion %championName% because still alive</target>
+            </trans-unit>
+           <trans-unit id="32">
+                <source>battle.report.champion.alive</source>
+                <target>The Champion %championName% is alive</target>
+            </trans-unit>
+           <trans-unit id="33">
+                <source>battle.report.champion.ko</source>
+                <target>The Champion %championName% is KO</target>
+            </trans-unit>
+           <trans-unit id="34">
+                <source>battle.report.champion.tryDefaultAttack</source>
+                <target>The Champion %championName% tries to use default attack at round %time%</target>
+            </trans-unit>
+           <trans-unit id="35">
+                <source>battle.report.champion.defaultAttack</source>
+                <target>The Champion %championName% performs a default attack for %attackDamage% damage</target>
+            </trans-unit>
+           <trans-unit id="36">
+                <source>battle.report.champion.defaultAttackCooldown</source>
+                <target>The Champion %championName% cannot perform a default attack because it's in cooldown until round %time%</target>
+            </trans-unit>
+           <trans-unit id="37">
+                <source>battle.report.champion.injured</source>
+                <target>The Champion %championName% is injured for %damage% HP</target>
+            </trans-unit>
+           <trans-unit id="38">
+                <source>battle.report.champion.armorAbsorption</source>
+                <target>The Champion %championName% absorbs %armor% damage due to its armor</target>
+            </trans-unit>
+           <trans-unit id="39">
+                <source>battle.report.champion.hp</source>
+                <target>The Champion %championName% now has %currentHP% HP</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

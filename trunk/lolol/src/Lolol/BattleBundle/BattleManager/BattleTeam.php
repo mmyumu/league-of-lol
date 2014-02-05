@@ -24,7 +24,7 @@ class BattleTeam {
 	/**
 	 * The logger of the battle.
 	 *
-	 * @var string
+	 * @var BattleLogger
 	 */
 	private $battleLogger;
 	
@@ -48,16 +48,17 @@ class BattleTeam {
 	 * @param Team $team        	
 	 * @param boolean $attacker        	
 	 */
-	public function __construct(Team $team, $attacker, $battleLogger, TranslatorInterface $translator) {
+	public function __construct(Team $team, $attacker, BattleLogger $battleLogger, TranslatorInterface $translator) {
 		$this->team = $team;
 		$this->attacker = $attacker;
 		$this->battleLogger = $battleLogger;
 		$this->translator = $translator;
 		
 		foreach($team->getChampionsTeam() as $championTeam) {
-			$this->battleChampions[$championTeam->getPosition()] = new BattleChampion($championTeam->getChampion(), $attacker, $battleLogger);
+			$this->battleChampions[$championTeam->getPosition()] = new BattleChampion($championTeam->getChampion(), $attacker, $battleLogger, $translator);
 		}
 	}
+	
 	/**
 	 * Get the team.
 	 */
@@ -117,25 +118,25 @@ class BattleTeam {
 	 */
 	public function play($time = 0) {
 		// On n'a rien fait, jusqu'à preuve du contraire
-		$this->battleLogger->log($this->translator->trans('battle.report.team.canPlay', array('%teamName%' => $this->team->getName(), '%roundNumber%' => $time)), '', false, $this->getIcon());
+		$this->battleLogger->log($this->translator->trans('battle.report.team.canPlay', array('%teamName%' => $this->team->getName(), '%time%' => $time)), 'text-info', false, $this->getIcon());
 		$action = false;
 	
 		// Recherche d'un champion qui peut jouer
 		foreach($this->battleChampions as $battleChampion) {
-			$this->battleLogger->log($this->translator->trans('battle.report.team.askChampion', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), '', false, $this->getIcon());
+			$this->battleLogger->log($this->translator->trans('battle.report.team.askChampion', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-info', false, $this->getIcon());
 				
 			$injury = $battleChampion->play($time);
 			$action = $injury;
 			if ($injury !== false) {
-				$this->battleLogger->log($this->translator->trans('battle.report.team.championPlayed', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), '', false, $this->getIcon());
+				$this->battleLogger->log($this->translator->trans('battle.report.team.championPlayed', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-info', false, $this->getIcon());
 				break;
 			}
 			else {
-				$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' n\'a pas pu faire jouer son Champion ' . $battleChampion->getChampion()->getName(), '', false, $this->getIcon());
+				$this->battleLogger->log($this->translator->trans('battle.report.team.championCannotPlay', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-info', false, $this->getIcon());
 			}
 		}
 		if ($action === false) {
-			$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' n\'a plus de Champion activable au tour ' . $time, '', false, $this->getIcon());
+			$this->battleLogger->log($this->translator->trans('battle.report.team.noMoreChampions', array('%teamName%' => $this->team->getName(), '%time%' => $time)), 'text-info', false, $this->getIcon());
 		}
 		return $action;
 	}
@@ -148,11 +149,11 @@ class BattleTeam {
 	 *        	IInjury	p_injury	La blessure à infliger
 	 */
 	public function setInjury(Injury $injury) {
-		$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' regarde à quel Champion infliger la blessure');
+		$this->battleLogger->log($this->translator->trans('battle.report.team.injuryWhichChampion', array('%teamName%' => $this->team->getName())), 'text-muted', false, $this->getIcon());
 		// Recherche d'un champion encore en vie
 		foreach($this->battleChampions as $battleChampion) {
 			if ($battleChampion->isAlive()) {
-				$this->battleLogger->log('L\'équipe ' . $this->team->getName() . ' inflige la blessure à ' . $battleChampion->getChampion()->getName() . ' car il est encore en vie');
+				$this->battleLogger->log($this->translator->trans('battle.report.team.injureChampion', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-danger', false, $this->getIcon());
 				$battleChampion->setInjury($injury);
 				break;
 			}
