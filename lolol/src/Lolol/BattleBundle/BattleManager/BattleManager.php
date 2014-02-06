@@ -4,6 +4,7 @@ namespace Lolol\BattleBundle\BattleManager;
 
 use Lolol\BattleBundle\BattleManager\BattleTeam as BattleTeam;
 use Lolol\BattleBundle\Entity\Battle as Battle;
+use Lolol\BattleBundle\Entity\Log as Log;
 use Lolol\TeamBundle\Entity\Team as Team;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -46,8 +47,6 @@ class BattleManager {
 		
 		$battle = new Battle($opponentTeam, $attackerTeam);
 		
-		
-		
 		$this->battleLogger->log($this->translator->trans('battle.report.attacker') . ': ' . $attackerTeam->getName(), '', true, BattleIcon::ATTACKER);
 		$this->battleLogger->log($attackerTeam->championsToString(), '', false, BattleIcon::ATTACKER);
 		$this->battleLogger->log('', '', false, false);
@@ -63,7 +62,9 @@ class BattleManager {
 		$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam);
 		while ($battleResult == null) {
 			// Le combat continue jusqu'à ce qu'une équipe ait perdu
-			$this->battleLogger->log($this->translator->trans('battle.report.roundBegin', array('%time%' => $time)), '', true, BattleIcon::CLOCK);
+			
+			$battle->addLog(new Log('battle.report.roundBegin', array('%time%' => $time)));
+// 			$this->battleLogger->log($this->translator->trans('battle.report.roundBegin', array('%time%' => $time)), '', true, BattleIcon::CLOCK);
 			$actionOpponent = true;
 			$actionAttacker = true;
 			// On continue d'agir tant qu'on a des actions à faire
@@ -102,15 +103,15 @@ class BattleManager {
 		$opponentLost = $opponentBattleTeam->hasLost();
 		$attackerLost = $attackerBattleTeam->hasLost();
 		if($opponentLost && $attackerLost) {
-			$this->battleLogger->log($this->translator->trans('battle.report.draw'), 'text-warning', true);
+			//$this->battleLogger->log($this->translator->trans('battle.report.draw'), 'text-warning', true);
 			return BattleResult::DRAW;
 		}
 		if($opponentLost) {
-			$this->battleLogger->log($this->translator->trans('battle.report.victory'), 'text-success', true);
+			//$this->battleLogger->log($this->translator->trans('battle.report.victory'), 'text-success', true);
 			return BattleResult::VICTORY;
 		}
 		if($attackerLost) {
-			$this->battleLogger->log($this->translator->trans('battle.report.defeat'), 'text-danger', true);
+			//$this->battleLogger->log($this->translator->trans('battle.report.defeat'), 'text-danger', true);
 			return BattleResult::DEFEAT;
 		}
 		return null;

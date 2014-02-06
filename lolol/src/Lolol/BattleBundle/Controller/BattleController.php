@@ -175,7 +175,11 @@ class BattleController extends Controller {
 		
 		// Fight
 		$battle = $battleManager->fight($opponentTeam, $attackerTeam);
-		$logs = $battleManager->getBattleLogger()->getLogs();
+		
+		$em->persist($battle);
+		$em->flush();
+		
+		$logs = $battle->getLogs();
 
 		return $this->render('LololBattleBundle:Battle:report.html.twig', array(
 				'folder' => $folder,
