@@ -9,21 +9,29 @@ use Lolol\TeamBundle\Entity\Team as Team;
  * @ORM\Entity(repositoryClass="Lolol\BattleBundle\Entity\BattleRepository")
  */
 class Battle {
+	
 	/**
-	 * @ORM\Id
+	 *
+	 * @var integer @ORM\Column(name="id", type="integer")
+	 *      @ORM\Id
+	 *      @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
+	
+	/**
 	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team")
+	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $attackerTeam;
 	
 	/**
-	 * @ORM\Id
 	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team")
+	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $opponentTeam;
 	
 	/**
-	 *
-	 * @var string @ORM\Column(name="logs", type="text")
+	 * @ORM\OneToMany(targetEntity="Lolol\BattleBundle\Entity\Log", mappedBy="battle", cascade={"persist", "remove"})
 	 */
 	private $logs;
 	
@@ -36,14 +44,14 @@ class Battle {
 	/**
 	 * Constructor.
 	 *
-	 * @param Team $opponentTeam
+	 * @param Team $opponentTeam        	
 	 * @param Team $attackerTeam        	
 	 */
 	public function __construct(Team $opponentTeam, Team $attackerTeam) {
 		$this->opponentTeam = $opponentTeam;
 		$this->attackerTeam = $attackerTeam;
 	}
-		
+	
 	/**
 	 * Set attackerTeam
 	 *
@@ -106,27 +114,56 @@ class Battle {
 	public function getLogs() {
 		return $this->logs;
 	}
-
-    /**
-     * Set result
-     *
-     * @param integer $result
-     * @return Battle
-     */
-    public function setResult($result)
-    {
-        $this->result = $result;
-
-        return $this;
-    }
-
-    /**
-     * Get result
-     *
-     * @return integer 
-     */
-    public function getResult()
-    {
-        return $this->result;
-    }
+	
+	/**
+	 * Set result
+	 *
+	 * @param integer $result        	
+	 * @return Battle
+	 */
+	public function setResult($result) {
+		$this->result = $result;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get result
+	 *
+	 * @return integer
+	 */
+	public function getResult() {
+		return $this->result;
+	}
+	
+	/**
+	 * Add logs
+	 *
+	 * @param \Lolol\BattleBundle\Entity\Log $logs        	
+	 * @return Battle
+	 */
+	public function addLog(\Lolol\BattleBundle\Entity\Log $logs) {
+		$this->logs[] = $logs;
+		$logs->setBattle($this);
+		
+		return $this;
+	}
+	
+	/**
+	 * Remove logs
+	 *
+	 * @param \Lolol\BattleBundle\Entity\Log $logs        	
+	 */
+	public function removeLog(\Lolol\BattleBundle\Entity\Log $logs) {
+		$this->logs->removeElement($logs);
+	}
+	
+	/**
+	 * Get id
+	 *
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->id;
+	}
 }

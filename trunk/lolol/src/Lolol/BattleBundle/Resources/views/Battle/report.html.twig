@@ -28,7 +28,7 @@
     <div id="collapseOne" class="panel-collapse collapse">
       <div class="panel-body">
 		{% for log in logs %}
-		<p class="{{ log.class }}">{% if log.strong %}<strong>{% endif %}{% if log.icon %}<i class="fa {{ log.icon }} fa-fw"></i> {% endif %}{% if log.text is empty %}&nbsp;{% else %}{{ log.text }}{% endif %}{% if log.strong %}</strong>{% endif %}</p>
+		<p class="{{ log.class }}">{% if log.strong %}<strong>{% endif %}{% if log.icon %}<i class="fa {{ log.icon }} fa-fw"></i> {% endif %}{% if log.key is empty %}&nbsp;{% else %}{{ log.key|trans(log.parametersArray) }}{% endif %}{% if log.strong %}</strong>{% endif %}</p>
 		{% endfor %}
       </div>
     </div>
