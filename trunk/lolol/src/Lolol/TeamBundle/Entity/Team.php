@@ -44,7 +44,12 @@ class Team {
 	 */
 	private $defender;
 	
-	
+	/**
+	 * Tell whether the team is deleted or not
+	 *
+	 * @var boolean @ORM\Column(name="deleted", type="boolean")
+	 */
+	private $deleted;
 	
 	/**
 	 * Constructor
@@ -175,5 +180,35 @@ class Team {
 	 */
 	public function getChampionsTeam() {
 		return $this->championsTeam;
+	}
+	
+	/**
+	 * Set deleted
+	 *
+	 * @param boolean $deleted        	
+	 * @return Team
+	 */
+	public function setDeleted($deleted) {
+		$this->deleted = $deleted;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get deleted
+	 *
+	 * @return boolean
+	 */
+	public function isDeleted() {
+		return $this->deleted;
+	}
+	
+	/**
+	 * Get deleted
+	 *
+	 * @return boolean
+	 */
+	public function getDeleted() {
+		return $this->deleted;
 	}
 }

@@ -19,6 +19,10 @@ td > label {
 	font-weight: normal;
 }
 
+.strong {
+	font-weight: bold;
+}
+
 .compacted-gallery a {
 	overflow: hidden;
 	white-space: nowrap;
