@@ -2,28 +2,121 @@
 
 namespace Lolol\BattleBundle\Entity;
 
-abstract class BasicEnum {
-	private static $constCache = NULL;
-	private static function getConstants() {
-		if (self::$constCache === NULL) {
-			$reflect = new ReflectionClass(get_called_class());
-			self::$constCache = $reflect->getConstants();
-		}
-		
-		return self::$constCache;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="Lolol\BattleBundle\Entity\LogTypeRepository")
+ */
+class LogType {
+	
+	/**
+	 *
+	 * @var integer @ORM\Column(name="id", type="integer")
+	 *      @ORM\Id
+	 *      @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
+	
+	/**
+	 *
+	 * @var string @ORM\Column(name="keyType", type="string", length=255)
+	 */
+	private $key;
+	
+	/**
+	 *
+	 * @var string @ORM\Column(name="valueType", type="string", length=255)
+	 */
+	private $value;
+	
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->logs = new \Doctrine\Common\Collections\ArrayCollection();
 	}
-	public static function isValidName($name, $strict = false) {
-		$constants = self::getConstants();
-		
-		if ($strict) {
-			return array_key_exists($name, $constants);
-		}
-		
-		$keys = array_map('strtolower', array_keys($constants));
-		return in_array(strtolower($name), $keys);
+	
+	/**
+	 * Get id
+	 *
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->id;
 	}
-	public static function isValidValue($value) {
-		$values = array_values(self::getConstants());
-		return in_array($value, $values, $strict = true);
+	
+	/**
+	 * Add logs
+	 *
+	 * @param \Lolol\BattleBundle\Entity\Log $logs        	
+	 * @return LogType
+	 */
+	public function addLog(\Lolol\BattleBundle\Entity\Log $logs) {
+		$this->logs[] = $logs;
+		return $this;
 	}
+	
+	/**
+	 * Remove logs
+	 *
+	 * @param \Lolol\BattleBundle\Entity\Log $logs        	
+	 */
+	public function removeLog(\Lolol\BattleBundle\Entity\Log $logs) {
+		$this->logs->removeElement($logs);
+	}
+	
+	/**
+	 * Get logs
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getLogs() {
+		return $this->logs;
+	}
+
+    /**
+     * Set key
+     *
+     * @param string $key
+     * @return LogType
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    /**
+     * Get key
+     *
+     * @return string 
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    /**
+     * Set value
+     *
+     * @param string $value
+     * @return LogType
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value
+     *
+     * @return string 
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 }

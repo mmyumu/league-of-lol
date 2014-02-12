@@ -176,6 +176,8 @@ class BattleController extends Controller {
 		// Fight
 		$battle = $battleManager->fight($opponentTeam, $attackerTeam);
 		
+		//$logger->info('MLA: ' . print_r($battle, true));
+		
 		$em->persist($battle);
 		$em->flush();
 		
