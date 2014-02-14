@@ -4,6 +4,7 @@ namespace Lolol\BattleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Lolol\TeamBundle\Entity\Team as Team;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="Lolol\BattleBundle\Entity\BattleRepository")
@@ -19,19 +20,19 @@ class Battle {
 	private $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team")
+	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $attackerTeam;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team")
+	 * @ORM\ManyToOne(targetEntity="Lolol\TeamBundle\Entity\Team", cascade={"persist"})
 	 * @ORM\JoinColumn(nullable=false)
 	 */
 	private $opponentTeam;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="Lolol\BattleBundle\Entity\Log", mappedBy="battle", cascade={"persist", "remove"})
+	 * @ORM\OneToMany(targetEntity="Lolol\BattleBundle\Entity\Log", mappedBy="battle")
 	 */
 	private $logs;
 	
@@ -50,6 +51,7 @@ class Battle {
 	public function __construct(Team $opponentTeam, Team $attackerTeam) {
 		$this->opponentTeam = $opponentTeam;
 		$this->attackerTeam = $attackerTeam;
+		$this->logs = new ArrayCollection();
 	}
 	
 	/**

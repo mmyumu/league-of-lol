@@ -19,12 +19,6 @@ class Log {
 	private $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Lolol\BattleBundle\Entity\Battle", inversedBy="logs")
-	 * @ORM\JoinColumn(nullable=false)
-	 */
-	private $battle;
-	
-	/**
 	 *
 	 * @var string @ORM\Column(name="keyLog", type="string", length=255)
 	 */
@@ -36,9 +30,14 @@ class Log {
 	private $parameters;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="Lolol\BattleBundle\Entity\LogType", cascade={"persist"})
+	 * @ORM\ManyToMany(targetEntity="Lolol\BattleBundle\Entity\LogType")
 	 */
 	private $logTypes;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="Lolol\BattleBundle\Entity\Battle", inversedBy="logs")
+	 */
+	private $battle;
 	
 	/**
 	 *
