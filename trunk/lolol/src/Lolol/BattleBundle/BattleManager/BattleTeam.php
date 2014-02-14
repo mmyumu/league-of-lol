@@ -2,14 +2,16 @@
 
 namespace Lolol\BattleBundle\BattleManager;
 
+use Lolol\BattleBundle\Entity\Battle as Battle;
+use Lolol\BattleBundle\Entity\Log as Log;
 use Lolol\TeamBundle\Entity\Team as Team;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class BattleTeam {
+class BattleTeam extends Team {
 	
 	/**
 	 * Team engaged in the battle.
-	 * 
+	 *
 	 * @var Team
 	 */
 	private $team;
@@ -22,22 +24,22 @@ class BattleTeam {
 	private $attacker;
 	
 	/**
-	 * The logger of the battle.
+	 * The battle
 	 *
-	 * @var BattleLogger
+	 * @var Battle
 	 */
-	private $battleLogger;
+	private $battle;
 	
 	/**
-	 * The translator service
-	 * 
-	 * @var TranslatorInterface
+	 * The log types manager to retrieve log types
+	 *
+	 * @var LogTypesManager
 	 */
-	private $translator;
+	private $ltm;
 	
 	/**
 	 * The champions of the team
-	 * 
+	 *
 	 * @var BattleChampion
 	 */
 	private $battleChampions;
@@ -48,14 +50,14 @@ class BattleTeam {
 	 * @param Team $team        	
 	 * @param boolean $attacker        	
 	 */
-	public function __construct(Team $team, $attacker, BattleLogger $battleLogger, TranslatorInterface $translator) {
+	public function __construct(Team $team, $attacker, Battle $battle, LogTypesManager $ltm) {
 		$this->team = $team;
 		$this->attacker = $attacker;
-		$this->battleLogger = $battleLogger;
-		$this->translator = $translator;
+		$this->battle = $battle;
+		$this->ltm = $ltm;
 		
 		foreach($team->getChampionsTeam() as $championTeam) {
-			$this->battleChampions[$championTeam->getPosition()] = new BattleChampion($championTeam->getChampion(), $attacker, $battleLogger, $translator);
+			$this->battleChampions[$championTeam->getPosition()] = new BattleChampion($championTeam->getChampion(), $attacker, $battle, $ltm);
 		}
 	}
 	
@@ -98,7 +100,7 @@ class BattleTeam {
 		$lost = true;
 		// Condition de non-défaite : au moins un Champion encore en vie
 		foreach($this->battleChampions as $battleChampion) {
-			if($battleChampion->isAlive()) {
+			if ($battleChampion->isAlive()) {
 				$lost = false;
 				break;
 			}
@@ -118,25 +120,45 @@ class BattleTeam {
 	 */
 	public function play($time = 0) {
 		// On n'a rien fait, jusqu'à preuve du contraire
-		$this->battleLogger->log($this->translator->trans('battle.report.team.canPlay', array('%teamName%' => $this->team->getName(), '%time%' => $time)), 'text-info', false, $this->getIcon());
+		// $this->battle->addLog(new Log('battle.report.team.canPlay', array(
+		// '%teamName%' => $this->team->getName(),
+		// '%time%' => $time)), $this->ltm->get(array(
+		// LogTypes::TEAM,
+		// LogTypes::CAN_PLAY)), $this->getIcon());
 		$action = false;
-	
+		
 		// Recherche d'un champion qui peut jouer
 		foreach($this->battleChampions as $battleChampion) {
-			$this->battleLogger->log($this->translator->trans('battle.report.team.askChampion', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-info', false, $this->getIcon());
-				
+			// $this->battle->addLog(new Log('battle.report.team.askChampion', array(
+			// '%teamName%' => $this->team->getName(),
+			// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
+			// LogTypes::TEAM,
+			// LogTypes::ASK_CHAMPION)), $this->getIcon()));
+			
 			$injury = $battleChampion->play($time);
 			$action = $injury;
 			if ($injury !== false) {
-				$this->battleLogger->log($this->translator->trans('battle.report.team.championPlayed', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-info', false, $this->getIcon());
+				// $this->battle->addLog(new Log('battle.report.team.championPlayed', array(
+				// '%teamName%' => $this->team->getName(),
+				// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
+				// LogTypes::TEAM,
+				// LogTypes::CHAMPION_PLAYED)), $this->getIcon()));
 				break;
 			}
 			else {
-				$this->battleLogger->log($this->translator->trans('battle.report.team.championCannotPlay', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-info', false, $this->getIcon());
+				// $this->battle->addLog(new Log('battle.report.team.championCannotPlay', array(
+				// '%teamName%' => $this->team->getName(),
+				// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
+				// LogTypes::TEAM,
+				// LogTypes::CHAMPION_PLAYED)), $this->getIcon()));
 			}
 		}
 		if ($action === false) {
-			$this->battleLogger->log($this->translator->trans('battle.report.team.noMoreChampions', array('%teamName%' => $this->team->getName(), '%time%' => $time)), 'text-info', false, $this->getIcon());
+			// $this->battle->addLog(new Log('battle.report.team.noMoreChampions', array(
+			// '%teamName%' => $this->team->getName(),
+			// '%time%' => $time), $this->ltm->get(array(
+			// LogTypes::TEAM,
+			// LogTypes::NO_MORE_CHAMPIONS)), $this->getIcon()));
 		}
 		return $action;
 	}
@@ -149,11 +171,19 @@ class BattleTeam {
 	 *        	IInjury	p_injury	La blessure à infliger
 	 */
 	public function setInjury(Injury $injury) {
-		$this->battleLogger->log($this->translator->trans('battle.report.team.injuryWhichChampion', array('%teamName%' => $this->team->getName())), 'text-muted', false, $this->getIcon());
+		// $this->battle->addLog(new Log('battle.report.team.injuryWhichChampion', array(
+		// '%teamName%' => $this->team->getName()), $this->ltm->get(array(
+		// LogTypes::TEAM,
+		// LogTypes::ASK_CHAMPION,
+		// LogTypes::INJURY)), $this->getIcon()));
 		// Recherche d'un champion encore en vie
 		foreach($this->battleChampions as $battleChampion) {
 			if ($battleChampion->isAlive()) {
-				$this->battleLogger->log($this->translator->trans('battle.report.team.injureChampion', array('%teamName%' => $this->team->getName(), '%championName%' => $battleChampion->getChampion()->getName())), 'text-danger', false, $this->getIcon());
+				// $this->battle->addLog(new Log('battle.report.team.injureChampion', array(
+				// '%teamName%' => $this->team->getName(),
+				// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
+				// LogTypes::TEAM,
+				// LogTypes::INJURY)), $this->getIcon()));
 				$battleChampion->setInjury($injury);
 				break;
 			}

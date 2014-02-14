@@ -5,7 +5,10 @@ namespace Lolol\BattleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Lolol\TeamBundle\Entity\Team;
 use Lolol\BattleBundle\BattleManager\BattleTeam;
+use Lolol\BattleBundle\BattleManager\LogThread;
 use Lolol\BattleBundle\Entity\Battle;
+use Lolol\BattleBundle\Entity\Log;
+
 
 class BattleController extends Controller {
 	public function indexAction() {
@@ -174,19 +177,21 @@ class BattleController extends Controller {
 		$attackerTeam = $em->getRepository('LololTeamBundle:Team')->findOneByIdWithChampions($attackerTeamId);
 		
 		// Fight
+		
 		$battle = $battleManager->fight($opponentTeam, $attackerTeam);
-		
-		//$logger->info('MLA: ' . print_r($battle, true));
-		
+		// Back up the logs
+		$logs = $battle->getLogs();
+		// Persist the battle without logs
+		$battle->setLogs(null);
 		$em->persist($battle);
 		$em->flush();
 		
-		$logs = $battle->getLogs();
-
+		$em->getRepository('LololBattleBundle:Log')->insertLogs($logs, $battle->getId());
+		
 		return $this->render('LololBattleBundle:Battle:report.html.twig', array(
 				'folder' => $folder,
 				'result' => $battle->getResult(),
-				'logs' => $logs,
+				'logs' => $battle->getLogs(),
 				'prefixIcons48' => $prefixIcons48,
 				'suffixIcons' => $suffixIcons,
 				'teamSize' => $teamSize));

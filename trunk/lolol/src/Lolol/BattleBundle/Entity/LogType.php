@@ -46,26 +46,6 @@ class LogType {
 	}
 	
 	/**
-	 * Add logs
-	 *
-	 * @param \Lolol\BattleBundle\Entity\Log $logs        	
-	 * @return LogType
-	 */
-	public function addLog(\Lolol\BattleBundle\Entity\Log $logs) {
-		$this->logs[] = $logs;
-		return $this;
-	}
-	
-	/**
-	 * Remove logs
-	 *
-	 * @param \Lolol\BattleBundle\Entity\Log $logs        	
-	 */
-	public function removeLog(\Lolol\BattleBundle\Entity\Log $logs) {
-		$this->logs->removeElement($logs);
-	}
-	
-	/**
 	 * Get logs
 	 *
 	 * @return \Doctrine\Common\Collections\Collection

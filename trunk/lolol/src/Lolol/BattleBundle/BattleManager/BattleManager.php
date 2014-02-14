@@ -58,11 +58,11 @@ class BattleManager {
 	 * @return \Lolol\BattleBundle\Entity\Battle
 	 */
 	public function fight(Team $opponentTeam, Team $attackerTeam) {
-		// Initialize battle teams
-		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $this->battleLogger, $this->translator);
-		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $this->battleLogger, $this->translator);
-		
 		$battle = new Battle($opponentTeam, $attackerTeam);
+		
+		// Initialize battle teams
+		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $battle, $this->ltm);
+		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $battle, $this->ltm);
 		
 		$battle->addLog(new Log('battle.report.attacker', array(), $this->ltm->get(array(
 				LogTypes::STRONG,
@@ -71,11 +71,15 @@ class BattleManager {
 				LogTypes::PRESENTATION))));
 		$battle->addLog(new Log('', array(), array(), null));
 		
-		$battle->addLog(new Log('battle.report.opponent'), '', false, BattleIcon::DEFENDER);
-		$battle->addLog(new Log($opponentTeam->championsToString()), '', false, BattleIcon::DEFENDER);
-		$battle->addLog(new Log(''), '', false, false);
+		$battle->addLog(new Log('battle.report.opponent', array(), $this->ltm->get(array(
+				LogTypes::STRONG,
+				LogTypes::PRESENTATION)), BattleIcon::DEFENDER));
+		$battle->addLog(new Log($opponentTeam->championsToString(), array(), $this->ltm->get(array(
+				LogTypes::PRESENTATION))));
+		$battle->addLog(new Log('', array(), array(), null));
 		
-		$battle->addLog(new Log('battle.report.start'), '', true, BattleIcon::CLOCK);
+		$battle->addLog(new Log('battle.report.start', array(), $this->ltm->get(array(
+				LogTypes::PRESENTATION)), BattleIcon::CLOCK));
 		
 		$time = 0;
 		
@@ -84,7 +88,7 @@ class BattleManager {
 			// Le combat continue jusqu'à ce qu'une équipe ait perdu
 			
 			$battle->addLog(new Log('battle.report.roundBegin', array(
-					'%time%' => $time)));
+					'%time%' => $time), array(), BattleIcon::CLOCK));
 			// $this->battleLogger->log($this->translator->trans('battle.report.roundBegin', array('%time%' => $time)), '', true, BattleIcon::CLOCK);
 			$actionOpponent = true;
 			$actionAttacker = true;
