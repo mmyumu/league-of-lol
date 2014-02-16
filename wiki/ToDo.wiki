@@ -1,3 +1,7 @@
 #summary ToDo list
 
-  * *Team Builder*: component to build/edit teams in the TeamBundle
+=Mandatory=
+  * ~~*Team Builder*: component to build/edit teams in the Team Bundle~~
+
+=Optional=
+  * User can change in settings the color of logs (probably useless)
