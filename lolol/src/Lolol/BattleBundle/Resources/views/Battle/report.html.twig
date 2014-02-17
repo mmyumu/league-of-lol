@@ -10,7 +10,7 @@
 
 {% block lolol_title %}{{ 'battle.report'|trans }}{% endblock %}
 
-{% block lolol_help_body %}
+{% block lolol_help_body %}c
 
 {% endblock %}
 
@@ -30,10 +30,8 @@
       
 		{% for log in logs %}
 			{% spaceless %}
-			<p class="{% for logType in log.logTypes %}{{ logType.value }} {% endfor %}">
-				{% if log.strong %}<strong>{% endif %}{% if log.icon %}
-					<i class="fa {{ log.icon }} fa-fw"></i> {% endif %}{% if log.key is empty %}&nbsp;{% else %}{{ log.key|trans(log.parametersArray) }}{% endif %}
-				{% if log.strong %}</strong>{% endif %}
+			<p class="{% for logType in log.logTypesAsArray %}{{ logType }} {% endfor %}">
+				{% if log.icon %}<i class="fa {{ log.icon }} fa-fw"></i> {% endif %}{% if log.key is empty %}&nbsp;{% else %}{{ log.key|trans(log.parametersArray) }}{% endif %}
 			</p>
 			{% endspaceless %}
 		{% endfor %}

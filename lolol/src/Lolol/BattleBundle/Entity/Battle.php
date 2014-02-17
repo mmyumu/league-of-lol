@@ -32,7 +32,7 @@ class Battle {
 	private $opponentTeam;
 	
 	/**
-	 * @ORM\OneToMany(targetEntity="Lolol\BattleBundle\Entity\Log", mappedBy="battle")
+	 * @ORM\OneToMany(targetEntity="Lolol\BattleBundle\Entity\Log", mappedBy="battle", cascade={"persist"})
 	 */
 	private $logs;
 	

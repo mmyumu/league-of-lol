@@ -127,6 +127,23 @@ class TeamController extends Controller {
 				throw new MalformedTeamException($message);
 			}
 			
+			// Checking if duplicate champions in team
+			$logger->info('Checking if there is no duplicated champions in team with name=' . $teamName);
+			$champions = array();
+			for($i = 0; $i < $teamSize; $i ++) {
+				for($j=$i+1; $j < $teamSize; $j++) {
+					if($team[$i] == $team[$j]) {
+						// Get the ID of the champion and retrieve it from DB
+						$championId = substr($team[$i], 9);
+						$champion = $em->getRepository('LololAppBundle:Champion')->findOneById($championId);
+						
+						$message = $translator->trans('team.built.error.duplicateChampion', array(
+								'%championName%' => $champion->getName()));
+						throw new MalformedTeamException($message);
+					}
+				}
+			}
+			
 			// Check if champions are owned by the user
 			$logger->info('Checking if the user owns all the champions of the team with name=' . $teamName);
 			$champions = array();
@@ -152,6 +169,7 @@ class TeamController extends Controller {
 				$champions[$i] = $champion;
 			}
 			$logger->info('Champions are valid.');
+
 			
 			if ($idTeam == null) {
 				$logger->info('Creating new team with name=' . $teamName);
