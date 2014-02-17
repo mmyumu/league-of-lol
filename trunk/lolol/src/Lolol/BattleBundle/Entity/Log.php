@@ -30,7 +30,8 @@ class Log {
 	private $parameters;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="Lolol\BattleBundle\Entity\LogType")
+	 *
+	 * @var string @ORM\Column(name="logTypes", type="string", length=510)
 	 */
 	private $logTypes;
 	
@@ -58,7 +59,7 @@ class Log {
 		foreach($parameters as $key => $value) {
 			$this->addParameter(new Parameter($key, $value));
 		}
-		$this->logTypes = $logTypes;
+		$this->logTypes = implode(';', $logTypes);
 		$this->icon = $icon;
 	}
 	
@@ -186,6 +187,10 @@ class Log {
 	 */
 	public function getLogTypes() {
 		return $this->logTypes;
+	}
+	
+	public function getLogTypesAsArray() {
+		return explode(';', $this->logTypes);
 	}
 	
 	/**

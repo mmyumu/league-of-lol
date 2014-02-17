@@ -31,13 +31,6 @@ class BattleTeam extends Team {
 	private $battle;
 	
 	/**
-	 * The log types manager to retrieve log types
-	 *
-	 * @var LogTypesManager
-	 */
-	private $ltm;
-	
-	/**
 	 * The champions of the team
 	 *
 	 * @var BattleChampion
@@ -50,14 +43,13 @@ class BattleTeam extends Team {
 	 * @param Team $team        	
 	 * @param boolean $attacker        	
 	 */
-	public function __construct(Team $team, $attacker, Battle $battle, LogTypesManager $ltm) {
+	public function __construct(Team $team, $attacker, Battle $battle) {
 		$this->team = $team;
 		$this->attacker = $attacker;
 		$this->battle = $battle;
-		$this->ltm = $ltm;
 		
 		foreach($team->getChampionsTeam() as $championTeam) {
-			$this->battleChampions[$championTeam->getPosition()] = new BattleChampion($championTeam->getChampion(), $attacker, $battle, $ltm);
+			$this->battleChampions[$championTeam->getPosition()] = new BattleChampion($championTeam->getChampion(), $attacker, $battle);
 		}
 	}
 	
@@ -83,8 +75,7 @@ class BattleTeam extends Team {
 	public function getIcon() {
 		if ($this->isAttacker()) {
 			return BattleIcon::ATTACKER;
-		}
-		else {
+		} else {
 			return BattleIcon::DEFENDER;
 		}
 	}
@@ -96,16 +87,22 @@ class BattleTeam extends Team {
 	 * @return boolean a-t-elle perdu ? Si oui, true, sinon, false
 	 */
 	public function hasLost() {
-		// On a perdu, jusqu'à preuve du contraire
-		$lost = true;
 		// Condition de non-défaite : au moins un Champion encore en vie
 		foreach($this->battleChampions as $battleChampion) {
 			if ($battleChampion->isAlive()) {
-				$lost = false;
-				break;
+				return false;
 			}
 		}
-		return $lost;
+		
+		$this->battle->addLog(new Log('battle.report.team.defeated', array(
+				'%teamName%' => $this->team->getName(),
+				'%championName%' => $battleChampion->getChampion()->getName()
+		), array(
+				LogType::TEAM,
+				LogType::DEFEATED,
+				LogType::STRONG
+		), $this->getIcon()));
+		return true;
 	}
 	
 	/**
@@ -123,8 +120,8 @@ class BattleTeam extends Team {
 		// $this->battle->addLog(new Log('battle.report.team.canPlay', array(
 		// '%teamName%' => $this->team->getName(),
 		// '%time%' => $time)), $this->ltm->get(array(
-		// LogTypes::TEAM,
-		// LogTypes::CAN_PLAY)), $this->getIcon());
+		// LogType::TEAM,
+		// LogType::CAN_PLAY)), $this->getIcon());
 		$action = false;
 		
 		// Recherche d'un champion qui peut jouer
@@ -132,8 +129,8 @@ class BattleTeam extends Team {
 			// $this->battle->addLog(new Log('battle.report.team.askChampion', array(
 			// '%teamName%' => $this->team->getName(),
 			// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
-			// LogTypes::TEAM,
-			// LogTypes::ASK_CHAMPION)), $this->getIcon()));
+			// LogType::TEAM,
+			// LogType::ASK_CHAMPION)), $this->getIcon()));
 			
 			$injury = $battleChampion->play($time);
 			$action = $injury;
@@ -141,24 +138,23 @@ class BattleTeam extends Team {
 				// $this->battle->addLog(new Log('battle.report.team.championPlayed', array(
 				// '%teamName%' => $this->team->getName(),
 				// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
-				// LogTypes::TEAM,
-				// LogTypes::CHAMPION_PLAYED)), $this->getIcon()));
+				// LogType::TEAM,
+				// LogType::CHAMPION_PLAYED)), $this->getIcon()));
 				break;
-			}
-			else {
+			} else {
 				// $this->battle->addLog(new Log('battle.report.team.championCannotPlay', array(
 				// '%teamName%' => $this->team->getName(),
 				// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
-				// LogTypes::TEAM,
-				// LogTypes::CHAMPION_PLAYED)), $this->getIcon()));
+				// LogType::TEAM,
+				// LogType::CHAMPION_PLAYED)), $this->getIcon()));
 			}
 		}
 		if ($action === false) {
 			// $this->battle->addLog(new Log('battle.report.team.noMoreChampions', array(
 			// '%teamName%' => $this->team->getName(),
 			// '%time%' => $time), $this->ltm->get(array(
-			// LogTypes::TEAM,
-			// LogTypes::NO_MORE_CHAMPIONS)), $this->getIcon()));
+			// LogType::TEAM,
+			// LogType::NO_MORE_CHAMPIONS)), $this->getIcon()));
 		}
 		return $action;
 	}
@@ -173,17 +169,17 @@ class BattleTeam extends Team {
 	public function setInjury(Injury $injury) {
 		// $this->battle->addLog(new Log('battle.report.team.injuryWhichChampion', array(
 		// '%teamName%' => $this->team->getName()), $this->ltm->get(array(
-		// LogTypes::TEAM,
-		// LogTypes::ASK_CHAMPION,
-		// LogTypes::INJURY)), $this->getIcon()));
+		// LogType::TEAM,
+		// LogType::ASK_CHAMPION,
+		// LogType::INJURY)), $this->getIcon()));
 		// Recherche d'un champion encore en vie
 		foreach($this->battleChampions as $battleChampion) {
 			if ($battleChampion->isAlive()) {
 				// $this->battle->addLog(new Log('battle.report.team.injureChampion', array(
 				// '%teamName%' => $this->team->getName(),
 				// '%championName%' => $battleChampion->getChampion()->getName()), $this->ltm->get(array(
-				// LogTypes::TEAM,
-				// LogTypes::INJURY)), $this->getIcon()));
+				// LogType::TEAM,
+				// LogType::INJURY)), $this->getIcon()));
 				$battleChampion->setInjury($injury);
 				break;
 			}

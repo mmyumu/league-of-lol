@@ -56,6 +56,7 @@ class Team {
 	 */
 	public function __construct() {
 		$this->defender = false;
+		$this->deleted = false;
 	}
 	
 	/**

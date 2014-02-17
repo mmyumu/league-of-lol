@@ -118,6 +118,10 @@
 				<source>builder.help.attackersOrDefenders</source>
 				<target>Your teams can be used both as attackers or defenders. The first team you are saving is promoted as defenders team because you always need one.</target>
 			</trans-unit>
+			<trans-unit id="30">
+				<source>team.built.error.duplicateChampion</source>
+				<target>You cannot build a team with duplicated champions: %championName%</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

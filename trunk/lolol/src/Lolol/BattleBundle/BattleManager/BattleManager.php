@@ -10,20 +10,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class BattleManager {
 	/**
-	 * The logger of the battle.
-	 *
-	 * @var BattleLogger
-	 */
-	private $battleLogger;
-	
-	/**
-	 * The manager to retrieve log types.
-	 *
-	 * @var LogTypesManager
-	 */
-	private $ltm;
-	
-	/**
 	 * The translator service
 	 *
 	 * @var TranslatorInterface
@@ -43,9 +29,7 @@ class BattleManager {
 	 * @param BattleLogger $battleLogger        	
 	 * @param TranslatorInterface $translator        	
 	 */
-	public function __construct(BattleLogger $battleLogger, LogTypesManager $logTypesManager, TranslatorInterface $translator, $logger) {
-		$this->battleLogger = $battleLogger;
-		$this->ltm = $logTypesManager;
+	public function __construct(TranslatorInterface $translator, $logger) {
 		$this->translator = $translator;
 		$this->logger = $logger;
 	}
@@ -61,25 +45,31 @@ class BattleManager {
 		$battle = new Battle($opponentTeam, $attackerTeam);
 		
 		// Initialize battle teams
-		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $battle, $this->ltm);
-		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $battle, $this->ltm);
+		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $battle);
+		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $battle);
 		
-		$battle->addLog(new Log('battle.report.attacker', array(), $this->ltm->get(array(
-				LogTypes::STRONG,
-				LogTypes::PRESENTATION)), BattleIcon::ATTACKER));
-		$battle->addLog(new Log($attackerTeam->championsToString(), array(), $this->ltm->get(array(
-				LogTypes::PRESENTATION))));
+		$battle->addLog(new Log('battle.report.attacker', array('%teamName%' => $attackerTeam->getName()), array(
+				LogType::STRONG,
+				LogType::PRESENTATION
+		), BattleIcon::ATTACKER));
+		$battle->addLog(new Log($attackerTeam->championsToString(), array(), array(
+				LogType::PRESENTATION
+		)));
 		$battle->addLog(new Log('', array(), array(), null));
 		
-		$battle->addLog(new Log('battle.report.opponent', array(), $this->ltm->get(array(
-				LogTypes::STRONG,
-				LogTypes::PRESENTATION)), BattleIcon::DEFENDER));
-		$battle->addLog(new Log($opponentTeam->championsToString(), array(), $this->ltm->get(array(
-				LogTypes::PRESENTATION))));
+		$battle->addLog(new Log('battle.report.opponent', array('%teamName%' => $opponentTeam->getName()), array(
+				LogType::STRONG,
+				LogType::PRESENTATION
+		), BattleIcon::DEFENDER));
+		$battle->addLog(new Log($opponentTeam->championsToString(), array(), array(
+				LogType::PRESENTATION
+		)));
+		
 		$battle->addLog(new Log('', array(), array(), null));
 		
-		$battle->addLog(new Log('battle.report.start', array(), $this->ltm->get(array(
-				LogTypes::PRESENTATION)), BattleIcon::CLOCK));
+		$battle->addLog(new Log('battle.report.start', array(), array(
+				LogType::PRESENTATION
+		), BattleIcon::CLOCK));
 		
 		$time = 0;
 		
@@ -87,9 +77,8 @@ class BattleManager {
 		while ( $battleResult == null ) {
 			// Le combat continue jusqu'à ce qu'une équipe ait perdu
 			
-			$battle->addLog(new Log('battle.report.roundBegin', array(
-					'%time%' => $time), array(), BattleIcon::CLOCK));
-			// $this->battleLogger->log($this->translator->trans('battle.report.roundBegin', array('%time%' => $time)), '', true, BattleIcon::CLOCK);
+			// $battle->addLog(new Log('battle.report.roundBegin', array(
+			// '%time%' => $time), array(), BattleIcon::CLOCK));
 			$actionOpponent = true;
 			$actionAttacker = true;
 			// On continue d'agir tant qu'on a des actions à faire
@@ -108,11 +97,7 @@ class BattleManager {
 			}
 			// Tout le monde a donc joué simultannément, sans vérification d'une victoire intermédiaire
 			// C'est seulement après que chacun ait fait son action du moment qu'on avance le temps
-			
-			$this->battleLogger->log($this->translator->trans('battle.report.roundEnd', array(
-					'%time%' => $time)), '', true);
-			
-			$time ++;
+			$time++;
 			$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam);
 		}
 		
@@ -130,15 +115,12 @@ class BattleManager {
 		$opponentLost = $opponentBattleTeam->hasLost();
 		$attackerLost = $attackerBattleTeam->hasLost();
 		if ($opponentLost && $attackerLost) {
-			// $this->battleLogger->log($this->translator->trans('battle.report.draw'), 'text-warning', true);
 			return BattleResult::DRAW;
 		}
 		if ($opponentLost) {
-			// $this->battleLogger->log($this->translator->trans('battle.report.victory'), 'text-success', true);
 			return BattleResult::VICTORY;
 		}
 		if ($attackerLost) {
-			// $this->battleLogger->log($this->translator->trans('battle.report.defeat'), 'text-danger', true);
 			return BattleResult::DEFEAT;
 		}
 		return null;

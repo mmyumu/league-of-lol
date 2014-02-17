@@ -80,11 +80,11 @@
             </trans-unit>
            <trans-unit id="20">
                 <source>battle.report.attacker</source>
-                <target>Attaquants </target>
+                <target>Attaquants : %teamName%</target>
             </trans-unit>
            <trans-unit id="21">
                 <source>battle.report.opponent</source>
-                <target>Adversaires </target>
+                <target>Défenseurs : %teamName%</target>
             </trans-unit>
            <trans-unit id="22">
                 <source>battle.report.start</source>
@@ -157,6 +157,10 @@
            <trans-unit id="39">
                 <source>battle.report.champion.hp</source>
                 <target>Il reste au Champion %championName% %currentHP% HP</target>
+            </trans-unit>
+           <trans-unit id="40">
+                <source>battle.report.team.defeated</source>
+                <target>L'équipe %teamName% a été vaincue.</target>
             </trans-unit>
         </body>
     </file>

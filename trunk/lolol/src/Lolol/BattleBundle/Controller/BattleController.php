@@ -5,7 +5,6 @@ namespace Lolol\BattleBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Lolol\TeamBundle\Entity\Team;
 use Lolol\BattleBundle\BattleManager\BattleTeam;
-use Lolol\BattleBundle\BattleManager\LogThread;
 use Lolol\BattleBundle\Entity\Battle;
 use Lolol\BattleBundle\Entity\Log;
 
@@ -180,13 +179,8 @@ class BattleController extends Controller {
 		
 		$battle = $battleManager->fight($opponentTeam, $attackerTeam);
 		// Back up the logs
-		$logs = $battle->getLogs();
-		// Persist the battle without logs
-		$battle->setLogs(null);
 		$em->persist($battle);
 		$em->flush();
-		
-		$em->getRepository('LololBattleBundle:Log')->insertLogs($logs, $battle->getId());
 		
 		return $this->render('LololBattleBundle:Battle:report.html.twig', array(
 				'folder' => $folder,

@@ -38,24 +38,16 @@ class BattleChampion extends Champion {
 	private $battle;
 	
 	/**
-	 * The log types manager to retrieve log types
-	 *
-	 * @var LogTypesManager
-	 */
-	private $ltm;
-	
-	/**
 	 * Initialize the champion for the battle
 	 *
 	 * @param Champion $champion        	
 	 * @param boolean $attacker        	
 	 * @param string $logs        	
 	 */
-	public function __construct(Champion $champion, $attacker, Battle $battle, LogTypesManager $ltm) {
+	public function __construct(Champion $champion, $attacker, Battle $battle) {
 		$this->champion = $champion;
 		$this->attacker = $attacker;
 		$this->battle = $battle;
-		$this->ltm = $ltm;
 		$lastAttackTime = 0;
 		$this->currentHealth = $champion->getHealth();
 	}
@@ -90,8 +82,7 @@ class BattleChampion extends Champion {
 	public function getIcon() {
 		if ($this->isAttacker()) {
 			return BattleIcon::ATTACKER;
-		}
-		else {
+		} else {
 			return BattleIcon::DEFENDER;
 		}
 	}
@@ -106,14 +97,13 @@ class BattleChampion extends Champion {
 		if ($this->getCurrentHealth() > 0) {
 			// $this->battle->addLog(new Log('battle.report.champion.alive', array(
 			// '%championName%' => $this->getChampion()->getName()), $this->ltm->get(array(
-			// LogTypes::CHAMPION,
-			// LogTypes::ALIVE)), $this->getIcon()));
-		}
-		else {
+			// LogType::CHAMPION,
+			// LogType::ALIVE)), $this->getIcon()));
+		} else {
 			// $this->battle->addLog(new Log('battle.report.champion.ko', array(
 			// '%championName%' => $this->getChampion()->getName()), $this->ltm->get(array(
-			// LogTypes::CHAMPION,
-			// LogTypes::KO)), $this->getIcon()));
+			// LogType::CHAMPION,
+			// LogType::KO)), $this->getIcon()));
 		}
 		return ($this->getCurrentHealth() > 0);
 	}
@@ -156,30 +146,31 @@ class BattleChampion extends Champion {
 		$injury = false;
 		// $this->battle->addLog(new Log('battle.report.champion.tryDefaultAttack', array(
 		// '%championName%' => $this->getChampion()->getName()), $this->ltm->get(array(
-		// LogTypes::CHAMPION,
-		// LogTypes::TRY_DEFAULT_ATTACK)), $this->getIcon()));
+		// LogType::CHAMPION,
+		// LogType::TRY_DEFAULT_ATTACK)), $this->getIcon()));
 		
 		// Vérification du temps écoulé depuis la dernière attaque de ce type
 		$up = $this->getLastAttackTime() + (1 / $this->champion->getAttackSpeed()) * 2;
 		if ($time >= $up) {
 			// Attaque disponible
-			// $this->battle->addLog(new Log('battle.report.champion.defaultAttack', array(
-			// '%championName%' => $this->getChampion()->getName(),
-			// '%attackDamage%' => $this->champion->getAttackDamage()), $this->ltm->get(array(
-			// LogTypes::CHAMPION,
-			// LogTypes::DEFAULT_ATTACK)), $this->getIcon()));
+			$this->battle->addLog(new Log('battle.report.champion.defaultAttack', array(
+					'%championName%' => $this->getChampion()->getName(),
+					'%attackDamage%' => $this->champion->getAttackDamage()
+			), array(
+					LogType::CHAMPION,
+					LogType::DEFAULT_ATTACK
+			), $this->getIcon()));
 			
 			$injury = new Injury($this->champion->getAttackDamage());
 			$this->setLastAttackTime($time);
 			// $this->lastAttackTime = $time;
-		}
-		else {
+		} else {
 			// Cooldown
 			// $this->battle->addLog(new Log('battle.report.champion.defaultAttackCooldown', array(
 			// '%championName%' => $this->getChampion()->getName(),
 			// '%time%' => ceil($up)), $this->ltm->get(array(
-			// LogTypes::CHAMPION,
-			// LogTypes::DEFAULT_ATTACK_COOLDOWN)), $this->getIcon()));
+			// LogType::CHAMPION,
+			// LogType::DEFAULT_ATTACK_COOLDOWN)), $this->getIcon()));
 		}
 		return $injury;
 	}
@@ -192,22 +183,28 @@ class BattleChampion extends Champion {
 	 *        	IInjury	p_injury	La blessure à infliger
 	 */
 	public function setInjury(Injury $injury) {
-		// $this->battle->addLog(new Log('battle.report.champion.injured', array(
-		// '%championName%' => $this->getChampion()->getName(),
-		// '%damage%' => $injury->getNormalAmount()), $this->ltm->get(array(
-		// LogTypes::CHAMPION,
-		// LogTypes::INJURED)), $this->getIcon()));
-		// $this->battle->addLog(new Log('battle.report.champion.armorAbsorption', array(
-		// '%championName%' => $this->getChampion()->getName(),
-		// '%armor%' => $this->champion->getArmor()), $this->ltm->get(array(
-		// LogTypes::CHAMPION,
-		// LogTypes::ARMOR_ABSORPTION)), $this->getIcon()));
+		$this->battle->addLog(new Log('battle.report.champion.injured', array(
+				'%championName%' => $this->getChampion()->getName(),
+				'%damage%' => $injury->getNormalAmount()
+		), array(
+				LogType::CHAMPION,
+				LogType::INJURED
+		), $this->getIcon()));
+		$this->battle->addLog(new Log('battle.report.champion.armorAbsorption', array(
+				'%championName%' => $this->getChampion()->getName(),
+				'%armor%' => $this->champion->getArmor()
+		), array(
+				LogType::CHAMPION,
+				LogType::ARMOR_ABSORPTION
+		), $this->getIcon()));
 		$this->setCurrentHealth($this->getCurrentHealth() - ($injury->getNormalAmount() - $this->champion->getArmor()));
 		
-		// $this->battle->addLog(new Log('battle.report.champion.armorAbsorption', array(
-		// '%championName%' => $this->getChampion()->getName(),
-		// '%currentHP%' => $this->getCurrentHealth()), $this->ltm->get(array(
-		// LogTypes::CHAMPION,
-		// LogTypes::HEALTH)), $this->getIcon()));
+		$this->battle->addLog(new Log('battle.report.champion.hp', array(
+				'%championName%' => $this->getChampion()->getName(),
+				'%currentHP%' => $this->getCurrentHealth()
+		), array(
+				LogType::CHAMPION,
+				LogType::HEALTH
+		), $this->getIcon()));
 	}
 }

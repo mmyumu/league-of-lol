@@ -11,10 +11,5 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class LogRepository extends EntityRepository {
-	public function insertLogs($logs, $id) {
-		$query = $this->_em->createNativeQuery('INSERT INTO Log() ', $rsm);
-		
-		$users = $query->getResult();
-	}
 	
 }
