@@ -153,45 +153,6 @@ class Log {
 		}
 		return $result;
 	}
-	public function isStrong() {
-		return false;
-	}
-	public function getText() {
-		return '';
-	}
-	
-	/**
-	 * Add logTypes
-	 *
-	 * @param \Lolol\BattleBundle\Entity\LogType $logTypes        	
-	 * @return Log
-	 */
-	public function addLogType(\Lolol\BattleBundle\Entity\LogType $logTypes) {
-		$this->logTypes[] = $logTypes;
-		return $this;
-	}
-	
-	/**
-	 * Remove logTypes
-	 *
-	 * @param \Lolol\BattleBundle\Entity\LogType $logTypes        	
-	 */
-	public function removeLogType(\Lolol\BattleBundle\Entity\LogType $logTypes) {
-		$this->logTypes->removeElement($logTypes);
-	}
-	
-	/**
-	 * Get logTypes
-	 *
-	 * @return \Doctrine\Common\Collections\Collection
-	 */
-	public function getLogTypes() {
-		return $this->logTypes;
-	}
-	
-	public function getLogTypesAsArray() {
-		return explode(';', $this->logTypes);
-	}
 	
 	/**
 	 * Set icon
@@ -212,5 +173,35 @@ class Log {
 	 */
 	public function getIcon() {
 		return $this->icon;
+	}
+	
+	/**
+	 * Set logTypes
+	 *
+	 * @param string $logTypes        	
+	 * @return Log
+	 */
+	public function setLogTypes($logTypes) {
+		$this->logTypes = $logTypes;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get logTypes
+	 *
+	 * @return string
+	 */
+	public function getLogTypes() {
+		return $this->logTypes;
+	}
+	
+	/**
+	 * Get the log types as array
+	 * 
+	 * @return array:
+	 */
+	public function getLogTypesAsArray() {
+		return explode(';', $this->logTypes);
 	}
 }
