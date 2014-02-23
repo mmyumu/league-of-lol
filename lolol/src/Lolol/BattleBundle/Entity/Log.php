@@ -47,6 +47,12 @@ class Log {
 	private $icon;
 	
 	/**
+	 *
+	 * @var integer @ORM\Column(name="logTime", type="integer")
+	 */
+	private $time;
+	
+	/**
 	 * Constructor.
 	 *
 	 * @param string $key        	
@@ -54,7 +60,8 @@ class Log {
 	 * @param array $logTypes        	
 	 * @param string $icon        	
 	 */
-	public function __construct($key, $parameters = array(), $logTypes = array(), $icon = BattleIcon::DEFAULT_ICON) {
+	public function __construct($time, $key, $parameters = array(), $logTypes = array(), $icon = BattleIcon::DEFAULT_ICON) {
+		$this->time = $time;
 		$this->key = $key;
 		foreach($parameters as $key => $value) {
 			$this->addParameter(new Parameter($key, $value));
@@ -198,10 +205,31 @@ class Log {
 	
 	/**
 	 * Get the log types as array
-	 * 
+	 *
 	 * @return array:
 	 */
 	public function getLogTypesAsArray() {
 		return explode(';', $this->logTypes);
+	}
+	
+	/**
+	 * Set the time of the log
+	 *
+	 * @param int $time        	
+	 * @return \Lolol\BattleBundle\Entity\Log
+	 */
+	public function setTime($time) {
+		$this->time = $time;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get the time of the log
+	 *
+	 * @return int
+	 */
+	public function getTime() {
+		return $this->time;
 	}
 }

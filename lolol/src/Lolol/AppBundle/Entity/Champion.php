@@ -162,6 +162,34 @@ class Champion {
 	// TODO MLA: Add the attack power, difficulty and stuff and draw lines (like wiki)
 	// TODO MLA: Add the role like primary: tank secondary: mage
 	public function __construct() {
+
+	}
+	
+	public function copyFrom(Champion $champion) {
+		$this->id = $champion->getId();
+		$this->name = $champion->getName();
+		$this->subName = $champion->getSubName();
+		$this->imgName = $champion->getImgName();
+		$this->attackDamage = $champion->getAttackDamage();
+		$this->bonusAttackDamage = $champion->getBonusAttackDamage();
+		$this->armor = $champion->getArmor();
+		$this->bonusArmor = $champion->getBonusArmor();
+		$this->health = $champion->getHealth();
+		$this->bonusHealth = $champion->getBonusHealth();
+		$this->healthRegen = $champion->getHealthRegen();
+		$this->bonusHealthRegen = $champion->getBonusHealthRegen();
+		$this->mana = $champion->getMana();
+		$this->bonusMana = $champion->getBonusMana();
+		$this->manaRegen = $champion->getManaRegen();
+		$this->bonusManaRegen = $champion->getBonusManaRegen();
+		$this->magicResist = $champion->getMagicResist();
+		$this->bonusMagicResist = $champion->getBonusMagicResist();
+		$this->attackRange = $champion->getAttackRange();
+		$this->attackRangeType = $champion->getAttackRangeType();
+		$this->moveSpeed = $champion->getMoveSpeed();
+		$this->bonusMoveSpeed = $champion->getBonusMoveSpeed();
+		$this->attackSpeed = $champion->getAttackSpeed();
+		$this->bonusAttackSpeed = $champion->getBonusAttackSpeed();
 	}
 	
 	/**

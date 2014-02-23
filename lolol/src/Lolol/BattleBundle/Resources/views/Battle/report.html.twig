@@ -26,13 +26,14 @@
       </h4>
     </div>
     <div id="collapseOne" class="panel-collapse collapse">
-      <div class="panel-body">
-      
+      <div class="panel-body">      
 		{% for log in logs %}
 			{% spaceless %}
+			<div class="row">
 			<p class="{% for logType in log.logTypesAsArray %}{{ logType }} {% endfor %}">
-				{% if log.icon %}<i class="fa {{ log.icon }} fa-fw"></i> {% endif %}{% if log.key is empty %}&nbsp;{% else %}{{ log.key|trans(log.parametersArray) }}{% endif %}
+				{% if log.icon %}<i class="fa {{ log.icon }} fa-fw"></i>{% endif %}{% if log.key is empty %}&nbsp;{% else %}[{{ log.time|number_format(2, '.') }}] {{ log.key|trans(log.parametersArray) }}{% endif %}
 			</p>
+			</div>
 			{% endspaceless %}
 		{% endfor %}
 		
