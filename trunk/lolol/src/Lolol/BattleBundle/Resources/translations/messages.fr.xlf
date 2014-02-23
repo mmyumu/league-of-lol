@@ -148,7 +148,7 @@
             </trans-unit>
            <trans-unit id="37">
                 <source>battle.report.champion.injured</source>
-                <target>Le Champion %championName% subit une blessure de %damage% HP</target>
+                <target>Le Champion %championName% subit une blessure de %damage% HP (Absorption d'armure: %armor%)</target>
             </trans-unit>
            <trans-unit id="38">
                 <source>battle.report.champion.armorAbsorption</source>
@@ -156,7 +156,7 @@
             </trans-unit>
            <trans-unit id="39">
                 <source>battle.report.champion.hp</source>
-                <target>Il reste au Champion %championName% %currentHP% HP</target>
+                <target>Il reste au Champion %championName% %currentHP%/%totalHP% HP</target>
             </trans-unit>
            <trans-unit id="40">
                 <source>battle.report.team.defeated</source>

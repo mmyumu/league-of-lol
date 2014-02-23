@@ -147,7 +147,6 @@ class Battle {
 	public function addLog(\Lolol\BattleBundle\Entity\Log $logs) {
 		$this->logs[] = $logs;
 		$logs->setBattle($this);
-		
 		return $this;
 	}
 	

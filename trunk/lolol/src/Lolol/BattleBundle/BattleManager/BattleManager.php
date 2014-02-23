@@ -9,6 +9,15 @@ use Lolol\TeamBundle\Entity\Team as Team;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class BattleManager {
+	
+	/**
+	 * Tick to increment the time of the battle
+	 *
+	 * @var float
+	 */
+	const TICK = 0.01;
+	const PRECISION = 2;
+	
 	/**
 	 * The translator service
 	 *
@@ -48,36 +57,42 @@ class BattleManager {
 		$opponentBattleTeam = new BattleTeam($opponentTeam, false, $battle);
 		$attackerBattleTeam = new BattleTeam($attackerTeam, true, $battle);
 		
-		$battle->addLog(new Log('battle.report.attacker', array('%teamName%' => $attackerTeam->getName()), array(
+		$time = 0;
+		
+		// Presentation logs
+		$battle->addLog(new Log($time, 'battle.report.attacker', array(
+				'%teamName%' => $attackerTeam->getName()
+		), array(
 				LogType::STRONG,
 				LogType::PRESENTATION
 		), BattleIcon::ATTACKER));
-		$battle->addLog(new Log($attackerTeam->championsToString(), array(), array(
+		$battle->addLog(new Log($time, $attackerTeam->championsToString(), array(), array(
 				LogType::PRESENTATION
 		)));
-		$battle->addLog(new Log('', array(), array(), null));
+		$battle->addLog(new Log($time, '', array(), array(), null));
 		
-		$battle->addLog(new Log('battle.report.opponent', array('%teamName%' => $opponentTeam->getName()), array(
+		$battle->addLog(new Log($time, 'battle.report.opponent', array(
+				'%teamName%' => $opponentTeam->getName()
+		), array(
 				LogType::STRONG,
 				LogType::PRESENTATION
 		), BattleIcon::DEFENDER));
-		$battle->addLog(new Log($opponentTeam->championsToString(), array(), array(
+		$battle->addLog(new Log($time, $opponentTeam->championsToString(), array(), array(
 				LogType::PRESENTATION
 		)));
 		
-		$battle->addLog(new Log('', array(), array(), null));
+		$battle->addLog(new Log($time, '', array(), array(), null));
 		
-		$battle->addLog(new Log('battle.report.start', array(), array(
+		$battle->addLog(new Log($time, 'battle.report.start', array(), array(
 				LogType::PRESENTATION
 		), BattleIcon::CLOCK));
 		
-		$time = 0;
-		
-		$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam);
+		// Fight starts
+		$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam, $time);
 		while ( $battleResult == null ) {
 			// Le combat continue jusqu'à ce qu'une équipe ait perdu
 			
-			// $battle->addLog(new Log('battle.report.roundBegin', array(
+			// $battle->addLog(new Log($time, 'battle.report.roundBegin', array(
 			// '%time%' => $time), array(), BattleIcon::CLOCK));
 			$actionOpponent = true;
 			$actionAttacker = true;
@@ -88,17 +103,17 @@ class BattleManager {
 				$actionAttacker = $attackerBattleTeam->play($time);
 				
 				// On résout les blessures
-				if (false !== $actionAttacker) {
-					$opponentBattleTeam->setInjury($actionAttacker);
-				}
 				if (false !== $actionOpponent) {
-					$attackerBattleTeam->setInjury($actionOpponent);
+					$attackerBattleTeam->setInjury($actionOpponent, $time);
+				}
+				if (false !== $actionAttacker) {
+					$opponentBattleTeam->setInjury($actionAttacker, $time);
 				}
 			}
 			// Tout le monde a donc joué simultannément, sans vérification d'une victoire intermédiaire
 			// C'est seulement après que chacun ait fait son action du moment qu'on avance le temps
-			$time++;
-			$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam);
+			$time = round($time + self::TICK, self::PRECISION, PHP_ROUND_HALF_UP);
+			$battleResult = $this->computeResult($opponentBattleTeam, $attackerBattleTeam, $time);
 		}
 		
 		$battle->setResult($battleResult);
@@ -111,9 +126,9 @@ class BattleManager {
 	 *
 	 * @return the result or null if the battle is not finished
 	 */
-	public function computeResult(BattleTeam $opponentBattleTeam, BattleTeam $attackerBattleTeam) {
-		$opponentLost = $opponentBattleTeam->hasLost();
-		$attackerLost = $attackerBattleTeam->hasLost();
+	public function computeResult(BattleTeam $opponentBattleTeam, BattleTeam $attackerBattleTeam, $time) {
+		$opponentLost = $opponentBattleTeam->hasLost($time);
+		$attackerLost = $attackerBattleTeam->hasLost($time);
 		if ($opponentLost && $attackerLost) {
 			return BattleResult::DRAW;
 		}
