@@ -1,0 +1,48 @@
+#summary Describe the steps of the tutorial
+#labels tutorial
+
+= Tutorial Steps=
+
+  * 0
+    * Just registered
+    * Highlight New team
+  * 100
+    * Clicked on New team
+    * Highlight 1st champion
+  * 110
+    * Clicked on 1st champion
+    * Highlight 1st slot
+  * 120
+    * Clicked 1st slot
+    * Highlight 2nd champion
+  * 130
+    * Clicked on 2nd champion
+    * Highlight 2nd slot
+  * 140
+    * Clicked 2nd slot
+    * Highlight 3rd champion
+  * 150
+    * Clicked on 3rd champion
+    * Highlight 3rd slot
+  * 160
+    * Clicked 3rd slot
+    * Highlight 4th champion
+  * 170
+    * Clicked on 4th champion
+    * Highlight 4th slot
+  * 180
+    * Clicked 4th slot
+    * Highlight 5th champion
+  * 190
+    * Clicked on 5th champion
+    * Highlight 5th slot
+  * 200
+    * Clicked 4th slot
+    * Highlight name input + save button
+  * 210
+    * 
+
+  * 1000
+    * Created a team
+    * My teams
+  * 2000
